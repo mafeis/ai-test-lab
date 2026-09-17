@@ -1,0 +1,145 @@
+{
+ "BASE": 14.793953341740222,
+ "pairs": [
+  {
+   "a": "story_shot4",
+   "b": "story_shot5",
+   "d": 4.6,
+   "ta": 5.08,
+   "tb": 0
+  },
+  {
+   "a": "story_shot5",
+   "b": "story_shot6",
+   "d": 7.36,
+   "ta": 5.08,
+   "tb": 0
+  },
+  {
+   "a": "story_shot4",
+   "b": "story_shot2",
+   "d": 43.16,
+   "ta": 2.75,
+   "tb": 2.42
+  },
+  {
+   "a": "story_shot2",
+   "b": "story_shot3",
+   "d": 45.29,
+   "ta": 2.83,
+   "tb": 0.25
+  },
+  {
+   "a": "story_shot2",
+   "b": "story_shot4",
+   "d": 46.87,
+   "ta": 4.5,
+   "tb": 0.33
+  },
+  {
+   "a": "story_shot5",
+   "b": "story_shot2",
+   "d": 51.44,
+   "ta": 4.25,
+   "tb": 2.42
+  },
+  {
+   "a": "story_shot4",
+   "b": "story_shot3",
+   "d": 51.63,
+   "ta": 2.83,
+   "tb": 0.08
+  },
+  {
+   "a": "story_shot2",
+   "b": "story_shot5",
+   "d": 51.9,
+   "ta": 4.83,
+   "tb": 0.33
+  },
+  {
+   "a": "story_shot4",
+   "b": "story_shot6",
+   "d": 52.08,
+   "ta": 4.75,
+   "tb": 0.33
+  },
+  {
+   "a": "story_shot3",
+   "b": "story_shot2",
+   "d": 53.41,
+   "ta": 5.08,
+   "tb": 2.42
+  },
+  {
+   "a": "story_shot3",
+   "b": "story_shot4",
+   "d": 53.45,
+   "ta": 5.08,
+   "tb": 1.08
+  },
+  {
+   "a": "story_shot3",
+   "b": "story_shot5",
+   "d": 54.27,
+   "ta": 5.08,
+   "tb": 0.33
+  },
+  {
+   "a": "story_shot2",
+   "b": "story_shot6",
+   "d": 55.02,
+   "ta": 2.83,
+   "tb": 2
+  },
+  {
+   "a": "story_shot5",
+   "b": "story_shot4",
+   "d": 56.47,
+   "ta": 2.92,
+   "tb": 0.08
+  },
+  {
+   "a": "story_shot5",
+   "b": "story_shot3",
+   "d": 56.91,
+   "ta": 4.25,
+   "tb": 0
+  },
+  {
+   "a": "story_shot3",
+   "b": "story_shot6",
+   "d": 58.13,
+   "ta": 5.08,
+   "tb": 2
+  },
+  {
+   "a": "story_shot6",
+   "b": "story_shot2",
+   "d": 64.08,
+   "ta": 2.67,
+   "tb": 2.42
+  },
+  {
+   "a": "story_shot6",
+   "b": "story_shot4",
+   "d": 65.19,
+   "ta": 2.67,
+   "tb": 0.17
+  },
+  {
+   "a": "story_shot6",
+   "b": "story_shot3",
+   "d": 67.15,
+   "ta": 2.67,
+   "tb": 2.17
+  },
+  {
+   "a": "story_shot6",
+   "b": "story_shot5",
+   "d": 67.52,
+   "ta": 2.67,
+   "tb": 0.25
+  }
+ ]
+}
