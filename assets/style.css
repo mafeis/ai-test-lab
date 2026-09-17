@@ -90,6 +90,11 @@ body {
   padding: 4px 4px 12px;
   scrollbar-width: thin;
 }
+.list-group-label {
+  font-size: 11.5px; font-weight: 700; color: var(--dim);
+  padding: 6px 4px 0;
+  text-transform: uppercase; letter-spacing: .04em;
+}
 .testitem {
   display: flex; gap: 10px; align-items: center;
   background: var(--card);

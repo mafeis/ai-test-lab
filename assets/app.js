@@ -62,31 +62,65 @@ let ACTIVE_REEL = 0;
 let LOOP_MODE = "off";        // off | one | all
 let PLAYBACK_RATE = 1;
 
+/* ---------- 播放器设置持久化（localStorage） ----------
+   保存：音量 / 静音 / 倍速 / 循环模式，跨视频、跨会话生效 */
+const SETTINGS_KEY = "aitl-player-settings";
+
+function loadSettings() {
+  try {
+    const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
+    if (typeof s.volume === "number") VOLUME = Math.min(1, Math.max(0, s.volume));
+    if (typeof s.muted === "boolean") MUTED = s.muted;
+    if (typeof s.rate === "number" && SPEEDS.includes(s.rate)) PLAYBACK_RATE = s.rate;
+    if (["off", "one", "all"].includes(s.loop)) LOOP_MODE = s.loop;
+  } catch (e) { /* ignore corrupt settings */ }
+}
+
+function saveSettings() {
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({
+      volume: VOLUME, muted: MUTED, rate: PLAYBACK_RATE, loop: LOOP_MODE,
+    }));
+  } catch (e) { /* storage unavailable */ }
+}
+
+let VOLUME = 1;
+let MUTED = false;
+
 function currentTest() { return ALL_TESTS.find(t => t.id === ACTIVE_ID) || null; }
 function currentReel(t) { const r = normalizeReels(t); return r[ACTIVE_REEL] || r[0] || null; }
 
-/* ---------- 左侧列表 ---------- */
+/* ---------- 左侧列表（测试清单，按分类分组） ---------- */
 
 function renderList() {
   const el = document.getElementById("testlist");
   const visible = ALL_TESTS.filter(t => ACTIVE_CAT === "全部" || t.category === ACTIVE_CAT);
-  el.innerHTML = visible.map(t => {
-    const color = CATEGORY_COLORS[t.category] || "var(--accent)";
-    const thumb = firstThumb(t);
-    const media = thumb
-      ? `<img src="${esc(thumb)}" alt="">`
-      : `<video src="${esc((normalizeReels(t)[0] || {}).src || "")}" preload="metadata" muted></video>`;
-    return `
-    <button class="testitem ${t.id === ACTIVE_ID ? "active" : ""}" data-id="${esc(t.id)}"
-            style="--cat-color: ${color}">
-      <span class="thumb-box">${media}</span>
-      <span class="ti-text">
-        <span class="ti-cat">${esc(t.category || "未分类")}</span>
-        <div class="ti-title">${esc(t.title)}</div>
-        <div class="ti-meta">${esc(t.summary || "")}</div>
-      </span>
-    </button>`;
-  }).join("") || `<div class="empty">该分类下暂无测试</div>`;
+  if (!visible.length) {
+    el.innerHTML = `<div class="empty">该分类下暂无测试</div>`;
+    return;
+  }
+  /* 按 category 分组插入小标题；选了具体分类时只显示该组 */
+  const groups = [...new Set(visible.map(t => t.category || "未分类"))];
+  el.innerHTML = groups.map(cat => {
+    const items = visible.filter(t => (t.category || "未分类") === cat).map(t => {
+      const color = CATEGORY_COLORS[t.category] || "var(--accent)";
+      const thumb = firstThumb(t);
+      const media = thumb
+        ? `<img src="${esc(thumb)}" alt="">`
+        : `<video src="${esc((normalizeReels(t)[0] || {}).src || "")}" preload="metadata" muted></video>`;
+      return `
+      <button class="testitem ${t.id === ACTIVE_ID ? "active" : ""}" data-id="${esc(t.id)}"
+              style="--cat-color: ${color}">
+        <span class="thumb-box">${media}</span>
+        <span class="ti-text">
+          <span class="ti-cat">${esc(t.category || "未分类")}</span>
+          <div class="ti-title">${esc(t.title)}</div>
+          <div class="ti-meta">${esc(t.summary || "")}</div>
+        </span>
+      </button>`;
+    }).join("");
+    return (ACTIVE_CAT === "全部" ? `<div class="list-group-label">${esc(cat)}</div>` : "") + items;
+  }).join("");
 
   el.querySelectorAll(".testitem").forEach(btn =>
     btn.addEventListener("click", () => {
@@ -178,10 +212,10 @@ function bindControls(video) {
     btnLoopAll.classList.toggle("active", LOOP_MODE === "all");
   }
   btnLoopOne.addEventListener("click", () => {
-    LOOP_MODE = LOOP_MODE === "one" ? "off" : "one"; applyLoop();
+    LOOP_MODE = LOOP_MODE === "one" ? "off" : "one"; applyLoop(); saveSettings();
   });
   btnLoopAll.addEventListener("click", () => {
-    LOOP_MODE = LOOP_MODE === "all" ? "off" : "all"; applyLoop();
+    LOOP_MODE = LOOP_MODE === "all" ? "off" : "all"; applyLoop(); saveSettings();
   });
   video.addEventListener("ended", () => {
     if (LOOP_MODE !== "all") return;
@@ -210,22 +244,31 @@ function bindControls(video) {
   };
   btnRate.addEventListener("click", () => {
     PLAYBACK_RATE = SPEEDS[(SPEEDS.indexOf(PLAYBACK_RATE) + 1) % SPEEDS.length] || 1;
-    syncRate();
+    syncRate(); saveSettings();
   });
   syncRate();
 
-  /* 音量 */
+  /* 音量（含持久化恢复） */
   const syncVol = () => {
     btnMute.classList.toggle("active", video.muted || video.volume === 0);
     vol.value = video.muted ? 0 : video.volume * 1000;
   };
-  btnMute.addEventListener("click", () => { video.muted = !video.muted; syncVol(); });
+  btnMute.addEventListener("click", () => {
+    video.muted = !video.muted;
+    MUTED = video.muted;
+    syncVol(); saveSettings();
+  });
   vol.addEventListener("input", () => {
     video.muted = false;
     video.volume = vol.value / 1000;
-    syncVol();
+    VOLUME = video.volume;
+    MUTED = false;
+    syncVol(); saveSettings();
   });
   video.addEventListener("volumechange", syncVol);
+  /* 恢复持久化的音量设置 */
+  video.volume = VOLUME;
+  video.muted = MUTED;
   syncVol();
 
   /* 画中画 / 全屏（能力检测，不支持就隐藏） */
@@ -389,6 +432,8 @@ function renderFilters() {
 
 async function boot() {
   try {
+    loadSettings();   // 恢复上次会话的播放器设置（音量/静音/倍速/循环）
+
     const manifest = await (await fetch("data/manifest.json", { cache: "no-store" })).json();
     const results = await Promise.all(manifest.tests.map(async path => {
       try {
