@@ -25,7 +25,7 @@ const CATEGORY_COLORS = {
   "Agent 任务": "var(--c-agent)",
 };
 
-const SPEEDS = [0.25, 0.5, 1, 1.5, 2, 4];
+const SPEEDS = [0.1, 0.2, 0.5, 0.75, 1, 1.25, 1.5, 2, 3, 5, 10];   // 倍速菜单选项（0.1x–10x）
 
 const esc = s => String(s == null ? "" : s)
   .replace(/&/g, "&amp;").replace(/</g, "&lt;")
@@ -84,7 +84,7 @@ function loadSettings() {
     const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
     if (typeof s.volume === "number") VOLUME = Math.min(1, Math.max(0, s.volume));
     if (typeof s.muted === "boolean") MUTED = s.muted;
-    if (typeof s.rate === "number" && SPEEDS.includes(s.rate)) PLAYBACK_RATE = s.rate;
+    if (typeof s.rate === "number" && (SPEEDS.includes(s.rate) || SPEEDS.includes(Math.round(s.rate * 100) / 100))) PLAYBACK_RATE = s.rate;
     if (["off", "one", "all"].includes(s.loop)) LOOP_MODE = s.loop;
   } catch (e) { /* ignore corrupt settings */ }
 }
@@ -181,6 +181,22 @@ function bindControls(video) {
   const btnPip = $("c-pip"), btnFull = $("c-full");
   const stage = document.getElementById("stage");
 
+  /* 倍速选择菜单（跟随倍速按钮，动态构建一次） */
+  let menu = document.getElementById("rate-menu");
+  if (!menu) {
+    menu = document.createElement("div");
+    menu.id = "rate-menu";
+    menu.innerHTML = SPEEDS.map(r =>
+      `<button class="rate-opt" data-r="${r}">${r}x</button>`).join("");
+    document.body.appendChild(menu);
+    /* 点击页面其他地方关闭菜单 */
+    document.addEventListener("click", e => {
+      if (!menu.contains(e.target) && e.target !== btnRate && !btnRate.contains(e.target)) {
+        menu.classList.remove("open");
+      }
+    });
+  }
+
   /* 播放/暂停 */
   const syncPlay = () => {
     iconPlay.style.display = video.paused ? "" : "none";
@@ -238,15 +254,28 @@ function bindControls(video) {
   });
   applyLoop();
 
-  /* 倍速 */
+  /* 倍速：点击弹出菜单直接选（0.1x–10x），并持久化 */
   const syncRate = () => {
     video.playbackRate = PLAYBACK_RATE;
     btnRate.textContent = PLAYBACK_RATE === 1 ? "1x" : `${PLAYBACK_RATE}x`;
     btnRate.classList.toggle("active", PLAYBACK_RATE !== 1);
+    menu.querySelectorAll(".rate-opt").forEach(o =>
+      o.classList.toggle("on", Number(o.dataset.r) === PLAYBACK_RATE));
   };
-  btnRate.addEventListener("click", () => {
-    PLAYBACK_RATE = SPEEDS[(SPEEDS.indexOf(PLAYBACK_RATE) + 1) % SPEEDS.length] || 1;
+  btnRate.addEventListener("click", e => {
+    e.stopPropagation();
+    menu.classList.toggle("open");
+    /* 菜单定位在倍速按钮上方 */
+    const r = btnRate.getBoundingClientRect();
+    menu.style.left = `${Math.min(r.left, window.innerWidth - menu.offsetWidth - 8)}px`;
+    menu.style.top = `${Math.max(8, r.top - menu.offsetHeight - 8)}px`;
+  });
+  menu.addEventListener("click", e => {
+    const opt = e.target.closest(".rate-opt");
+    if (!opt) return;
+    PLAYBACK_RATE = Number(opt.dataset.r);
     syncRate(); saveSettings();
+    menu.classList.remove("open");
   });
   syncRate();
 
