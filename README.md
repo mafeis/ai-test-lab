@@ -10,6 +10,8 @@
 
 **▶ 点击封面直接观看** → [在线播放器](https://mafeis.github.io/ai-test-lab/) · [视频文件页](https://github.com/mafeis/ai-test-lab/blob/main/images/miku_dance.mp4)
 
+📄 详细测试记录（制作过程 / 提示词 / 踩坑）：[experiments/miku-blender-dance](experiments/miku-blender-dance/) · 后续 H3 图生视频优化对比：[docs/miku-dance-optimize](docs/miku-dance-optimize.md)
+
 > 注：GitHub README 出于安全策略会过滤 `<video>` 标签，无法在 README 内直接内嵌播放器，因此点击封面跳转到 GitHub Pages 播放页观看。
 
 ## 目录结构
