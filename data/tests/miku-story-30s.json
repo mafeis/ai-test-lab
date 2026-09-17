@@ -1,0 +1,34 @@
+{
+  "id": "miku-story-30s",
+  "category": "视频生成",
+  "title": "初音 30s 舞台小剧场《Encore》—— 链式续拍完整叙事",
+  "summary": "6 幕 × 5s · 末帧接力无缝衔接 · 全片统一 BGM · 31s 成片",
+  "date": "2026-09-17",
+  "tags": [
+    ["赛璐璐动漫", "green"],
+    ["6 镜接力", "amber"],
+    ["统一 BGM", "green"]
+  ],
+  "media": {
+    "type": "video",
+    "src": "experiments/miku-story-30s/miku_story_30s.mp4",
+    "poster": "experiments/miku-story-30s/miku_story_poster.png"
+  },
+  "stats": [
+    ["规格", "31.0s @24fps · 672×896 · 6 幕链式生成（每镜 5.17s / 124 帧）"],
+    ["首帧", "Flux2 Klein 0.6MP 8步：黑暗侧幕+顶光，赛璐璐风定调"],
+    ["衔接", "每镜末帧 → 下一镜首帧接力；shot1→2 为设计好的开演场景切换"],
+    ["角色", "双马尾/水手服/金扣/耳机 6 镜全程零漂移"],
+    ["音频", "shot3 BGM 循环铺底 31s（全片同源），shot1 环境音叠 5.2s，片尾淡出"]
+  ],
+  "findings": [
+    "剧情分镜的关键是提示词写明'动作终态'，让末帧自然落在下一镜的起点",
+    "各镜独立音轨有能量差，成片改用单一 BGM 音源全片铺底才稳",
+    "整条管线（构图→分镜→生成→拼接→混音）约 15 分钟出一条 30s 叙事片"
+  ],
+  "links": [
+    ["📄 制作说明", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-story-30s/README.md"],
+    ["🔧 全部资产", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/miku-story-30s"],
+    ["← 管线依据：链式续拍实验", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/h3-round2/README.md"]
+  ]
+}

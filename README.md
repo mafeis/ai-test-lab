@@ -14,6 +14,7 @@
 | 6 | **t2i_ref_i2v** —— 两张 0.6MP 甜点图做首帧 → H3 图生视频（0.4/0.6MP 两档 5s 含音频） | MiniMax H3 + 双文生图参考图 | ✅ 完成（风格完全跟随参考图） | [实验说明](experiments/t2i-ref-i2v/README.md) · [逐条查看](https://mafeis.github.io/ai-test-lab/#t2i-ref-i2v) |
 | 7 | **t2i_round2** —— 步数权衡（Z-Image 1步即成品 / Flux2 8步省60%）+ 原生 2MP 天花板 | Z-Image Turbo + Flux 2 Klein 9B | ✅ 完成（推荐 8 步 / 2MP 可用） | [实验说明](experiments/t2i-round2/README.md) · [逐张查看](https://mafeis.github.io/ai-test-lab/#t2i-round2) |
 | 8 | **h3_round2** —— 链式续拍 3 镜角色一致性 + 音频提示词隔离（4 变体） | MiniMax H3 | ✅ 完成（末帧接力可行 / 音频独立可控） | [实验说明](experiments/h3-round2/README.md) · [逐条查看](https://mafeis.github.io/ai-test-lab/#h3-round2) |
+| 9 | **miku_story_30s** —— 初音 30s 舞台小剧场《Encore》：6 幕链式叙事 + 统一 BGM | Flux2 首帧 + H3 六镜接力 | ✅ 完成（31s 无缝成片） | [制作说明](experiments/miku-story-30s/README.md) · [播放](https://mafeis.github.io/ai-test-lab/#miku-story-30s) |
 
 ## 🎬 在线观看
 
