@@ -103,7 +103,7 @@ let MUTED = false;
 function currentTest() { return ALL_TESTS.find(t => t.id === ACTIVE_ID) || null; }
 function currentReel(t) { const r = normalizeReels(t); return r[ACTIVE_REEL] || r[0] || null; }
 
-/* ---------- 左侧列表（测试清单，按分类分组） ---------- */
+/* ---------- 右侧列表（测试清单：纯文字行，无缩略图） ---------- */
 
 function renderList() {
   const el = document.getElementById("testlist");
@@ -117,16 +117,11 @@ function renderList() {
   el.innerHTML = groups.map(cat => {
     const items = visible.filter(t => (t.category || "未分类") === cat).map(t => {
       const color = CATEGORY_COLORS[t.category] || "var(--accent)";
-      const thumb = firstThumb(t);
-      const media = thumb
-        ? `<img src="${esc(thumb)}" alt="">`
-        : `<video src="${esc((normalizeReels(t)[0] || {}).src || "")}" preload="metadata" muted></video>`;
       return `
       <button class="testitem ${t.id === ACTIVE_ID ? "active" : ""}" data-id="${esc(t.id)}"
               style="--cat-color: ${color}">
-        <span class="thumb-box">${media}</span>
+        <span class="ti-dot"></span>
         <span class="ti-text">
-          <span class="ti-cat">${esc(t.category || "未分类")}</span>
           <div class="ti-title">${esc(t.title)}</div>
           <div class="ti-meta">${esc(t.summary || "")}</div>
         </span>
@@ -143,8 +138,9 @@ function renderList() {
 
 function renderReelNav(t) {
   const reelNav = document.getElementById("reelnav");
+  if (!t) { reelNav.innerHTML = ""; reelNav.style.display = "none"; return; }
   const reels = normalizeReels(t);
-  if (!t || reels.length <= 1) { reelNav.innerHTML = ""; reelNav.style.display = "none"; return; }
+  if (reels.length <= 1) { reelNav.innerHTML = ""; reelNav.style.display = "none"; return; }
   reelNav.style.display = "";
   reelNav.innerHTML = `
     <div class="playlist">

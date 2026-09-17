@@ -241,11 +241,11 @@ body {
   letter-spacing: .04em;
 }
 .testitem {
-  display: flex; gap: 10px; align-items: center;
+  display: flex; gap: 9px; align-items: center;
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 7px;
+  border-radius: 8px;
+  padding: 7px 10px;
   cursor: pointer;
   transition: border-color .15s ease, box-shadow .15s ease;
   text-align: left; width: 100%;
@@ -253,27 +253,15 @@ body {
 }
 .testitem:hover { border-color: var(--accent); }
 .testitem.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(37,99,235,.18); }
-.thumb-box {
-  width: 78px; height: 50px; flex: none;
-  border-radius: 6px; overflow: hidden;
-  background: var(--stage);
-  display: flex; align-items: center; justify-content: center;
+.ti-dot {
+  width: 8px; height: 8px; flex: none;
+  border-radius: 50%;
+  background: var(--cat-color, var(--accent));
 }
-.thumb-box img, .thumb-box video {
-  width: 100%; height: 100%;
-  object-fit: cover;          /* 缩略图允许裁切 */
-  display: block; pointer-events: none;
-}
+.testitem.active .ti-dot { box-shadow: 0 0 0 3px color-mix(in srgb, var(--cat-color, var(--accent)) 25%, transparent); }
 .testitem .ti-text { min-width: 0; }
-.testitem .ti-cat {
-  display: inline-block;
-  font-size: 10.5px; line-height: 1.5;
-  padding: 0 7px; border-radius: 99px;
-  color: var(--cat-color, var(--accent));
-  background: color-mix(in srgb, var(--cat-color, var(--accent)) 10%, transparent);
-}
 .testitem .ti-title {
-  font-size: 12px; font-weight: 600; line-height: 1.45;
+  font-size: 12.5px; font-weight: 600; line-height: 1.45;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -361,8 +349,7 @@ body {
     scrollbar-width: none;
   }
   .testlist::-webkit-scrollbar { display: none; }
-  .testitem { flex: none; width: 200px; flex-direction: column; align-items: stretch; }
-  .thumb-box { width: 100%; height: 90px; }
+  .testitem { flex: none; width: 210px; }
   .list-group-label { display: none; }
   .sidebar-head { display: none; }
 
