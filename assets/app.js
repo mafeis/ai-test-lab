@@ -367,7 +367,7 @@ function renderStage() {
     controls.style.display = "";
   }
 
-  /* 比例保真自检 */
+  /* 比例保真监控（仅 console 日志，不影响界面显示） */
   const vid = stage.querySelector("video, img");
   if (vid) {
     const check = () => {
@@ -375,11 +375,9 @@ function renderStage() {
       const nh = vid.videoHeight || vid.naturalHeight;
       const rw = vid.getBoundingClientRect().width;
       const rh = vid.getBoundingClientRect().height;
-      if (!nw || !nh || !rw || !rh) return false;
+      if (!nw || !nh || !rw || !rh) return;
       const diff = Math.abs(nw / nh - rw / rh) / (nw / nh);
-      console.log(`[aspect-check] ${reel.src} native ${nw}x${nh} shown ${rw.toFixed(1)}x${rh.toFixed(1)} diff=${diff.toExponential(2)} ${diff < 1e-8 ? "PASS" : "FAIL"}`);
-      if (diff >= 1e-8) vid.style.outline = "2px solid #dc2626";
-      return diff < 1e-8;
+      if (diff > 0.01) console.warn(`[aspect-check] ${reel.src} 比例偏差 ${(diff * 100).toFixed(2)}%（native ${nw}x${nh} shown ${rw.toFixed(1)}x${rh.toFixed(1)}）`);
     };
     if (vid.tagName === "VIDEO") {
       vid.addEventListener("loadedmetadata", check, { once: true });

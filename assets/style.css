@@ -222,18 +222,20 @@ body {
   position: sticky; top: calc(var(--topbar-h) + 8px);
   display: flex; flex-direction: column;
   max-height: calc(100vh - var(--topbar-h) - 28px);
+  overflow-y: auto;                 /* 整栏唯一滚动容器，消除双滚动条 */
+  scrollbar-width: thin;
 }
 .sidebar-head {
   font-size: 12.5px; font-weight: 700; color: var(--dim);
   margin-bottom: 10px; padding-left: 4px; flex: none;
+  position: sticky; top: 0;         /* 滚动时标题钉在栏顶 */
+  background: var(--bg);
+  z-index: 1;
 }
 .testlist {
   display: flex; flex-direction: column; gap: 8px;
-  overflow-y: auto;
   padding: 4px 4px 8px;
-  scrollbar-width: thin;
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: none;                       /* 不再内部滚动，跟随整栏滚动 */
 }
 .list-group-label {
   font-size: 11px; font-weight: 700; color: var(--dim);
@@ -290,8 +292,7 @@ body {
 .pl-hint { font-weight: 400; font-size: 11px; color: var(--dim); }
 .pl-items {
   display: flex; flex-direction: column;
-  max-height: 40vh; overflow-y: auto;
-  scrollbar-width: thin;
+  /* 跟随整栏滚动，不再内部滚动 */
 }
 .pl-item {
   display: flex; align-items: center; gap: 10px;
@@ -338,8 +339,9 @@ body {
   .layout { grid-template-columns: 1fr; padding: 12px 12px 32px; gap: 14px; }
 
   /* 移动端：先播放器后列表，恢复自然文档流 */
-  .sidebar { position: static; max-height: none; }
+  .sidebar { position: static; max-height: none; overflow-y: visible; }
   .stage-wrap { order: -1; }
+  .sidebar-head { position: static; }
 
   .testlist {
     flex-direction: row;
@@ -362,8 +364,7 @@ body {
   .ctl-btn.rate, .ctl-btn.wide { padding: 0 9px; }
   .c-seek-wrap { flex: 1 1 100%; order: -1; margin-bottom: 2px; }
 
-  /* 片段列表限高放宽 */
-  .pl-items { max-height: none; }
+  /* 片段列表行 */
   .pl-label { white-space: normal; }
 }
 
