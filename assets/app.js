@@ -151,10 +151,16 @@ function chipLabels(reels) {
     return m[1].replace(/[\s]*[0-9.]+MP.*$/u, "").trim();
   };
   const series = reels.map(seriesOf);
-  const names = [...new Set(series.filter(Boolean))];
+  /* 同名至少出现两次才算真系列（如 Z-Image / Flux2 的档位扫描）；
+     只出现一次的 <b> 段是条目自己的标题，不参与分组——否则每块都自成一系，
+     前缀编号既没信息量，系列间强制换行还会挤成一行一个 */
+  const seriesCount = {};
+  series.forEach(s => { if (s) seriesCount[s] = (seriesCount[s] || 0) + 1; });
+  const realSeries = series.map(s => (s && seriesCount[s] >= 2 ? s : null));
+  const names = [...new Set(realSeries.filter(Boolean))];
   /* 只有一个系列（或全无系列）→ 全局序号 1..N；series 始终返回数组（调用方依赖） */
   if (names.length <= 1) {
-    return { labels: reels.map((_, i) => String(i + 1)), series, starts: {} };
+    return { labels: reels.map((_, i) => String(i + 1)), series: realSeries, starts: {} };
   }
 
   const prefixes = {};
@@ -173,15 +179,15 @@ function chipLabels(reels) {
     used.add(prefixes[n]);
   });
   const counters = {};
-  const labels = series.map((s, i) => {
+  const labels = realSeries.map((s, i) => {
     if (!s) return String(i + 1);
     counters[s] = (counters[s] || 0) + 1;
     return `${prefixes[s]}${counters[s]}`;
   });
   /* 每个系列在选集中的起始下标（用于系列间换行） */
   const starts = {};
-  series.forEach((s, i) => { if (s && starts[s] === undefined) starts[s] = i; });
-  return { labels, series, starts };
+  realSeries.forEach((s, i) => { if (s && starts[s] === undefined) starts[s] = i; });
+  return { labels, series: realSeries, starts };
 }
 
 function renderReelNav(t) {
