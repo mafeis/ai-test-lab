@@ -18,9 +18,7 @@
 
 ## 快速对比
 
-- Z-Image 十档拼条：[strip_zimage_turbo.png](strip_zimage_turbo.png)
-- Flux2 十档拼条：[strip_flux2_klein.png](strip_flux2_klein.png)
-- 双模型同屏网格（上 Z-Image / 下 Flux2）：[grid_combined.png](grid_combined.png)
+- 20 张原图逐张查看：`zimg_mp*.png` / `flux2_mp*.png`（播放页 [t2i-res-sweep](https://mafeis.github.io/ai-test-lab/#t2i-res-sweep) 可逐张切换）
 
 ## 数据总表（NVIDIA H20 实测）
 
@@ -75,8 +73,6 @@
 |---|---|
 | `zimg_mp0.1_00001_.png` … `zimg_mp1.0_00001_.png` | Z-Image Turbo 十档原始成片 |
 | `flux2_mp0.1_00001_.png` … `flux2_mp1.0_00001_.png` | Flux 2 Klein 十档原始成片 |
-| `strip_zimage_turbo.png` / `strip_flux2_klein.png` | 各自十档同排拼条 |
-| `grid_combined.png` | 双模型上下对照网格 |
 | `workflow_zimg_api.json` / `workflow_flux2_api.json` | API 格式工作流（0.5MP 示例，改 width/height 复现） |
 | `prompt.txt` | 扫描用提示词 |
 

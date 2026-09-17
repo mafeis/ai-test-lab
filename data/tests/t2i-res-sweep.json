@@ -14,16 +14,25 @@
     "columns": "four",
     "items": [
       { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.1_00001_.png", "label": "<b>Z-Image 0.1MP</b> 256×352 · 2.0s" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.2_00001_.png", "label": "<b>Z-Image 0.2MP</b> 384×512 · 2.0s" },
       { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.3_00001_.png", "label": "<b>Z-Image 0.3MP</b> 480×640 · 2.0s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.6_00001_.png", "label": "<b>Z-Image 0.6MP</b> 672×896 · 4.1s ★" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.4_00001_.png", "label": "<b>Z-Image 0.4MP</b> 544×736 · 2.0s" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.5_00001_.png", "label": "<b>Z-Image 0.5MP</b> 608×832 · 2.1s" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.6_00001_.png", "label": "<b>Z-Image 0.6MP</b> 672×896 · 4.1s ★甜点" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.7_00001_.png", "label": "<b>Z-Image 0.7MP</b> 736×960 · 4.1s" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.8_00001_.png", "label": "<b>Z-Image 0.8MP</b> 768×1056 · 4.1s" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.9_00001_.png", "label": "<b>Z-Image 0.9MP</b> 832×1088 · 4.1s" },
       { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp1.0_00001_.png", "label": "<b>Z-Image 1.0MP</b> 896×1120 · 4.1s" },
       { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.1_00001_.png", "label": "<b>Flux2 0.1MP</b> 256×352 · 4.6s" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.2_00001_.png", "label": "<b>Flux2 0.2MP</b> 384×512 · 4.1s" },
       { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.3_00001_.png", "label": "<b>Flux2 0.3MP</b> 480×640 · 腿部伪影" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.6_00001_.png", "label": "<b>Flux2 0.6MP</b> 672×896 · 10.4s ★" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp1.0_00001_.png", "label": "<b>Flux2 1.0MP</b> 896×1120 · 18.3s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/strip_zimage_turbo.png", "label": "<b>Z-Image 十档拼条</b> 0.1→1.0MP" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/strip_flux2_klein.png", "label": "<b>Flux2 十档拼条</b> 0.1→1.0MP" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/grid_combined.png", "label": "<b>双模型对照网格</b> 上 Z-Image / 下 Flux2" }
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.4_00001_.png", "label": "<b>Flux2 0.4MP</b> 544×736 · 8.1s" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.5_00001_.png", "label": "<b>Flux2 0.5MP</b> 608×832 · 8.9s" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.6_00001_.png", "label": "<b>Flux2 0.6MP</b> 672×896 · 10.4s ★甜点" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.7_00001_.png", "label": "<b>Flux2 0.7MP</b> 736×960 · 12.2s" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.8_00001_.png", "label": "<b>Flux2 0.8MP</b> 768×1056 · 14.2s" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.9_00001_.png", "label": "<b>Flux2 0.9MP</b> 832×1088 · 16.2s" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp1.0_00001_.png", "label": "<b>Flux2 1.0MP</b> 896×1120 · 18.3s" }
     ]
   },
   "stats": [
