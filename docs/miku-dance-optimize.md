@@ -2,7 +2,7 @@
 
 ## 目标
 
-用本地 ComfyUI（127.0.0.1:8188）的 **MiniMax H3 视频生成模型** + **Qwen3 8B 文本编码器**，
+用本地 ComfyUI（127.0.0.1:8188）的 **MiniMax H3 视频生成模型** + **qwen3vl_32b 文本编码器（MiniMax H3 专用）**，
 对原始 `miku_dance.mp4`（qwen3.8-flash 生成）做优化重生成，对比效果。
 
 ## 原始视频参数
@@ -38,7 +38,7 @@ API 格式工作流及全部资产见 [experiments/miku-h3-i2v/](../experiments/
 
 ```
 UNETLoader(H3 fl2va) → LoraLoader(8step turbo) ─┐
-CLIPLoader(qwen3-8b, minimax) ─┐                │
+CLIPLoader(qwen3vl-32b, minimax) ─┐                │
 VAELoader(video + audio) ──┐   │                │
 LoadImage(首帧) ──────────┐  │  │                │
                           ▼  ▼  ▼                │

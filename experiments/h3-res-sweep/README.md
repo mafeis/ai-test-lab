@@ -5,9 +5,7 @@
 
 ## 快速对比
 
-- 十档全景拼条：`comparison_strip_full10.png`（左 → 右 = 0.1 → 1.0MP，取 t=2.5s 同帧）
-- 低段 5 档拼条：`comparison_strip_5s.png` · 高段 5 档拼条：`comparison_strip_hi.png`
-- 同屏视频：`res_comparison_5s.mp4`（0.1–0.5MP）· `res_comparison_hi.mp4`（0.6–1.0MP）
+- 十档成片逐档查看：`res5s_mp0.1_00001_.mp4` … `res5s_mp1.0_00001_.mp4`（播放页 [h3-res-sweep](https://mafeis.github.io/ai-test-lab/#h3-res-sweep) 可逐档切换播放）
 
 ## 数据总表
 
@@ -24,10 +22,10 @@
 | 0.9 MP | 832×1088 | 211.3s | 3673 KB | 5823 kbps |
 | 1.0 MP | 896×1120 | **252.8s** | 3456 KB | 5479 kbps |
 
-> 耗时随像素量近似平方增长（0.1MP 10.5s → 1.0MP 252.8s，24 倍像素 → 24 倍耗时）；
+> 耗时随像素量近似线性增长（0.1MP 10.5s → 1.0MP 252.8s，24 倍像素 → 24 倍耗时）；
 > 0.9→1.0MP 码率不升反降（5823→5479 kbps），内容信息增益趋于饱和。
 
-## 视觉结论（看十档拼条从左到右）
+## 视觉结论（0.1 → 1.0MP 逐档）
 
 1. **0.1MP**：柔糊，五官融成真人感，只配预览构图运镜
 2. **0.2MP**：全身远景，舞台桁架可见，蕾丝糊成一片
@@ -52,10 +50,7 @@
 
 | 文件 | 说明 |
 |---|---|
-| `res5s_mp0.1_00001_.mp4` … `res5s_mp1.0_00001_.mp4` | 10 档原始成片（5.17s，含音频） |
-| `comparison_strip_full10.png` | 十档同帧全景拼条 |
-| `comparison_strip_5s.png` / `comparison_strip_hi.png` | 低段/高段分组拼条 |
-| `res_comparison_5s.mp4` / `res_comparison_hi.mp4` | 低段/高段同屏对比视频 |
+| `res5s_mp0.1_00001_.mp4` … `res5s_mp1.0_00001_.mp4` | 10 档原始成片（5.17s，含音频），逐档播放见 [播放页](https://mafeis.github.io/ai-test-lab/#h3-res-sweep) |
 | `h3_res5s_workflow_template.json` | 工作流模板（0.5MP 示例，改 width/height 复现任意档位） |
 
 复现命令：

@@ -47,12 +47,15 @@ ai-test-lab/
 │       ├── h3-i2v.json
 │       ├── h3-t2v.json
 │       ├── h3-res-sweep.json
-│       └── t2i-res-sweep.json
+│       ├── t2i-res-sweep.json
+│       └── t2i-ref-i2v.json
 ├── experiments/                # 媒体素材（视频/图片/工作流/README）
+│   ├── miku-blender-dance/
 │   ├── miku-h3-i2v/
 │   ├── miku-h3-t2v/
 │   ├── h3-res-sweep/
-│   └── t2i-res-sweep/
+│   ├── t2i-res-sweep/
+│   └── t2i-ref-i2v/
 ├── images/                     # 通用图片（如原始素材）
 ├── docs/
 │   ├── adding-tests.md         # ← 本文档
