@@ -2,6 +2,14 @@
 
 用来测试 AI 各种效果的实验仓库（Playground）。
 
+## 🎬 AI 生成动画
+
+### miku_dance.mp4 —— Qwen 生成
+
+<video src="images/miku_dance.mp4" controls muted width="640"></video>
+
+> 点击上方画面即可直接播放；也可点 [images/miku_dance.mp4](images/miku_dance.mp4) 在文件页观看。
+
 ## 目录结构
 
 ```
