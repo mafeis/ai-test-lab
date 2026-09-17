@@ -290,32 +290,34 @@ body {
   display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
 }
 .pl-hint { font-weight: 400; font-size: 11px; color: var(--dim); }
-.pl-items {
-  display: flex; flex-direction: column;
-  /* 跟随整栏滚动，不再内部滚动 */
+/* ---------- 片段选集（紧凑方块，像视频网站的"选集"） ---------- */
+
+.pl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+  gap: 6px;
+  padding: 10px 12px;
 }
-.pl-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 7px 12px;
-  border: none; border-bottom: 1px solid var(--line);
-  background: var(--card);
-  font: inherit; color: inherit;
-  cursor: pointer; text-align: left;
-  transition: background .12s ease;
+.pl-chip {
+  height: 34px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--dim);
+  font: inherit; font-size: 12.5px; font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: all .12s ease;
 }
-.pl-item:last-child { border-bottom: none; }
-.pl-item:hover { background: #f1f5f9; }
-.pl-item.active {
-  background: rgba(37,99,235,.08);
-  box-shadow: inset 3px 0 0 var(--accent);
+.pl-chip:hover { border-color: var(--accent); color: var(--accent); }
+.pl-chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(37,99,235,.35);
 }
-.pl-no { width: 24px; flex: none; display: flex; justify-content: center; color: var(--dim); font-size: 12px; font-variant-numeric: tabular-nums; }
-.pl-item.active .pl-no { color: var(--accent); }
 .pl-eq { width: 14px; height: 14px; }
-.pl-label { flex: 1; min-width: 0; font-size: 12px; color: var(--txt); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pl-item.active .pl-label { font-weight: 700; color: var(--accent); }
-.pl-state { flex: none; font-size: 10.5px; color: var(--dim); }
-.pl-item.active .pl-state { color: var(--accent); font-weight: 600; }
 
 /* ============ 页脚 / 空状态 ============ */
 
@@ -364,13 +366,12 @@ body {
   .ctl-btn.rate, .ctl-btn.wide { padding: 0 9px; }
   .c-seek-wrap { flex: 1 1 100%; order: -1; margin-bottom: 2px; }
 
-  /* 片段列表行 */
-  .pl-label { white-space: normal; }
+  /* 片段选集：移动端方块加大触控热区 */
+  .pl-chip { height: 40px; }
 }
 
 @media (hover: none) {
   .chip, .st-btn { padding-top: 5px; padding-bottom: 5px; }
-  .pl-item { padding: 10px 12px; }
 }
 
 @media print {

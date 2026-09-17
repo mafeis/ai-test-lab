@@ -134,7 +134,7 @@ function renderList() {
   el.querySelector(".testitem.active")?.scrollIntoView({ block: "nearest" });
 }
 
-/* ---------- 片段播放列表（右侧栏内，当前测试的二级选择） ---------- */
+/* ---------- 片段选集（紧凑方块，悬停显示片段信息） ---------- */
 
 function renderReelNav(t) {
   const reelNav = document.getElementById("reelnav");
@@ -144,18 +144,19 @@ function renderReelNav(t) {
   reelNav.style.display = "";
   reelNav.innerHTML = `
     <div class="playlist">
-      <div class="pl-head">片段列表 · ${reels.length} 个 <span class="pl-hint">点击切换播放</span></div>
-      <div class="pl-items">` + reels.map((r, i) => `
-      <button class="pl-item ${i === ACTIVE_REEL ? "active" : ""}" data-i="${i}">
-        <span class="pl-no">${i === ACTIVE_REEL
-          ? `<svg viewBox="0 0 16 16" class="pl-eq"><path d="M3 6v4M6.5 4v8M10 5.5v5M10 5v6M13 6v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"><animate attributeName="d" dur="0.8s" repeatCount="indefinite" values="M3 6v4M6.5 3.5v9M10 6v4M13 5v6;M3 5v6M6.5 6v4M10 3.5v9M13 7v2;M3 6v4M6.5 3.5v9M10 6v4M13 5v6"/></animate></svg>`
-          : `<span class="pl-num">${i + 1}</span>`}</span>
-        <span class="pl-label">${r.html_label || esc(r.label)}</span>
-        <span class="pl-state">${i === ACTIVE_REEL ? "播放中" : ""}</span>
-      </button>`).join("") + `</div></div>`;
+      <div class="pl-head">选集 <span class="pl-hint">${reels.length} 个</span></div>
+      <div class="pl-grid">` + reels.map((r, i) => {
+        const tip = (r.html_label || r.label || "").replace(/<[^>]+>/g, "").trim();
+        return `
+        <button class="pl-chip ${i === ACTIVE_REEL ? "active" : ""}" data-i="${i}" title="${esc(tip)}">
+          ${i === ACTIVE_REEL
+            ? `<svg viewBox="0 0 16 16" class="pl-eq"><path d="M3 6v4M6.5 4v8M10 5.5v5M13 6v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"><animate attributeName="d" dur="0.8s" repeatCount="indefinite" values="M3 6v4M6.5 3.5v9M10 6v4M13 5v6;M3 5v6M6.5 6v4M10 3.5v9M13 7v2;M3 6v4M6.5 3.5v9M10 6v4M13 5v6"/></animate></svg>`
+            : (i + 1)}
+        </button>`;
+      }).join("") + `</div></div>`;
 
   /* 当前片段自动滚进可视区 */
-  reelNav.querySelector(".pl-item.active")?.scrollIntoView({ block: "nearest" });
+  reelNav.querySelector(".pl-chip.active")?.scrollIntoView({ block: "nearest", inline: "nearest" });
 }
 
 /* ---------- 自定义控制条 ---------- */
@@ -335,7 +336,7 @@ document.getElementById("testlist").addEventListener("click", e => {
 
 /* 播放列表行：事件委托绑定在 #reelnav 容器上 */
 document.getElementById("reelnav").addEventListener("click", e => {
-  const btn = e.target.closest(".pl-item");
+  const btn = e.target.closest(".pl-chip");
   if (!btn) return;
   ACTIVE_REEL = Number(btn.dataset.i);
   renderStage();
