@@ -150,13 +150,17 @@ function renderReelNav(t) {
   const reels = normalizeReels(t);
   if (reels.length <= 1) { reelNav.innerHTML = ""; reelNav.style.display = "none"; return; }
   reelNav.style.display = "";
+  const starCount = reels.filter(r => (r.html_label || r.label || "").includes("★")).length;
   reelNav.innerHTML = `
     <div class="playlist">
-      <div class="pl-head">选集 <span class="pl-hint">${reels.length} 个</span></div>
+      <div class="pl-head">选集 <span class="pl-hint">${reels.length} 个${starCount ? ` · ★${starCount}` : ""}</span></div>
       <div class="pl-grid">` + reels.map((r, i) => {
-        const tip = (r.html_label || r.label || "").replace(/<[^>]+>/g, "").trim();
+        const raw = (r.html_label || r.label || "");
+        const tip = raw.replace(/<[^>]+>/g, "").trim();
+        const starred = raw.includes("★");
         return `
-        <button class="pl-chip ${i === ACTIVE_REEL ? "active" : ""}" data-i="${i}" title="${esc(tip)}">
+        <button class="pl-chip ${i === ACTIVE_REEL ? "active" : ""} ${starred ? "starred" : ""}" data-i="${i}" title="${esc((starred ? "★ " : "") + tip)}">
+          ${starred ? `<span class="pl-star">★</span>` : ""}
           ${i === ACTIVE_REEL
             ? `<svg viewBox="0 0 16 16" class="pl-eq"><path d="M3 6v4M6.5 4v8M10 5.5v5M13 6v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"><animate attributeName="d" dur="0.8s" repeatCount="indefinite" values="M3 6v4M6.5 3.5v9M10 6v4M13 5v6;M3 5v6M6.5 6v4M10 3.5v9M13 7v2;M3 6v4M6.5 3.5v9M10 6v4M13 5v6"/></animate></svg>`
             : (i + 1)}
