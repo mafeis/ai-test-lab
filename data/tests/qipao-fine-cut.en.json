@@ -1,0 +1,47 @@
+{
+  "id": "qipao-fine-cut",
+  "category": "Video",
+  "title": "6 white-gauze qipao studio dance clips cut into one 16.8s video: where to put the joins, what order avoids jumps?",
+  "summary": "Fix the order first, then pick the cut points. The worst jump drops from 3.31x in the straight concat to 2.07x in the fine cut (1 = the footage's normal motion level): 31.0s of raw footage cut into a 16.75s final video with its original audio.",
+  "date": "2026-09-17",
+  "tags": [
+    ["6 clips into 1", "green"],
+    ["Frame-diff cut points", "amber"],
+    ["16.8s", "gray"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "two",
+    "items": [
+      { "src": "experiments/qipao-fine-cut/qipao_fine_cut.mp4", "poster": "experiments/qipao-fine-cut/poster.png", "label": "<b>Fine Cut</b> Final video 16.75s · Watch it start to finish and keep your eye on the 5 joins for any visible jump · ★ recommended" },
+      { "src": "experiments/qipao-fine-cut/qipao_raw_concat.mp4", "label": "<b>Fine Cut</b> Control: straight concat in original order, 31.0s · See where each boundary jumps — the worst is 3.31x, while the fine cut at the same spots is only 2.07x" },
+      { "type": "image", "src": "experiments/qipao-fine-cut/joins_check.jpg", "label": "<b>Fine Cut</b> Pre-cut check · 5 side-by-side pairs of \"last frame of A | first frame of B\", checked group by group for whether the motion connects" },
+      { "type": "image", "src": "experiments/qipao-fine-cut/overview_frames.jpg", "label": "<b>Fine Cut</b> Full-video spot check · 2fps × 36 contact-sheet frames, scanned in cell order for breaks in rhythm or pose" },
+      { "type": "image", "src": "experiments/qipao-fine-cut/first_frame_dance.jpg", "label": "<b>Fine Cut</b> Design frame · Studio front full-body shot, shared as the first frame by 4 clips; compare against the final video to check the character hasn't drifted" },
+      { "type": "image", "src": "experiments/qipao-fine-cut/first_frame_breeze.png", "label": "<b>Fine Cut</b> Design frame · Back view in a light breeze, shared as the first frame by the other 2 clips; covers the two slow-motion shots at the end" }
+    ]
+  },
+  "stats": [
+    ["What came out", "One 16.75s final video with its original audio, about half of the 31.0s of raw footage: 544×960 portrait · 24fps constant frame rate (CFR) · SAR 1:1 · H.264 CRF16 slow · AAC 32kHz · 7.48MB"],
+    ["What went in", "6 clips (takes) of one dance from the same prompt groups, 5.17s each, three sizes at 0.4/0.5/0.98MP → 480×864 / 544×960 / 768×1344, plus 2 first-frame design images"],
+    ["How the cut points were picked", "Scale frames down to 40×52 grayscale, diff adjacent frames at 12fps, and brute-force all 30 ordered pairs (last 2.5s of A × first 2.5s of B); the closest frame lands right in the middle of the dissolve"],
+    ["How the six clips are ordered", "00273→00276→00274→00278→00277→00275: big moves up front, slow shots at the end, and the two near-identical clips pulled apart"],
+    ["How the joins are handled", "All 5 joins use dissolves: 0.22s between dance clips; 0.35s at joins that cross background audio tracks (between J-pop music and ambient sound); the final 0.55s fades picture and sound to white together"],
+    ["Do the joins jump", "Straight concat ▮▮▮▮▮ 2.73~3.31x → fine cut ▮▮▮ 1.63~2.07x (1 = the footage's normal motion level); the last cut at 0.89x is barely visible"],
+    ["How the export works", "Trimming the 6 clips, white padding, 5 picture+audio dissolves (xfade/acrossfade), and the white fade-out all go into one filter chain (filter_complex) - done in a single encode, no second pass"]
+  ],
+  "findings": [
+    "Order is worth more than cut points: with the exact same scan results, only the order of the six clips changes, and the worst join drops from 3.11x to 2.42x - the original order wedged a near-static slow shot between big-move dance clips, and that cut jumped the hardest",
+    "Frame diffing has a floor: scan every pairing of the 6 clips and the best pair still sits at 1.64x (big dance moves, and a pure-white background gives no edge reference), so a seamless hard cut is off the table; the leftover 1.6~2.4x gap is smoothed by the 0.22s dissolves",
+    "Cutting the parts nobody watches saves the most runtime: every clip starts on an idle stance and ends on a settle (motion under 0.6x of normal); trimming them takes 31.0s down to 16.75s, and the perceived density nearly doubles",
+    "The two clip groups carry different background-audio prompts (J-pop / soft-breeze ambience), so after reordering the video naturally runs \"music section → ambient sound close\"; joins that cross background tracks use the longer 0.35s dissolve so picture and sound change together",
+    "With a pure-white studio background you must pad with white: black bars read as smudges on a white frame - the pad color follows the scene, it is not the default black",
+    "Frame diffs cannot read motion meaning: two frames spinning in opposite directions can still score close, so eyeball the \"last frame | first frame\" pairs before any cut"
+  ],
+  "links": [
+    ["📄 Experiment README", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/qipao-fine-cut/README.md"],
+    ["🔧 All assets", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/qipao-fine-cut"],
+    ["← Generation-side parameter basis: chained continuation + audio isolation", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/h3-round2/README.md"],
+    ["← Another joining route: first/last-frame dual anchors for cross-shot stories", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-story-30s/README.md"]
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "id": "miku-stage-recut",
+  "category": "Video",
+  "title": "Hatsune Miku Stage: Six-Shot Dual-Line Fine Cut — Score All 720 Cut Orders to Find the Smoothest, Then Speed Up the Parts AI Quietly Slowed Down",
+  "summary": "Two finished cuts (animation 25.9s / live-action 22.2s): score all 720 shot orders and pick the one with the smoothest joins; find the 3s airborne slow motion the model left in during generation and speed up just that stretch. Total runtime -10.5% / -15.8%",
+  "date": "2026-09-18",
+  "tags": [
+    ["Two finished cuts", "green"],
+    ["All 720 orders scored", "amber"],
+    ["Slow motion 3s→1.3s", "amber"],
+    ["Animation / live-action cos", "gray"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "two",
+    "items": [
+      { "src": "experiments/miku-stage-recut/recut_cel.mp4", "poster": "experiments/miku-stage-recut/poster_cel.png", "label": "<b>Animation-line cut</b> 25.9s · Best order among 720 candidates · Slow motion fixed" },
+      { "src": "experiments/miku-stage-recut/recut_real.mp4", "poster": "experiments/miku-stage-recut/poster_real.png", "label": "<b>Live-action-line cut</b> 22.2s · Opens on the spotlight entrance · Hang time fixed from 3.0s to 1.3s" },
+      { "type": "image", "src": "experiments/miku-stage-recut/slowmo_hang_24fps.jpg", "label": "<b>Defect evidence</b> 24 shots per second: she hangs in the air for a full 3.0s (a real jump stays airborne 0.7s or less)" },
+      { "type": "image", "src": "experiments/miku-stage-recut/fixed_real_jump.jpg", "label": "<b>After the fix</b> About 1.3s airborne in the same shot - takeoff and landing read crisp" },
+      { "type": "image", "src": "experiments/miku-stage-recut/verify_cel_joins.jpg", "label": "<b>Cut-point acceptance · Animation line</b> Each image shows the two frames on either side of a cut - smooth or not, visible at a glance" },
+      { "type": "image", "src": "experiments/miku-stage-recut/verify_real_joins.jpg", "label": "<b>Cut-point acceptance · Live-action line</b> Frames before and after the five cuts side by side - no jump visible anywhere" },
+      { "type": "image", "src": "experiments/miku-stage-recut/verify_cel_overview.jpg", "label": "<b>Whole-film overview · Animation line</b> One frame per second - the pacing curve in one look" },
+      { "type": "image", "src": "experiments/miku-stage-recut/verify_real_overview.jpg", "label": "<b>Whole-film overview · Live-action line</b> One frame per second - no more frozen picture in the middle" }
+    ]
+  },
+  "stats": [
+    ["What was done", "One six-act stage performance, cut into one film per art style. First, score all 720 shot orders and pick the one with the smoothest joins. Then, find the slow motion the model left in during generation and speed up only the slow parts"],
+    ["Finished cuts", "Animation 25.92s (15.2MB) · Live-action 22.22s (10.7MB) · 672×896 · Native video audio preserved"],
+    ["How smoothness is scored", "Each cut point gets one picture-jump measurement: if the character's pose is close between the two frames on either side of the switch, it is smooth. Add up the jumps of all cut points in an order and that is its total score - lower is smoother"],
+    ["Rearrangement result", "The new animation-line order ranks #1 of 720, 28% smoother than the original. The trick is one cut: 'lights drop into eyes open at the end' is nearly seamless, yet the same shot as the opening is the most expensive cut in the whole matrix - same shot at the start vs the end, the score doubles. On the live-action line the exhaustive check confirmed the existing order was already the best (#1 of 120)"],
+    ["How the slow motion was found", "In a real jump the feet leave the ground for under 0.7s; this footage measures a full 3.0s airborne (counted from 24 shots per second). The original prompt even reads hangs at the peak - a slow motion the generator rendered on purpose, not a cutting accident"],
+    ["How the slow motion was fixed", "Only segments with no visible reference (hang time, freeze frames) were sped up, to 2.7x; real actions like takeoff and landing keep original speed. Every cut-point frame stayed put, and the previous round's acceptance results show zero regression"],
+    ["Fix result", "Hang time 3.0s ▮▮▮▮▮ → 1.3s ▮▮ · Total runtime 28.96→25.92s / 26.38→22.22s · All 10 cut points across the two films pass final acceptance"]
+  ],
+  "findings": [
+    "Judge slow motion before cutting: 3.0s airborne against 0.7s for a real person - 4x beyond physics is a defect. Slow that doesn't break physics (bows, curtain calls, lights-up openings) is narrative pacing, and every bit of it stays",
+    "Speed-ups only hide where there is no reference: hang-time and freeze-frame shots have no visible motion to compare against, so 2.7x goes unnoticed; real actions like takeoff and landing give it away even at 1.2x",
+    "Brute force gives a ranking, not the final call: on the live-action line the top-scoring order put the opening shot in the middle of the film - smoothest picture, broken story, discarded; in the end the pick is the smoothest order that makes narrative sense, costing only 5.6% more",
+    "The gain from reordering can be pinned to one cut: all of the animation line's gain comes from the 'exit→eyes open' cut, the 5th cheapest of 30 possible joins, while putting the eyes-open shot at the top is the most expensive join",
+    "The speed-up lifted the whole film's motion baseline from 6.34 to 9.36, but every acceptance threshold is a relative value, so the criteria needed no change between the two rounds",
+    "Never review footage at a framerate below the source: a fast spin shot's jump was completely invisible at half framerate, showed a 4.58x jump at full framerate, and was finally smoothed out with a 0.25s dissolve"
+  ],
+  "links": [
+    ["📄 Experiment README", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-stage-recut/README.md"],
+    ["🔧 All assets", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/miku-stage-recut"],
+    ["← How the source footage was generated: keyframe dual anchors", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-story-30s/README.md"],
+    ["← First use of this same fine-cut method", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/qipao-fine-cut/README.md"]
+  ]
+}

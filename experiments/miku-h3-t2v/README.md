@@ -1,5 +1,7 @@
 # 零图片输入对照实验：只靠文字能否生成同一支舞
 
+中文 | [English](README.en.md)
+
 同一支「初音舞蹈」此前已用「先输入一张首帧图」的方式生成过一次（[experiments/miku-h3-i2v/](../miku-h3-i2v/)）。本实验把图片输入完全去掉，只保留文字提示词，检验文字能否独立确定主题与角色，并与该版本横向对照。配套对比记录见 [docs/miku-dance-optimize.md](../../docs/miku-dance-optimize.md)。
 
 ## 一分钟看懂

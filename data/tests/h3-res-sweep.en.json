@@ -1,0 +1,44 @@
+{
+  "id": "h3-res-sweep",
+  "category": "Parameter Sweep",
+  "title": "How Many Pixels Does Generated Video Need to Look Sharp? MiniMax H3 Resolution 0.1→1.0 MP, All 10 Steps Compared",
+  "summary": "One clip rendered at 10 resolutions: 24x the pixels costs about 24x the time; 0.6MP quality is already enough for everything, at just 45% of the top step's time; click any window to play it on its own",
+  "date": "2026-09-17",
+  "tags": [
+    ["MiniMax H3", "green"],
+    ["All 10 steps scanned", "green"],
+    ["Best step: 0.6MP", "amber"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "four",
+    "items": [
+      { "src": "experiments/h3-res-sweep/res5s_mp0.1_00001_.mp4", "label": "<b>0.1MP</b> 256×352 · 10.5s · Check framing and camera moves only: the image is soft and blurry, facial features melt together, quality is unusable at this step" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.2_00001_.mp4", "label": "<b>0.2MP</b> 384×512 · 24.8s · Full-body wide shot and stage truss: the lace texture smudges into one blur" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.3_00001_.mp4", "label": "<b>0.3MP</b> 480×640 · 43.1s · Bow tie, double-breasted buttons and depth-of-field bokeh: portrait-photo quality, usable from this step up" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.4_00001_.mp4", "label": "<b>0.4MP</b> 544×736 · 61.6s · Standard cel-shaded anime face with eye highlights: both batches hit this style" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.5_00001_.mp4", "label": "<b>0.5MP</b> 608×832 · 84.1s · Details are rich but the style drifts back toward semi-realism; note it is less stable than 0.4MP" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.6_00001_.mp4", "label": "<b>0.6MP</b> 672×896 · 113s · Look closely at hair highlights, skirt embroidery and audience light dots: all sharp, the best single frame of all 10 steps" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.7_00001_.mp4", "label": "<b>0.7MP</b> 736×960 · 143s · Layers in the red-white-blue dress and the full-body framing: stable, same tier as 0.6MP" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.8_00001_.mp4", "label": "<b>0.8MP</b> 768×1056 · 178.7s · Neon stage panorama: lots of content in frame, small character share, good for crowd shots" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.9_00001_.mp4", "label": "<b>0.9MP</b> 832×1088 · 211.3s · Bust close-up: every hair strand, lace thread and bow in full detail, spot-on anime face" },
+      { "src": "experiments/h3-res-sweep/res5s_mp1.0_00001_.mp4", "label": "<b>1.0MP</b> 896×1120 · 252.8s · Best watched side by side with 0.9MP: detail stays level, the photoreal feel edges back up slightly" }
+    ]
+  },
+  "stats": [
+    ["What was done", "Only one variable changed: resolution. 256×352 → 896×1120 across 10 steps (~0.1MP per step), each step one 5.17s @24fps (124 frames) clip; prompt/seed/sampling config all fixed, so every difference between steps comes from resolution alone"],
+    ["Time cost", "More pixels, longer render, nearly proportional: 0.1MP 10.5s ▮ → 1.0MP 252.8s ▮▮▮▮▮▮▮▮▮▮ (24x pixels ≈ 24x time), so you can budget render time straight from resolution"],
+    ["The big finding", "Quality comes in three tiers: below 0.3MP unusable; 0.3-0.5MP usable but the style is a lottery (occasional drift back to semi-realism, needs repeated retries); from 0.6MP up it is fully in the high-detail stable zone"],
+    ["Best value step", "0.6MP: a full-depth-of-field detail explosion (hair/embroidery/audience light dots all sharp), at just 45% of 1.0MP's time, quality and speed both land at this step"],
+    ["Pitfall", "No need to chase the top step: from 0.9→1.0MP the bitrate actually drops (5823→5479kbps) while time rises 20%; you pay more but the image gains no more information (inverted payoff)"]
+  ],
+  "findings": [
+    "Output style is unstable at low resolution (occasional drift back to semi-realism): 0.4MP and 0.6MP each ran two batches, all four hit the anime style; at 0.6MP and up the style stops drifting",
+    "For big scenes pick 0.8MP: it is a full-body wide shot with lots in frame but a small character share, good for crowd shots and stage panoramas",
+    "Recommended workflow: draft framing fast at 0.1MP (10s per clip), then render the final cut at 0.6MP (113s per clip)"
+  ],
+  "links": [
+    ["📄 Sweep report", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/h3-res-sweep/README.md"],
+    ["🔧 Workflow assets", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/h3-res-sweep"]
+  ]
+}

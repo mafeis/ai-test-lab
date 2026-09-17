@@ -13,7 +13,11 @@ window.addEventListener("error", e => {
     box.style.cssText = "position:fixed;bottom:8px;left:8px;z-index:9999;max-width:70%;background:#dc2626;color:#fff;font:12px/1.5 monospace;padding:8px 12px;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.4);";
     document.body.appendChild(box);
   }
-  box.textContent = `⚠ JS 错误: ${e.message} @ ${e.filename?.split("/").pop()}:${e.lineno}`;
+  try {
+    box.textContent = `${T().err}: ${e.message} @ ${e.filename?.split("/").pop()}:${e.lineno}`;
+  } catch {
+    box.textContent = `⚠ ${e.message} @ ${e.filename?.split("/").pop()}:${e.lineno}`;
+  }
   setTimeout(() => box.remove(), 10000);
 });
 
@@ -23,7 +27,94 @@ const CATEGORY_COLORS = {
   "参数扫描": "var(--c-sweep)",
   "图像生成": "var(--c-image)",
   "Agent 任务": "var(--c-agent)",
+  /* 英文版分类名共用同一套色 */
+  "Video": "var(--c-video)",
+  "Parameter Sweep": "var(--c-sweep)",
+  "Image": "var(--c-image)",
+  "Agent Task": "var(--c-agent)",
 };
+
+/* ---------- 双语（中/EN） ----------
+   数据层：LANG=en 时优先取 <id>.en.json，缺失自动回退中文
+   界面层：动态文案走 T()，静态文案启动时快照原文、切 EN 时替换 */
+const LS_LANG = "atl-lang";
+let LANG = localStorage.getItem(LS_LANG)
+  || (String(navigator.language || "zh").toLowerCase().startsWith("zh") ? "zh" : "en");
+const ALL_CAT = "❖all❖";   // 「全部」哨兵：与语言无关，切语言不失效
+const I18N = {
+  zh: { all: "全部", uncat: "未分类", empty: "该分类下暂无测试", mainReel: "正片",
+        episodes: "选集", unit: " 个", pick: "← 从左侧选择一个测试开始播放",
+        open: "在 GitHub 打开", data: "测试数据", findings: "结论与发现",
+        loadFail: "数据加载失败（检查 data/manifest.json）", err: "⚠ JS 错误",
+        title: null },
+  en: { all: "All", uncat: "Uncategorized", empty: "No tests in this category", mainReel: "Main",
+        episodes: "Episodes", unit: " items", pick: "← Pick a test on the left to start",
+        open: "Open on GitHub", data: "Test data", findings: "Findings",
+        loadFail: "Failed to load data (check data/manifest.json)", err: "⚠ JS error",
+        title: "AI Test Lab · AI Experiments Playground" },
+};
+const T = () => I18N[LANG];
+
+/* 静态文案替换表：EN 覆盖值；zh 用启动时快照的原文还原 */
+const EN_STATIC = [
+  { sel: ".brand-sub", text: "AI Experiments Playground" },
+  { sel: "#sidebar-head", text: "Playlist" },
+  { sel: "#c-play", title: "Play / Pause (Space)", aria: "Play or pause" },
+  { sel: "#c-seek", aria: "Seek" },
+  { sel: "#c-loop-one", text: "Loop one", title: "Loop this clip (L)" },
+  { sel: "#c-loop-all", text: "Loop all", title: "Loop the list" },
+  { sel: "#c-rate", title: "Playback speed" },
+  { sel: "#c-mute", title: "Mute (M)", aria: "Mute" },
+  { sel: "#c-vol", aria: "Volume" },
+  { sel: "#c-pip", title: "Picture in picture", aria: "Picture in picture" },
+  { sel: "#c-full", title: "Fullscreen (F)", aria: "Fullscreen" },
+  { sel: "#filters", aria: "Category filter" },
+  { sel: ".footer", html:
+      `<strong>Adding a test</strong> (no code changes needed):
+       ① create a <code>.json</code> under <code>data/tests/</code> (schema: <a href="https://github.com/mafeis/ai-test-lab/blob/main/docs/adding-tests.en.md" target="_blank" rel="noopener">docs/adding-tests.en.md</a>, plus an optional <code>&lt;id&gt;.en.json</code> for this language);
+       ② add its path to the <code>tests</code> array in <code>data/manifest.json</code>.
+       Refresh and it appears; <code>#test-id</code> deep-links.
+       <br>
+       <strong>Label rules</strong>: <code>&lt;b&gt;Series Tier&lt;/b&gt;</code> → chips auto-number per series (Z1-Z10 / F1-F10); <code>★</code> in a label → gold star on the chip (sweet-spot pick).
+       <br>
+       Shortcuts: Space play · ←→ seek 5s · ↑↓ volume · M mute · L loop-one · F fullscreen
+       <a href="https://github.com/mafeis/ai-test-lab">github.com/mafeis/ai-test-lab</a>` },
+];
+let STATIC_SNAPSHOT = null;
+const ORIG_TITLE = document.title;
+function applyStatic() {
+  if (!STATIC_SNAPSHOT) {
+    STATIC_SNAPSHOT = EN_STATIC.map(o => {
+      const el = document.querySelector(o.sel);
+      return el && {
+        el, text: el.textContent, html: el.innerHTML,
+        title: el.getAttribute("title"), aria: el.getAttribute("aria-label"),
+      };
+    });
+  }
+  const en = LANG === "en";
+  EN_STATIC.forEach((o, i) => {
+    const rec = STATIC_SNAPSHOT[i];
+    if (!rec) return;
+    if (o.text != null) rec.el.textContent = en ? o.text : rec.text;
+    if (o.html != null) rec.el.innerHTML = en ? o.html : rec.html;
+    if (o.title != null) rec.el.setAttribute("title", en ? o.title : (rec.title ?? ""));
+    if (o.aria != null) rec.el.setAttribute("aria-label", en ? o.aria : (rec.aria ?? ""));
+  });
+  document.documentElement.lang = en ? "en" : "zh-CN";
+  document.title = en ? I18N.en.title : ORIG_TITLE;
+}
+function syncLangBtn() {
+  const b = document.getElementById("lang-btn");
+  if (b) b.textContent = LANG === "zh" ? "EN" : "中文";
+}
+function setLang(l) {
+  LANG = l;
+  localStorage.setItem(LS_LANG, l);
+  applyStatic(); syncLangBtn();
+  ACTIVE_CAT = ALL_CAT; ACTIVE_ID = null;   // 分类名随语言变化，重置后由 boot 重新定位
+  boot();
+}
 
 const SPEEDS = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 3, 5];   // 倍速菜单：超慢放细看生成 + 常规快放
 
@@ -49,7 +140,7 @@ function normalizeReels(t) {
     kind: m.type,
     src: m.src,
     poster: m.poster || "",
-    label: "正片",
+    label: T().mainReel,
     html_label: "",
   }];
 }
@@ -69,7 +160,7 @@ function firstThumb(t) {
 /* ---------- 状态 ---------- */
 
 let ALL_TESTS = [];
-let ACTIVE_CAT = "全部";
+let ACTIVE_CAT = ALL_CAT;
 let ACTIVE_ID = null;
 let ACTIVE_REEL = 0;
 let LOOP_MODE = "off";        // off | one | all
@@ -115,15 +206,15 @@ function currentReel(t) { const r = normalizeReels(t); return r[ACTIVE_REEL] || 
 
 function renderList() {
   const el = document.getElementById("testlist");
-  const visible = ALL_TESTS.filter(t => ACTIVE_CAT === "全部" || t.category === ACTIVE_CAT);
+  const visible = ALL_TESTS.filter(t => ACTIVE_CAT === ALL_CAT || t.category === ACTIVE_CAT);
   if (!visible.length) {
-    el.innerHTML = `<div class="empty">该分类下暂无测试</div>`;
+    el.innerHTML = `<div class="empty">${esc(T().empty)}</div>`;
     return;
   }
   /* 按 category 分组插入小标题；选了具体分类时只显示该组 */
-  const groups = [...new Set(visible.map(t => t.category || "未分类"))];
+  const groups = [...new Set(visible.map(t => t.category || T().uncat))];
   el.innerHTML = groups.map(cat => {
-    const items = visible.filter(t => (t.category || "未分类") === cat).map(t => {
+    const items = visible.filter(t => (t.category || T().uncat) === cat).map(t => {
       const color = CATEGORY_COLORS[t.category] || "var(--accent)";
       return `
       <button class="testitem ${t.id === ACTIVE_ID ? "active" : ""}" data-id="${esc(t.id)}"
@@ -132,7 +223,7 @@ function renderList() {
         <span class="ti-text"><div class="ti-title">${esc(t.title)}</div></span>
       </button>`;
     }).join("");
-    return (ACTIVE_CAT === "全部" ? `<div class="list-group-label">${esc(cat)}</div>` : "") + items;
+    return (ACTIVE_CAT === ALL_CAT ? `<div class="list-group-label">${esc(cat)}</div>` : "") + items;
   }).join("");
 
   /* 当前测试的项自动滚进可视区 */
@@ -200,7 +291,7 @@ function renderReelNav(t) {
   const { labels, series, starts } = chipLabels(reels);
   reelNav.innerHTML = `
     <div class="playlist">
-      <div class="pl-head">选集 <span class="pl-hint">${reels.length} 个${starCount ? ` · ★${starCount}` : ""}</span></div>
+      <div class="pl-head">${esc(T().episodes)} <span class="pl-hint">${reels.length}${esc(T().unit)}${starCount ? ` · ★${starCount}` : ""}</span></div>
       <div class="pl-grid">` + reels.map((r, i) => {
         const raw = (r.html_label || r.label || "");
         const tip = raw.replace(/<[^>]+>/g, "").trim();
@@ -474,7 +565,7 @@ function renderStage() {
   const controls = document.getElementById("controls");
 
   if (!t) {
-    stage.innerHTML = `<div class="stage-hint">← 从左侧选择一个测试开始播放</div>`;
+    stage.innerHTML = `<div class="stage-hint">${esc(T().pick)}</div>`;
     bar.style.display = "none"; detail.style.display = "none";
     controls.style.display = "none";
     renderReelNav(t);
@@ -526,7 +617,7 @@ function renderStage() {
       <div class="st-summary">${esc(reel.html_label ? reel.html_label.replace(/<[^>]+>/g, "") : reel.label)} · ${esc(t.summary || "")}</div>
     </div>
     <div class="st-actions">
-      <button class="st-btn" id="btn-open-file">在 GitHub 打开</button>
+      <button class="st-btn" id="btn-open-file">${esc(T().open)}</button>
     </div>`;
   document.getElementById("btn-open-file").addEventListener("click", () => {
     window.open(`https://github.com/mafeis/ai-test-lab/blob/main/${reel.src.replace(/^\/?/, "")}`, "_blank");
@@ -546,11 +637,11 @@ function renderStage() {
   detail.style.display = "";
   detail.innerHTML = `
     <div class="d-head">
-      <span class="d-cat" style="--cat-color: ${CATEGORY_COLORS[t.category] || "var(--accent)"}">${esc(t.category || "未分类")}</span>
+      <span class="d-cat" style="--cat-color: ${CATEGORY_COLORS[t.category] || "var(--accent)"}">${esc(t.category || T().uncat)}</span>
       ${badges}
     </div>
-    ${rows ? `<div class="d-section"><div class="d-label">测试数据</div><table>${rows}</table></div>` : ""}
-    ${points ? `<div class="d-section"><div class="d-label">结论与发现</div><ul>${points}</ul></div>` : ""}
+    ${rows ? `<div class="d-section"><div class="d-label">${esc(T().data)}</div><table>${rows}</table></div>` : ""}
+    ${points ? `<div class="d-section"><div class="d-label">${esc(T().findings)}</div><ul>${points}</ul></div>` : ""}
     ${links ? `<div class="links">${links}</div>` : ""}`;
 }
 
@@ -558,21 +649,23 @@ function renderStage() {
 
 function renderFilters() {
   const el = document.getElementById("filters");
-  const groups = [...new Set(ALL_TESTS.map(t => t.category || "未分类"))];
-  const cats = ["全部", ...groups];
+  const groups = [...new Set(ALL_TESTS.map(t => t.category || T().uncat))];
+  const cats = [ALL_CAT, ...groups];
   el.innerHTML = cats.map(c => {
-    const n = c === "全部" ? ALL_TESTS.length : ALL_TESTS.filter(t => (t.category || "未分类") === c).length;
-    return `<button class="chip ${c === ACTIVE_CAT ? "active" : ""}" data-cat="${esc(c)}">${esc(c)}<span class="n">${n}</span></button>`;
-  }).join("");
+    const n = c === ALL_CAT ? ALL_TESTS.length : ALL_TESTS.filter(t => (t.category || T().uncat) === c).length;
+    return `<button class="chip ${c === ACTIVE_CAT ? "active" : ""}" data-cat="${esc(c)}">${esc(c === ALL_CAT ? T().all : c)}<span class="n">${n}</span></button>`;
+  }).join("") + `<button class="chip lang-btn" id="lang-btn" title="Language / 语言">EN</button>`;
 }
 
-/* 顶部分类 chip：事件委托绑定在 #filters 容器上（重建按钮不丢事件） */
+/* 顶部分类 chip + 语言切换：事件委托绑定在 #filters 容器上（重建按钮不丢事件） */
 document.getElementById("filters").addEventListener("click", e => {
+  const langBtn = e.target.closest("#lang-btn");
+  if (langBtn) { setLang(LANG === "zh" ? "en" : "zh"); return; }
   const btn = e.target.closest(".chip");
   if (!btn) return;
   ACTIVE_CAT = btn.dataset.cat;
   const stillVisible = ALL_TESTS.some(t => t.id === ACTIVE_ID &&
-    (ACTIVE_CAT === "全部" || t.category === ACTIVE_CAT));
+    (ACTIVE_CAT === ALL_CAT || t.category === ACTIVE_CAT));
   if (!stillVisible) { ACTIVE_ID = null; renderStage(); }
   renderFilters();
   renderList();
@@ -582,18 +675,21 @@ document.getElementById("filters").addEventListener("click", e => {
 
 async function boot() {
   try {
+    applyStatic(); syncLangBtn();
     loadSettings();   // 恢复上次会话的播放器设置（音量/静音/倍速/循环）
 
     const manifest = await (await fetch("data/manifest.json", { cache: "no-store" })).json();
     const results = await Promise.all(manifest.tests.map(async path => {
-      try {
-        const res = await fetch(path, { cache: "no-store" });
-        if (!res.ok) throw new Error(res.status);
-        return await res.json();
-      } catch (e) {
-        console.warn("skip broken test file:", path, e);
-        return null;
+      /* 英文界面优先取 <id>.en.json，缺失自动回退中文原文件 */
+      const paths = LANG === "en" ? [path.replace(/\.json$/, ".en.json"), path] : [path];
+      for (const p of paths) {
+        try {
+          const res = await fetch(p, { cache: "no-store" });
+          if (res.ok) return await res.json();
+        } catch (e) { /* 换下一个语言档 */ }
       }
+      console.warn("skip broken test file:", path);
+      return null;
     }));
     ALL_TESTS = results.filter(Boolean);
 
@@ -601,12 +697,12 @@ async function boot() {
     if (hash && ALL_TESTS.some(t => t.id === hash)) ACTIVE_ID = hash;
     else if (ALL_TESTS.length) ACTIVE_ID = ALL_TESTS[0].id;
 
-    renderFilters();
+    renderFilters(); syncLangBtn();
     renderList();
     renderStage();
   } catch (e) {
     document.getElementById("stage").innerHTML =
-      `<div class="stage-hint">数据加载失败：${esc(e.message)}（检查 data/manifest.json）</div>`;
+      `<div class="stage-hint">${esc(T().loadFail)}：${esc(e.message)}</div>`;
   }
 }
 

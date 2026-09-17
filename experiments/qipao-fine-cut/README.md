@@ -1,5 +1,7 @@
 # 白水纱旗袍棚拍舞：6 条短片精剪为一条 16.8 秒成片，接缝几乎看不出
 
+中文 | [English](README.en.md)
+
 > 成片：[qipao_fine_cut.mp4](qipao_fine_cut.mp4)（16.75s / 544×960 / 含原生音频）
 > 在线播放：https://mafeis.github.io/ai-test-lab/#qipao-fine-cut
 

@@ -1,0 +1,44 @@
+{
+  "id": "seedvr2-recut-3x",
+  "category": "Video Enhancement",
+  "title": "Whole recut upscaled 3x — the calibrated pipeline, run end to end on a real delivery",
+  "summary": "The calibrated '1.5x restore + local upscale to size' pipeline, run on the 22.2s six-shot recut: all 532 frames in one pass, 2016×2688 final cut in 7 minutes. A 3x direct probe on the same clip measured 13.3s/frame — the full clip would need about 2 hours, for only a half-notch more sharpness.",
+  "date": "2026-09-19",
+  "tags": [
+    ["Whole clip 426.6s", "green"],
+    ["3x direct 13.3s/frame", "amber"],
+    ["Zero expression change", "green"],
+    ["532 frames in one delivery", "gray"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "two",
+    "items": [
+      { "type": "image", "src": "experiments/seedvr2-recut-3x/compare_face_3way.png", "label": "<b>Face 3-way compare</b> left: stretched source / middle: 1.5x + local upscale (final pipeline) / right: 3x direct probe — all three match on expression, no face change on this clip ★" },
+      { "src": "experiments/seedvr2-recut-3x/recut_final_2016.mp4", "poster": "experiments/seedvr2-recut-3x/poster_final.jpg", "label": "<b>Final cut</b> 2016×2688 · 22.2s · 532 frames · with audio ★" },
+      { "src": "experiments/seedvr2-recut-3x/recut_15x_1008.mp4", "poster": "experiments/seedvr2-recut-3x/poster_final.jpg", "label": "<b>1.5x direct out</b> 1008×1344 · SeedVR2 whole clip 426.6s" },
+      { "src": "experiments/seedvr2-recut-3x/recut_source_672.mp4", "poster": "experiments/seedvr2-recut-3x/poster_final.jpg", "label": "<b>Recut source</b> 672×896 · the six-shot reordered cut" },
+      { "type": "image", "src": "experiments/seedvr2-recut-3x/compare_full_3way.jpg", "label": "<b>Full-frame 3-way compare</b> lace, hem edges and fabric folds get sharper step by step" }
+    ]
+  },
+  "stats": [
+    ["What we did", "Last round's calibration (red line: 1.5x) stopped at a 5s clip. This time we ran the finalized pipeline on the 22.2s six-shot recut, whole clip in one pass, to check speed and quality at a real delivery length"],
+    ["Final cut", "2016×2688 (3x the 672×896 source) · 532 frames · with audio · 426.6s on the server + local upscale, about 7 minutes total"],
+    ["3x direct probe", "48-frame sample measured 639.3s ≈ 13.3s/frame, so the full clip would need about 2 hours; the 3-way face compare shows matching expressions, but sharpness is only a touch better than the 1.5x pipeline"],
+    ["Surprise find", "Last round, 3x direct turned one clip's closed-mouth smile into a toothy grin. This clip stayed clean start to finish — face change is not a given, but 13x the compute for a half-notch of sharpness still does not pay off"],
+    ["Quality gain", "Face, hair strands, lace and hem edges, and stage-light textures each gain one notch of clarity; for the stretched-source comparison see the full-frame 3-way image"],
+    ["Tech params", "Same as the calibration round: SeedVR2 7B fp8 · 1 step · color correction lab · local lanczos upscale to final size"]
+  ],
+  "findings": [
+    "The finalized pipeline reproduces at 22.2s / 532 frames: zero expression change frame by frame, and the quality gain matches the 5s calibration clip — it can serve as the delivery default as is",
+    "Speed rule of thumb, re-calibrated against measurements: a 22.2s clip took 426.6s for the whole thing ≈ 19x its own seconds, inside the calibration round's 'x15~25' band — the scheduling math can stay as is",
+    "The real cost of 3x direct is compute, not artifacts: 13.3s/frame vs 0.8s/frame, and the only payoff is marginal sharpness — not worth scheduling unless frame-by-frame acceptance is justified",
+    "'Upscaling changes faces' is a probabilistic risk, not a certainty: same model, same ratio, one clip failed and one stayed clean start to finish — so the red line stays at 1.5x by clip category, and one safe run does not loosen it"
+  ],
+  "links": [
+    ["📝 Experiment notes", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/seedvr2-recut-3x/README.md"],
+    ["🔓 All assets", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/seedvr2-recut-3x"],
+    ["← Calibration round: upscale red line", "https://mafeis.github.io/ai-test-lab/#seedvr2-upscale"],
+    ["← Source footage: Miku stage six-shot recut", "https://mafeis.github.io/ai-test-lab/#miku-stage-recut"]
+  ]
+}

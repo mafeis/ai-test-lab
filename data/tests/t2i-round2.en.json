@@ -1,0 +1,46 @@
+{
+  "id": "t2i-round2",
+  "category": "Parameter Sweep",
+  "title": "How many steps does one image need? Tested on two models, and even big 2MP images don't break",
+  "summary": "Both models hit their quality ceiling early: Z-Image Turbo gives a finished image in 1 step, and Flux2 caps out at 8 steps, saving 60% of the time vs the official default of 20; big 2MP (1216×1632) images generate natively without breaking, and Z-Image takes just 9.2s.",
+  "date": "2026-09-17",
+  "tags": [
+    ["1 to 32 steps compared", "green"],
+    ["Z-Image makes an image in 1 step", "amber"],
+    ["Big 2MP images don't break", "green"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "four",
+    "items": [
+      { "type": "image", "src": "experiments/t2i-round2/zimgs_step1_00001_.png", "label": "<b>Z-Image 1 step</b> 3.1s — the model refined the image just 1 time: look at the face and the outfit, it's already a complete, usable portrait, just slightly soft" },
+      { "type": "image", "src": "experiments/t2i-round2/zimgs_step2_00001_.png", "label": "<b>Z-Image 2 steps</b> 3.0s — compare with the last one: almost no difference from 1 step" },
+      { "type": "image", "src": "experiments/t2i-round2/zimgs_step4_00001_.png", "label": "<b>Z-Image 4 steps</b> 3.0s — recommended setting for drafts: compared with the first two, no visible difference" },
+      { "type": "image", "src": "experiments/t2i-round2/zimgs_step8_00001_.png", "label": "<b>Z-Image 8 steps</b> 3.0s · default value, recommended for finals — compare with the 1-step version in the first image, no difference at all" },
+      { "type": "image", "src": "experiments/t2i-round2/zimgs_step16_00001_.png", "label": "<b>Z-Image 16 steps</b> 6.0s · no gain — takes 2x the time of 8 steps, and it's still the same picture, confirmed side by side" },
+      { "type": "image", "src": "experiments/t2i-round2/flux2s_step4_00001_.png", "label": "<b>Flux2 4 steps</b> 3.1s · slightly short on detail — already usable: look closely at the lines and the background detail, still not crisp enough" },
+      { "type": "image", "src": "experiments/t2i-round2/flux2s_step8_00001_.png", "label": "<b>Flux2 8 steps</b> 6.0s ★ recommended — quality caps out from here: look at how crisp the lines are, then compare with the three images after it" },
+      { "type": "image", "src": "experiments/t2i-round2/flux2s_step12_00001_.png", "label": "<b>Flux2 12 steps</b> 6.6s — costs 0.6s more than 8 steps, now try to spot a difference by eye: you can't" },
+      { "type": "image", "src": "experiments/t2i-round2/flux2s_step20_00001_.png", "label": "<b>Flux2 20 steps</b> official default — compare with the 8-step image: still no difference, switching to 8 steps saves 60% of the time" },
+      { "type": "image", "src": "experiments/t2i-round2/flux2s_step32_00001_.png", "label": "<b>Flux2 32 steps</b> 18.1s · no gain — 3x the time of 8 steps (6.0s), and the quality hasn't changed at all" },
+      { "type": "image", "src": "experiments/t2i-round2/zimg_2mp_00001_.png", "label": "<b>Z-Image 2MP</b> 1216×1632 · 9.2s — zoom in: the lace layers, the headphone structure and the stage reflections are all clear" },
+      { "type": "image", "src": "experiments/t2i-round2/flux2_2mp_00001_.png", "label": "<b>Flux2 2MP</b> 1216×1632 · 39.3s — look at the lines: still clean and sharp at this larger size, the slowest image in this set" }
+    ]
+  },
+  "stats": [
+    ["How many steps does Z-Image need?", "1 step already gives a complete finished image (3.1s); from 2 to 16 steps there's no visible difference — 4 steps for drafts and 8 for finals is enough, more won't be better"],
+    ["How many steps does Flux2 need?", "Quality caps out at 8 steps; 8 vs 12/20/32 shows no difference: ▮ 6.0s (8 steps) vs ▮▮▮ 18.1s (32 steps) look identical — picking 8 steps saves 60% of the time vs the official default of 20"],
+    ["Can the results be reproduced?", "Yes: under the same seed (the number that controls generation randomness), the sha256 (a fingerprint that proves files are bit-for-bit identical) of the 8-step image matches last round's sweep image exactly"],
+    ["Can it generate big 2MP images?", "Yes, without breaking: at 1216×1632 (2MP), Z-Image takes just 9.2s and Flux2 39.3s, and the detail keeps growing over 0.6MP"],
+    ["Does last round's best 0.6MP setting still hold?", "Corrected on the image side: 0.6MP was the value-for-money turning point, not the capability ceiling — for bigger images go straight to 2MP; unchanged on the video side: still bound by H3's hard 768 short-edge limit, so its best setting stands"]
+  ],
+  "findings": [
+    "Z-Image Turbo lives up to its name: step count barely affects time (3-6s), so you can't pick a wrong setting",
+    "Flux2's official default of 20 steps is too conservative: at 8 steps the quality looks identical by eye and you save 60% of the time — 8 steps is the best setting",
+    "For big static images, generate 2MP directly (Z-Image takes just 9s); no need to make a small image first and upscale it afterwards"
+  ],
+  "links": [
+    ["📄 Experiment notes", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/t2i-round2/README.md"],
+    ["← Upstream: resolution sweep", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/t2i-res-sweep/README.md"]
+  ]
+}

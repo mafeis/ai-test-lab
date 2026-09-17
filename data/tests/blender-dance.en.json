@@ -1,0 +1,33 @@
+{
+  "id": "blender-dance",
+  "category": "Agent Task",
+  "title": "Can an AI build a 30-second dance animation all by itself from just three sentences?",
+  "summary": "Verdict: yes. Zero human hands touched it, and three short instructions produced a finished 30.000-second dance animation (720×960 @24fps, H.264+AAC, just 5.0 MB).",
+  "date": "2026-09-17",
+  "tags": [
+    ["30-second dance animation", ""],
+    ["Qwen3.8-Flash xhigh", "green"],
+    ["Blender 5.2 headless run", "green"],
+    ["✅ Zero human intervention", "amber"]
+  ],
+  "media": {
+    "type": "video",
+    "src": "images/miku_dance.mp4",
+    "poster": "images/miku_dance_poster.png"
+  },
+  "stats": [
+    ["What was done", "Just 3 instructions to the assistant (Hermes): ① build a Hatsune Miku model in Blender → ② continue → ③ once acceptance passes, make a 30-second dance video; no reference images, no storyboard, the AI designed everything itself"],
+    ["Biggest finding", "Yes, and not one human touch the whole way: modeling → fixing → rigging → choreography → music → rendering were all done by the AI alone. Model acceptance passed 6/6 rounds, the final cut is exactly 30.000 seconds, and it fixed all 3 render crashes by itself"],
+    ["How it was tested", "On a Mac mini M2 16GB (macOS 26.6.2), the AI drove Blender 5.2 headless in the background, using render-image checks (vision_analyze) as its eyes: 19 self-checks, each round finding flaws and fixing them"],
+    ["What it cost", "227 messages · 108 tool calls; input tokens ▮▮▮▮▮▮▮▮▮▮ 530K vs output ▮▮ 109K (thinking took 63K), so most of the burn is on the input side"]
+  ],
+  "findings": [
+    "The model ran 6 rounds of 'render → look at the image → fix': one defect class per round (headphone band, bangs, tie, skirt/boots), and the final acceptance passed all 6 rounds (6/6 PASS)",
+    "Memory blew up halfway (OOM): 258MB of mesh data filled the 16GB RAM and the system killed the process; the AI lowered the precision and reran, shrinking the mesh to 64MB to get it through",
+    "The dance splits into 8 sections aligned to the music beat (128 BPM), twin tails swung by 'spring' physics; the soundtrack is also synthesized in code (Am-F-C-G electro-pop), no ready-made song",
+    "3 render crashes (frame_end left unset, new filenames polluted by an old template) were all found and fixed by the AI itself, with no human help"
+  ],
+  "links": [
+    ["📄 Full test log", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-blender-dance/README.md"]
+  ]
+}

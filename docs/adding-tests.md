@@ -1,5 +1,7 @@
 # AI Test Lab · 测试接入与标注规范
 
+中文 | [English](adding-tests.en.md)
+
 > 本文档是给"后续添加测试"用的完整操作手册。**核心原则：加测试只写 JSON，不改任何代码。**
 
 仓库：<https://github.com/mafeis/ai-test-lab>

@@ -1,5 +1,7 @@
 # ai-test-lab
 
+中文 | [English](README.en.md)
+
 用来测试 AI 各种效果的实验仓库（Playground）。
 
 ## 🧪 测试项目
@@ -30,8 +32,9 @@
 
 ## 🔄 维护约定（每次改动必读）
 
-**任何测试相关的内容变更（新增成片 / 新增测试 / 修改资产），必须在同一次提交里同步以下三处，缺一不可：**
+**任何测试相关的内容变更（新增成片 / 新增测试 / 修改资产），必须在同一次提交里同步以下几处，缺一不可：**
 
 1. 本 README 的「测试项目」表（状态、链接）
 2. `data/manifest.json` 登记路径 + `data/tests/<id>.json`（播放页数据，详见 [docs/adding-tests.md](docs/adding-tests.md)）
 3. 对应实验目录的 `README.md`（资产清单）
+4. 英文版文字：`data/tests/<id>.en.json` 与各 `README.en.md`（播放页缺 en.json 时自动回退中文）

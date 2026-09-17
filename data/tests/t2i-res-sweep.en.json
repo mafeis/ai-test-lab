@@ -1,0 +1,55 @@
+{
+  "id": "t2i-res-sweep",
+  "category": "Parameter Sweep",
+  "title": "Do Bigger Images Look Better? Two Models Compared from 0.1 to 1.0 Megapixels",
+  "summary": "One prompt, 10 resolution tiers on each of two text-to-image models: both peak at 0.6MP; Z-Image Turbo never takes more than 4.1s at any tier, Flux 2 Klein 9B tops out at 18.3s",
+  "date": "2026-09-17",
+  "tags": [
+    ["Z-Image Turbo", "green"],
+    ["Flux 2 Klein 9B", "amber"],
+    ["Both peak at 0.6MP", "green"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "four",
+    "items": [
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.1_00001_.png", "label": "<b>Z-Image 0.1MP</b> 256×352 · 2.0s — Look at the face: blurry features, plastic-looking skin" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.2_00001_.png", "label": "<b>Z-Image 0.2MP</b> 384×512 · 2.0s — Composition and outfit are already set, but details are still rough" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.3_00001_.png", "label": "<b>Z-Image 0.3MP</b> 480×640 · 2.0s — Details still rough; the real jump comes in the next one" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.4_00001_.png", "label": "<b>Z-Image 0.4MP</b> 544×736 · 2.0s — Still 2.0s, now one tier away from the sharp tier" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.5_00001_.png", "label": "<b>Z-Image 0.5MP</b> 608×832 · 2.1s — The last one before the leap: compare the detail gap with the next" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.6_00001_.png", "label": "<b>Z-Image 0.6MP</b> 672×896 · 4.1s ★Best tier — Lace folds on the skirt, backup dancers in back, stage truss: all sharp from here on" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.7_00001_.png", "label": "<b>Z-Image 0.7MP</b> 736×960 · 4.1s — One tier bigger, yet it still takes just 4.1s" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.8_00001_.png", "label": "<b>Z-Image 0.8MP</b> 768×1056 · 4.1s — Recommended daily tier: bigger frame, same time as 0.6MP" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.9_00001_.png", "label": "<b>Z-Image 0.9MP</b> 832×1088 · 4.1s — File size stops growing from here; check it against the next" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp1.0_00001_.png", "label": "<b>Z-Image 1.0MP</b> 896×1120 · 4.1s — Biggest tier, same time, but the file is no bigger than 0.9MP" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.1_00001_.png", "label": "<b>Flux2 0.1MP</b> 256×352 · 4.6s — Look at the hands and linework: this is the breakdown tier" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.2_00001_.png", "label": "<b>Flux2 0.2MP</b> 384×512 · 4.1s — Still under the 0.4MP quality floor; watch how much the lines improve" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.3_00001_.png", "label": "<b>Flux2 0.3MP</b> 480×640 — Watch the legs: obvious horizontal smearing artifacts" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.4_00001_.png", "label": "<b>Flux2 0.4MP</b> 544×736 · 8.1s — Lowest tier where anime faces land consistently; compare with the leg artifacts in the last one" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.5_00001_.png", "label": "<b>Flux2 0.5MP</b> 608×832 · 8.9s — One tier before the best; the face is already stable" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.6_00001_.png", "label": "<b>Flux2 0.6MP</b> 672×896 · 10.4s ★Best tier — Clean linework; crowd bokeh, truss, and speakers all in place" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.7_00001_.png", "label": "<b>Flux2 0.7MP</b> 736×960 · 12.2s — One tier above the best; note the time climbing the whole way" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.8_00001_.png", "label": "<b>Flux2 0.8MP</b> 768×1056 · 14.2s — Linework still clean; vs 0.6MP, is the extra time worth it?" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.9_00001_.png", "label": "<b>Flux2 0.9MP</b> 832×1088 · 16.2s — The sharpest lines start here; compare with 0.6MP to see the difference" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp1.0_00001_.png", "label": "<b>Flux2 1.0MP</b> 896×1120 · 18.3s — Slowest tier, yet a smaller file than 0.9MP — the gains are done" }
+    ]
+  },
+  "stats": [
+    ["What we did", "10 images per model, changing only the resolution (256×352 → 896×1120); the prompt, seed (91720260, the number that controls generation randomness) and sampling settings all stayed fixed"],
+    ["How long it took", "Z-Image ▮ 2-4.1s, barely moves — high resolution costs no extra wait; Flux2 ▮▮▮▮▮ 4.6→18.3s, rising linearly with pixels — 2-4x slower for the same image"],
+    ["How the style changed", "Style comes from the model, not the resolution: all ten Z-Image tiers lean photoreal (low res only blurs, never shifts style), all ten Flux2 tiers stay locked in cel-shaded anime (a flat-color animation look)"],
+    ["Best tier", "Both models are best overall at 0.6MP (672×896): Z-Image 4.1s, Flux2 10.4s — matching the conclusion of the H3 video sweep"],
+    ["Bigger is better?", "No: from 0.9→1.0MP neither model's file size grows, and one even shrinks — more time spent, but no extra information in the image"]
+  ],
+  "findings": [
+    "No tier anxiety with Z-Image Turbo: all ten tiers finish in under 4.1s, so just keep 0.8MP as your daily default",
+    "Flux2 Klein's quality floor sits at 0.4MP: below it, limbs and linework break down, and rerolling over and over won't save them",
+    "Style comes from the model, not the resolution: same seed (the number that controls generation randomness), same prompt, and the two models already look completely different from 0.1MP up",
+    "Use Flux2 for anime subjects, Z-Image for real-person/cos (cosplay photo look) subjects — the latter is also 2-4x faster"
+  ],
+  "links": [
+    ["📄 Sweep report", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/t2i-res-sweep/README.md"],
+    ["🔧 Workflow assets", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/t2i-res-sweep"]
+  ]
+}

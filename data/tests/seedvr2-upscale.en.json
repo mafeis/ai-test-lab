@@ -1,0 +1,50 @@
+{
+  "id": "seedvr2-upscale",
+  "category": "Video Enhancement",
+  "title": "SeedVR2 Video Upscaling — How Much Upscale Before Faces Break? A Measured Calibration",
+  "summary": "The harder you push AI upscaling, the more the model redraws the actor's face toward a 'standard face' from its training data: a direct 3x pass turned a closed-mouth smile into a toothy grin, while 1.5x matched the source frame for frame. Final workflow: SeedVR2 does 1.5x only, local upscaling fills in the rest of the size",
+  "date": "2026-09-19",
+  "tags": [
+    ["Hard limit: 1.5x upscale", "green"],
+    ["3x changes expressions", "amber"],
+    ["Cartoon footage is safer", "purple"],
+    ["Time = clip seconds ×15~25", "gray"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "two",
+    "items": [
+      { "type": "image", "src": "experiments/seedvr2-upscale/compare_real_face_3way.jpg", "label": "<b>Key evidence</b> One face, three treatments: left 1.5x / middle 1.5x + local upscale (recommended) / right direct 3x — note the mouth shape in the right image has been rewritten ★" },
+      { "src": "experiments/seedvr2-upscale/dance05_15x_lanczos_1440.mp4", "poster": "experiments/seedvr2-upscale/poster_real.jpg", "label": "<b>Recommended workflow final cut</b> 1.5x + local upscale to 1440×2560 · expression matches the source · 86s on the server ★" },
+      { "src": "experiments/seedvr2-upscale/dance05_3x_direct_1440.mp4", "poster": "experiments/seedvr2-upscale/poster_real.jpg", "label": "<b>Cautionary example</b> Direct 3x · mouth and eyes redrawn · also 3x slower (274s)" },
+      { "src": "experiments/seedvr2-upscale/dance05_15x_816.mp4", "poster": "experiments/seedvr2-upscale/poster_real.jpg", "label": "<b>Direct 1.5x output</b> 816×1440 · expression matches the source" },
+      { "src": "experiments/seedvr2-upscale/dance05_source_544.mp4", "poster": "experiments/seedvr2-upscale/poster_real.jpg", "label": "<b>Source clip</b> 544×960 · the expression baseline, compare it against the clips above" },
+      { "type": "image", "src": "experiments/seedvr2-upscale/compare_mmd_full.jpg", "label": "<b>Cartoon before/after</b> Before 704×960 / after 1056×1440 · leather highlights, sheer sleeves and floor light spots each one step sharper" },
+      { "type": "image", "src": "experiments/seedvr2-upscale/compare_mmd_face.jpg", "label": "<b>Cartoon face comparison</b> Zero expression change before vs after — a cartoon face has no 'standard real face' template to copy, so the model does not redraw it" },
+      { "src": "experiments/seedvr2-upscale/mmd_full_15x_1056.mp4", "poster": "experiments/seedvr2-upscale/poster_mmd.jpg", "label": "<b>Full cartoon clip at 1.5x</b> 1056×1440 · 30.2s · all 724 frames of the clip run to the end" },
+      { "src": "experiments/seedvr2-upscale/mmd_source_704.mp4", "poster": "experiments/seedvr2-upscale/poster_mmd.jpg", "label": "<b>Cartoon source clip</b> 704×960 · 30.2s" }
+    ]
+  },
+  "stats": [
+    ["What was tested", "How far the AI super-resolution model SeedVR2 can safely upscale video: can picture sharpness be recovered, do the actor's expressions get changed, and how long each clip takes to run"],
+    ["Biggest finding", "The bigger the upscale, the more the model redraws faces toward the 'standard face' from its training data: at direct 3x, a closed-mouth smile became a toothy grin and the pupils were painted bluer and brighter; at 1.5x, every single frame matched the source"],
+    ["Final workflow", "SeedVR2 does the 1.5x pass to recover detail only → the target delivery size is filled in by a local lanczos upscale. Zero expression distortion, server time is only about 1/3 of a big-factor direct pass, and the look is nearly identical"],
+    ["Cartoon footage is a bonus", "MMD animation clips are safer and gain more than photoreal clips: a cartoon face has no real-face template to reference, so expressions stay untouched, while leather highlights, sheer sleeves and light-spot outlines each come out one step sharper"],
+    ["How it was tested", "Every final clip was run end to end, then the same frame position was pulled from each, faces were cropped, enlarged and placed side by side, and expressions were checked frame by frame; timing was measured by real wall clock"],
+    ["Timing rule", "Clip seconds ×15~25 (idle H20 queue; heavy motion takes the upper bound); e.g. a 5.17s clip took 86s, a 30.2s full clip took 653.5s"],
+    ["Tech setup", "ComfyUI 0.35.0 core-version SeedVR2 node · 7B fp8 weights · 1-step sampling · color correction set to lab (most faithful skin tones)"]
+  ],
+  "findings": [
+    "Super-resolution models 'draw while they upscale': at 3x they nearly repaint, at 1.5x they stay mostly faithful to the source. The core-version node has no 'restoration strength' dial, so the upscale factor is the only switch controlling how much the model draws",
+    "Faces are the worst-hit area: faces have the model's strongest training templates, and human eyes are the pickiest about them. Real-person footage must never upscale beyond 1.5x; for larger sizes, route the face region through a face-fidelity model (CodeFormer/GFPGAN type) as a separate pass",
+    "Cartoon/3D-rendered footage has no real-face template to reference, so the model only restores outlines and texture without redrawing expressions — the distortion risk simply does not exist, and the clean rendered edges actually gain more",
+    "The four color-correction modes only change color, never shape: lab is most faithful for skin tones, wavelet makes detail slightly brittle — pick lab",
+    "Use the official converted weights: a community mirror missing 2 tensors fails to load outright. 'The file name shows up in the dropdown' does not mean 'it will load'"
+  ],
+  "links": [
+    ["📄 Experiment notes", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/seedvr2-upscale/README.md"],
+    ["🔧 All assets", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/seedvr2-upscale"],
+    ["← Source footage: qipao studio dance fine cut", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/qipao-fine-cut/README.md"],
+    ["← Source footage: Miku stage six-shot recut", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-stage-recut/README.md"]
+  ]
+}

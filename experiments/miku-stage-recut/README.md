@@ -1,5 +1,7 @@
 # 初音舞台六镜双线精剪 —— 720 种剪法算出最顺的一条，再把 AI 偷偷放慢的部分修快
 
+中文 | [English](README.en.md)
+
 > 成片：[recut_cel.mp4](recut_cel.mp4) 动画版 25.92s · [recut_real.mp4](recut_real.mp4) 真人版 22.22s（均 672×896，带原生音频）
 > 在线播放：https://mafeis.github.io/ai-test-lab/#miku-stage-recut
 

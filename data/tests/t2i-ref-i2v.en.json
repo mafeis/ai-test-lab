@@ -1,0 +1,39 @@
+{
+  "id": "t2i-ref-i2v",
+  "category": "Parameter Sweep",
+  "title": "Video style is decided by the first image: two reference images, 4 videos, style never drifts",
+  "summary": "Feed an AI-generated image in as the video's first frame and the finished style follows the image completely. A realistic-looking image gives a realistic-looking video, an anime image gives an anime video, and the prompt cannot override it. Changing resolution only changes background detail and wait time; the character stays solid at both tiers",
+  "date": "2026-09-17",
+  "tags": [
+    ["MiniMax H3", "green"],
+    ["Image-to-video 4-way comparison", "amber"],
+    ["Style follows the reference image", "green"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "two",
+    "items": [
+      { "src": "experiments/t2i-ref-i2v/t2iref_zimg_mp0.4_00001_.mp4", "label": "<b>Z-Image ref → 0.4MP</b> 544×736 · 70.4s —— The live-action cosplay look comes from the reference image. Watch the face and the twin tails: they never change" },
+      { "src": "experiments/t2i-ref-i2v/t2iref_zimg_mp0.6_00001_.mp4", "label": "<b>Z-Image ref → 0.6MP</b> 672×896 · 125.7s —— Compare the background with the 0.4MP version: truss, light spots, and the lace hem come out sharper" },
+      { "src": "experiments/t2i-ref-i2v/t2iref_flux2_mp0.4_00001_.mp4", "label": "<b>Flux2 ref → 0.4MP</b> 544×736 · 70.4s —— The cel-shaded anime style comes from the reference image. Check whether the sailor uniform colors drift" },
+      { "src": "experiments/t2i-ref-i2v/t2iref_flux2_mp0.6_00001_.mp4", "label": "<b>Flux2 ref → 0.6MP</b> 672×896 · 125.6s —— The character stays solid at both tiers; the gains only show in background detail" }
+    ]
+  },
+  "stats": [
+    ["What we did", "Took the two best-tier AI images at 0.6 MP (one live-action look, one anime look) and used each as the opening first frame of H3 image-to-video (fl2va). Same prompt, same seed (91720260). Output: 124 frames, 5.17s @24fps videos with native audio. Two resolution tiers × two styles = 4 videos"],
+    ["How long it took", "Decided only by the video resolution tier, not by which reference image was used: 0.4MP 70.4s ▮▮▮▮▮ vs 0.6MP 125.6s ▮▮▮▮▮▮▮▮▮▮ (bar length is proportional to time)"],
+    ["Biggest finding", "Video style follows the first-frame reference image completely; the prompt cannot change it: the Z-Image live-action image yields a live-action cosplay video, the Flux2 anime image yields a cel-shaded anime video"],
+    ["Does the character change", "Twin tails, sailor uniform, and colors stay stable through all 5.17 seconds, with no face swap and no costume change"],
+    ["What the two tiers differ on", "The higher tier's gains sit mostly in the background: stage truss, audience light spots, and lace hem texture come out clearly sharper; the character itself stays solid at both 0.4MP and 0.6MP, with no visible difference"]
+  ],
+  "findings": [
+    "Video style is decided by the first frame; the prompt cannot change the style assignment. This cross-checks the conclusion of the upstream text-to-image resolution sweep",
+    "Under the same seed (91720260), camera moves and the dance starting point correlate strongly with how the first frame is composed. Whatever is in the first frame and where it sits is where the video starts moving",
+    "Recommended flow: 0.1MP to test composition fast → 0.6MP for the best reference image → 0.6MP for the final video (about 126s)"
+  ],
+  "links": [
+    ["📄 Experiment README", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/t2i-ref-i2v/README.md"],
+    ["🔧 Workflow assets", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/t2i-ref-i2v"],
+    ["← Upstream experiment: text-to-image resolution sweep", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/t2i-res-sweep/README.md"]
+  ]
+}

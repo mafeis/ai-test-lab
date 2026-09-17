@@ -1,5 +1,7 @@
 # SeedVR2 视频高清化 —— 放大多少倍才不会把脸改坏？实测标定
 
+中文 | [English](README.en.md)
+
 > 推荐流程成片：[dance05_15x_lanczos_1440.mp4](dance05_15x_lanczos_1440.mp4) · [mmd_full_15x_1056.mp4](mmd_full_1056.mp4)
 > 在线播放：https://mafeis.github.io/ai-test-lab/#seedvr2-upscale
 

@@ -1,0 +1,40 @@
+{
+  "id": "h3-round2",
+  "category": "Parameter Sweep",
+  "title": "Join 3 clips back to back: still the same character? Swap the music: does the picture change too?",
+  "summary": "Use the last frame of one clip as the first frame of the next. After 3 clips, the character never changed. And changing just the one music line swaps the background music with zero picture change - even writing nothing about music still gets you a soundtrack.",
+  "date": "2026-09-17",
+  "tags": [
+    ["H3 image-to-video", "green"],
+    ["3 shots, same face", "amber"],
+    ["4 music versions, same picture", "green"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "two",
+    "items": [
+      { "src": "experiments/h3-round2/cont_shot2_00001_.mp4", "label": "<b>Chained shot2</b> Watch the opening: the first frame is shot1's last frame. Is the character exactly the same as in the previous shot? (generated in 124s)" },
+      { "src": "experiments/h3-round2/cont_shot3_00001_.mp4", "label": "<b>Chained shot3</b> Watch the opening: the first frame is shot2's last frame. Compare hair, outfit and face against the first two shots (generated in 124s)" },
+      { "src": "experiments/h3-round2/aud_pop_00001_.mp4", "label": "<b>Audio: J-pop</b> Baseline: remember this version's picture and music first, then compare with the three after it (generated in 124s)" },
+      { "src": "experiments/h3-round2/aud_rock_00001_.mp4", "label": "<b>Audio: rock</b> Compare with the baseline: the picture should be completely unchanged, only the music swapped to rock" },
+      { "src": "experiments/h3-round2/aud_orchestral_00001_.mp4", "label": "<b>Audio: orchestral</b> Compare with the baseline again: picture unchanged, music swapped to orchestral" },
+      { "src": "experiments/h3-round2/aud_none_00001_.mp4", "label": "<b>Audio: none</b> This version has no music instruction at all. Listen - there's still a soundtrack" }
+    ]
+  },
+  "stats": [
+    ["What we did", "Two tests: 1) use the last frame of each shot as the first frame of the next, chained for 3 shots in a row; 2) keep one picture and pair it with 4 different music instructions, one version each"],
+    ["Most important finding", "No face swap across 3 shots: twin tails, sailor uniform, gold buttons, headphones and face shape stay stable throughout, no face swap and no outfit change"],
+    ["How we tested", "Prompt unchanged, seed (the random number used for generation, same value or the results aren't comparable) unchanged, only the first-frame source or the one music line changed"],
+    ["Does changing music change the picture?", "No: characters, stage and camera are identical across the 4 versions; and the 4 audio tracks all differ from each other, so the music line really does control the genre"],
+    ["Pitfalls", "After 3 shots the face skews slightly younger; keep it to 3-4 shots or correct with a reference image now and then. Also, writing no music instruction still gets you a soundtrack"]
+  ],
+  "findings": [
+    "Using the last frame of a clip as the first frame of the next naturally reads as the 'next shot' camera logic, so transitions stay seamless; for a hard-cut feel, reuse the same reference image with a different seed (the random number, i.e. a new generation starting point)",
+    "The music line can be edited on its own: to swap the background music, just change that line, no need to re-roll the picture",
+    "No music written does not mean no sound: H3 auto-adds a soundtrack even without a music instruction, so for a quiet scene you must spell it out in the prompt"
+  ],
+  "links": [
+    ["📄 Experiment README", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/h3-round2/README.md"],
+    ["← Upstream: dessert image → video", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/t2i-ref-i2v/README.md"]
+  ]
+}

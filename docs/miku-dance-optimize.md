@@ -1,5 +1,7 @@
 # miku_dance 生成优化实验
 
+中文 | [English](miku-dance-optimize.en.md)
+
 ## 目标
 
 用本地 ComfyUI（127.0.0.1:8188）的 **MiniMax H3 视频生成模型** + **qwen3vl_32b 文本编码器（MiniMax H3 专用）**，

@@ -1,5 +1,7 @@
 # SeedVR2 精剪成片整条 3x 高清化——定稿流程的首次全片交付
 
+中文 | [English](README.en.md)
+
 > 最终成片：[recut_final_2016.mp4](recut_final_2016.mp4)（2016×2688 · 22.2s · 含音轨）
 > 在线播放：https://mafeis.github.io/ai-test-lab/#seedvr2-recut-3x
 > 前置实验：[SeedVR2 放大倍数标定](../seedvr2-upscale/README.md)（3 倍直达改脸 / 1.5 倍保真的红线来源）

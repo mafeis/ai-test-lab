@@ -1,5 +1,7 @@
 # 只给一张画面，MiniMax H3 能重做出一段带声音的 15 秒跳舞片吗
 
+中文 | [English](README.en.md)
+
 配套测试记录见 [docs/miku-dance-optimize.md](../../docs/miku-dance-optimize.md)。
 
 ## 一分钟看懂
