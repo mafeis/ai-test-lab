@@ -1,0 +1,44 @@
+{
+  "id": "seedvr2-recut-3x",
+  "category": "视频增强",
+  "title": "精剪成片整条 3x 高清化——用上一轮标定的流程走完交付全程",
+  "summary": "把标定出的「1.5 倍恢复 + 本地放大补齐」流程用在 22.2 秒六镜精剪成片上：整条 532 帧一次跑完，7 分钟出 2016×2688 成片；同素材 3 倍直达探针实测 13.3 秒/帧，全片要约 2 小时，收益却只有半分锐度。",
+  "date": "2026-09-19",
+  "tags": [
+    ["全片 426.6s", "green"],
+    ["3x 直达 13.3s/帧", "amber"],
+    ["表情零失真", "green"],
+    ["532 帧整条交付", "gray"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "two",
+    "items": [
+      { "type": "image", "src": "experiments/seedvr2-recut-3x/compare_face_3way.png", "label": "<b>脸部三方对比</b> 左 源片拉伸 / 中 1.5 倍+本地放大（最终流程）/ 右 3 倍直达探针——三路表情一致，本素材未触发改脸 ★" },
+      { "src": "experiments/seedvr2-recut-3x/recut_final_2016.mp4", "poster": "experiments/seedvr2-recut-3x/poster_final.jpg", "label": "<b>最终成片</b> 2016×2688 · 22.2s · 532 帧 · 含音轨 ★" },
+      { "src": "experiments/seedvr2-recut-3x/recut_15x_1008.mp4", "poster": "experiments/seedvr2-recut-3x/poster_final.jpg", "label": "<b>1.5 倍直出</b> 1008×1344 · SeedVR2 全片 426.6s" },
+      { "src": "experiments/seedvr2-recut-3x/recut_source_672.mp4", "poster": "experiments/seedvr2-recut-3x/poster_final.jpg", "label": "<b>精剪源片</b> 672×896 · 六镜重排后成片" },
+      { "type": "image", "src": "experiments/seedvr2-recut-3x/compare_full_3way.jpg", "label": "<b>全画幅三方对比</b> 蕾丝、裙摆边缘、服装褶皱逐档变实" }
+    ]
+  },
+  "stats": [
+    ["做了什么", "上一轮标定（红线 1.5 倍）停留在 5 秒短片；这次把定稿流程用到 22.2 秒六镜精剪成片上整条跑完，验证它在真实交付长度下的速度与质量"],
+    ["最终成片", "2016×2688（3 倍于源片 672×896）· 532 帧 · 含音轨 · 服务器 426.6s + 本地放大，总耗时约 7 分钟"],
+    ["3 倍直达探针", "抽 48 帧实测 639.3s ≈ 13.3s/帧，全片需约 2 小时；三方脸部对比表情一致，但清晰度只比 1.5 倍流程略锐一点"],
+    ["意外发现", "上一轮 3 倍直达把抿嘴笑改成咧嘴露齿的素材，这次全程零失真——改脸不是必然，但 13 倍算力换半分锐度仍不成立"],
+    ["画质收益", "脸部、发丝、蕾丝与裙摆边缘、舞台灯纹理各清晰一档；源片拉伸版对比见全画幅三方图"],
+    ["技术参数", "与标定轮一致：SeedVR2 7B fp8 · 1 step · 色彩校正 lab · 本地 lanczos 补齐尺寸"]
+  ],
+  "findings": [
+    "定稿流程在 22.2s / 532 帧长度上复现成功：表情逐帧零失真，画质收益与 5 秒标定片一致，流程可直接作为交付默认",
+    "速度口诀按实测再校准：22.2s 素材全片 426.6s ≈ 秒数 ×19，落在标定轮「×15~25」区间内，排期口径可以沿用",
+    "3 倍直达的真实代价是算力不是失真：13.3s/帧 对 0.8s/帧，收益只有边际锐度——除非逐帧验收都值得，否则不值得排",
+    "「放大改脸」是概率性风险不是必然：同模型同倍数，一条素材翻车、一条全程干净，因此红线仍按素材类别定 1.5 倍，不因单次安全而放松"
+  ],
+  "links": [
+    ["📝 实验说明", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/seedvr2-recut-3x/README.md"],
+    ["🔓 全部资产", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/seedvr2-recut-3x"],
+    ["← 标定轮：放大倍数红线", "https://mafeis.github.io/ai-test-lab/#seedvr2-upscale"],
+    ["← 素材来源：初音舞台六镜精剪", "https://mafeis.github.io/ai-test-lab/#miku-stage-recut"]
+  ]
+}

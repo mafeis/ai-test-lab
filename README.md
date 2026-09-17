@@ -18,6 +18,7 @@
 | 10 | **qipao_fine_cut** —— 白水纱旗袍棚拍舞：6 条同提示词 take 精剪成一条 16.8s（帧差选切点 + 能量弧重排 + 叠化） | MiniMax H3 + ffmpeg 精剪 | ✅ 完成（切换处画面跳变从 3.31 倍降到 2.07 倍，接近无剪辑感） | [实验说明](experiments/qipao-fine-cut/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#qipao-fine-cut) |
 | 11 | **miku_stage_recut** —— 初音舞台六镜精剪：720 种剪法算出衔接最顺的一条 + 把 AI 偷偷放慢的 3 秒滞空修快（动画 / 真人两条成片） | MiniMax H3 + ffmpeg 精剪 | ✅ 完成（顺序全场第 1 · 滞空 3.0 秒修到 1.3 秒 · 25.9s / 22.2s） | [实验说明](experiments/miku-stage-recut/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#miku-stage-recut) |
 | 12 | **seedvr2_upscale** —— SeedVR2 视频高清化：放大多少倍才不会把脸改坏？3 倍直达会把抿嘴笑改成咧嘴露齿，1.5 倍全程保真 | SeedVR2 7B fp8（ComfyUI 0.35.0） | ✅ 完成（红线 1.5 倍，定稿流程：1.5 倍 + 本地放大补齐） | [实验说明](experiments/seedvr2-upscale/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#seedvr2-upscale) |
+| 13 | **seedvr2_recut_3x** —— 定稿流程首次全片交付：22.2s / 532 帧精剪成片整条 3x 高清化，7 分钟出 2016×2688；3 倍直达探针实测 13.3s/帧不排 | SeedVR2 7B fp8（ComfyUI 0.35.0） | ✅ 完成（全片 426.6s ≈ 秒数×19，表情零失真，流程转正为交付默认） | [实验说明](experiments/seedvr2-recut-3x/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#seedvr2-recut-3x) |
 
 ## 🎬 在线观看
 
