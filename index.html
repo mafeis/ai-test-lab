@@ -18,13 +18,7 @@
 </header>
 
 <div class="layout">
-  <!-- 左侧：测试列表 -->
-  <aside class="sidebar">
-    <div class="sidebar-head">测试列表</div>
-    <div class="testlist" id="testlist"></div>
-  </aside>
-
-  <!-- 右侧：共用大播放器（剧场） -->
+  <!-- 左：共用大播放器（剧场） -->
   <section class="stage-wrap">
     <div class="stage" id="stage"></div>
 
@@ -58,12 +52,16 @@
     <!-- 标题条 -->
     <div class="stage-bar" id="stagebar" style="display:none"></div>
 
-    <!-- 片段切换（参数扫描等多版本测试） -->
-    <div id="reelnav"></div>
-
     <!-- 详情 -->
     <div class="detail" id="detail" style="display:none"></div>
   </section>
+
+  <!-- 右：播放列表（测试清单 + 多片段列表合一，独立滚动，不随页面滚） -->
+  <aside class="sidebar">
+    <div class="sidebar-head" id="sidebar-head">播放列表</div>
+    <div class="testlist" id="testlist"></div>
+    <div id="reelnav"></div>
+  </aside>
 </div>
 
 <footer class="footer">
