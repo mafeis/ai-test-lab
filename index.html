@@ -20,15 +20,48 @@
 <div class="layout">
   <!-- 左侧：测试列表 -->
   <aside class="sidebar">
-    <div class="sidebar-head" id="sidebar-head">测试列表</div>
+    <div class="sidebar-head">测试列表</div>
     <div class="testlist" id="testlist"></div>
   </aside>
 
   <!-- 右侧：共用大播放器（剧场） -->
   <section class="stage-wrap">
     <div class="stage" id="stage"></div>
+
+    <!-- 自定义控制条 -->
+    <div class="controls" id="controls" style="display:none">
+      <button class="ctl-btn" id="c-play" title="播放/暂停（空格）" aria-label="播放或暂停">
+        <svg class="ic-play" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z"/></svg>
+        <svg class="ic-pause" viewBox="0 0 16 16" style="display:none"><path d="M3.5 2h3v12h-3zM9.5 2h3v12h-3z"/></svg>
+      </button>
+      <span class="c-time" id="c-cur">0:00</span>
+      <div class="c-seek-wrap">
+        <div class="c-buffer" id="c-buf" style="width:0%"></div>
+        <input type="range" class="c-seek" id="c-seek" min="0" max="1000" value="0" step="1" aria-label="播放进度">
+      </div>
+      <span class="c-time dur" id="c-dur">0:00</span>
+      <button class="ctl-btn wide" id="c-loop-one" title="单个循环（L）">单曲循环</button>
+      <button class="ctl-btn wide" id="c-loop-all" title="列表循环">列表循环</button>
+      <button class="ctl-btn rate" id="c-rate" title="播放速度">1x</button>
+      <button class="ctl-btn" id="c-mute" title="静音（M）" aria-label="静音">
+        <svg viewBox="0 0 16 16"><path d="M8 2 4.5 5H2v6h2.5L8 14zM10.5 5.5a3.5 3.5 0 0 1 0 5M12.2 3.8a6 6 0 0 1 0 8.4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </button>
+      <input type="range" class="c-vol" id="c-vol" min="0" max="1000" value="1000" aria-label="音量">
+      <button class="ctl-btn" id="c-pip" title="画中画" aria-label="画中画">
+        <svg viewBox="0 0 16 16"><path d="M2 3h12v10H2zm2 2v6h4V5z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+      </button>
+      <button class="ctl-btn" id="c-full" title="全屏（F）" aria-label="全屏">
+        <svg viewBox="0 0 16 16"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- 标题条 -->
     <div class="stage-bar" id="stagebar" style="display:none"></div>
+
+    <!-- 片段切换（参数扫描等多版本测试） -->
     <div id="reelnav"></div>
+
+    <!-- 详情 -->
     <div class="detail" id="detail" style="display:none"></div>
   </section>
 </div>
@@ -38,6 +71,7 @@
   ① 在 <code>data/tests/</code> 新建一个 <code>.json</code>（字段见现有文件）；
   ② 在 <code>data/manifest.json</code> 的 <code>tests</code> 数组里加一行路径。
   刷新即见；URL 加 <code>#测试id</code> 可直达。
+  快捷键：空格播放 · ←→ 快退快进 5s · ↑↓ 音量 · M 静音 · L 单曲循环 · F 全屏
   <a href="https://github.com/mafeis/ai-test-lab">github.com/mafeis/ai-test-lab</a>
 </footer>
 
