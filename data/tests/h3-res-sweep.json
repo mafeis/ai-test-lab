@@ -1,41 +1,41 @@
 {
   "id": "h3-res-sweep",
   "category": "参数扫描",
-  "title": "H3 分辨率扫描 —— 同提示词 0.1→1.0 MP 全档位对比",
-  "summary": "10 档独立播放器 · 每档 5.17s @24fps · 同 seed 同提示词 · 点击任一窗口单独播放",
+  "title": "生成视频要多少像素才够清晰？MiniMax H3 分辨率 0.1→1.0 MP 十档全对比",
+  "summary": "同一段内容生成十档分辨率：像素翻 24 倍，耗时也约翻 24 倍；0.6MP 画质已全面够用，只需最高档 45% 的时间；点击任一窗口可单独播放",
   "date": "2026-09-17",
   "tags": [
     ["MiniMax H3", "green"],
     ["10 档全扫完", "green"],
-    ["甜点 0.6MP", "amber"]
+    ["最佳档位 0.6MP", "amber"]
   ],
   "media": {
     "type": "gallery",
     "columns": "four",
     "items": [
-      { "src": "experiments/h3-res-sweep/res5s_mp0.1_00001_.mp4", "label": "<b>0.1MP</b> 256×352 · 10.5s" },
-      { "src": "experiments/h3-res-sweep/res5s_mp0.2_00001_.mp4", "label": "<b>0.2MP</b> 384×512 · 24.8s" },
-      { "src": "experiments/h3-res-sweep/res5s_mp0.3_00001_.mp4", "label": "<b>0.3MP</b> 480×640 · 43.1s" },
-      { "src": "experiments/h3-res-sweep/res5s_mp0.4_00001_.mp4", "label": "<b>0.4MP</b> 544×736 · 61.6s" },
-      { "src": "experiments/h3-res-sweep/res5s_mp0.5_00001_.mp4", "label": "<b>0.5MP</b> 608×832 · 84.1s" },
-      { "src": "experiments/h3-res-sweep/res5s_mp0.6_00001_.mp4", "label": "<b>0.6MP</b> 672×896 · 113s" },
-      { "src": "experiments/h3-res-sweep/res5s_mp0.7_00001_.mp4", "label": "<b>0.7MP</b> 736×960 · 143s" },
-      { "src": "experiments/h3-res-sweep/res5s_mp0.8_00001_.mp4", "label": "<b>0.8MP</b> 768×1056 · 178.7s" },
-      { "src": "experiments/h3-res-sweep/res5s_mp0.9_00001_.mp4", "label": "<b>0.9MP</b> 832×1088 · 211.3s" },
-      { "src": "experiments/h3-res-sweep/res5s_mp1.0_00001_.mp4", "label": "<b>1.0MP</b> 896×1120 · 252.8s" }
+      { "src": "experiments/h3-res-sweep/res5s_mp0.1_00001_.mp4", "label": "<b>0.1MP</b> 256×352 · 10.5s · 只看构图运镜：画面柔糊、五官融在一起，这档画质不可用" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.2_00001_.mp4", "label": "<b>0.2MP</b> 384×512 · 24.8s · 看全身远景和舞台桁架：蕾丝纹理已糊成一片" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.3_00001_.mp4", "label": "<b>0.3MP</b> 480×640 · 43.1s · 看领结、双排扣和景深光斑：写真质感，从这档起可用" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.4_00001_.mp4", "label": "<b>0.4MP</b> 544×736 · 61.6s · 看标准赛璐璐动漫脸和眼神光：两批都命中这个风格" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.5_00001_.mp4", "label": "<b>0.5MP</b> 608×832 · 84.1s · 细节饱满但风格漂回微写实，注意它不如 0.4MP 稳定" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.6_00001_.mp4", "label": "<b>0.6MP</b> 672×896 · 113s · 重点看发丝高光、裙摆刺绣和观众席光点：全部清晰，十档最佳单帧" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.7_00001_.mp4", "label": "<b>0.7MP</b> 736×960 · 143s · 看红白蓝裙装层次和全身构图：稳定，与 0.6MP 同级" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.8_00001_.mp4", "label": "<b>0.8MP</b> 768×1056 · 178.7s · 看霓虹舞台全景：画面内容多、人物占比小，适合群像" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.9_00001_.mp4", "label": "<b>0.9MP</b> 832×1088 · 211.3s · 看胸像特写：发丝、蕾丝、蝴蝶结纤毫毕现，动漫脸精准" },
+      { "src": "experiments/h3-res-sweep/res5s_mp1.0_00001_.mp4", "label": "<b>1.0MP</b> 896×1120 · 252.8s · 建议和 0.9MP 对比着看：细节持平，真人感略回升" }
     ]
   },
   "stats": [
-    ["变量", "仅分辨率（256×352 → 896×1120，~0.1MP 步进），提示词/seed/采样配置全部固定"],
-    ["耗时", "0.1MP 10.5s → 1.0MP 252.8s，随像素量近似线性（24 倍像素 ≈ 24 倍耗时）"],
-    ["质量", "<0.3MP 不可用；0.3-0.5MP 可用但风格抽卡；0.6MP 起全面进入高细节稳定区"],
-    ["甜点", "0.6MP 全景深细节爆发（发丝/刺绣/观众席光点全清晰），相对 1.0MP 只需 45% 耗时"],
-    ["饱和", "0.9→1.0MP 码率反降（5823→5479kbps）+ 耗时+20%，收益倒挂"]
+    ["做了什么", "只改分辨率一个变量：256×352 → 896×1120 共十档（~0.1MP 步进），每档各出一条 5.17s @24fps（124 帧）短片；提示词/seed/采样配置全部固定，所以各档差异全部来自分辨率本身"],
+    ["耗时", "像素越多耗时越长、近似成正比：0.1MP 10.5s ▮ → 1.0MP 252.8s ▮▮▮▮▮▮▮▮▮▮（24 倍像素 ≈ 24 倍耗时），生成时间可按分辨率直接预算"],
+    ["最重要的发现", "画质分三个台阶：<0.3MP 不可用；0.3-0.5MP 可用但风格抽卡（偶尔漂回微写实、要反复重试）；0.6MP 起全面进入高细节稳定区"],
+    ["哪档最划算", "0.6MP：全景深细节爆发（发丝/刺绣/观众席光点全清晰），相对 1.0MP 只需 45% 耗时，画质和时间在这档同时到位"],
+    ["踩过的坑", "不必追最高档：0.9→1.0MP 码率反降（5823→5479kbps），耗时还多 20%，花得更多但画面信息不再增加（收益倒挂）"]
   ],
   "findings": [
-    "0.4MP 与 0.6MP 两次批次均命中动漫风；0.6MP 以上风格漂移完全收敛",
-    "0.8MP 是全身远景档，画面信息量大但人物占比小，适合群像/舞台全景",
-    "推荐工作流：0.1MP 摇构图（10s/条）→ 0.6MP 出正片（113s/条）"
+    "出片风格在低分辨率下不稳定（偶尔漂回微写实）：0.4MP 和 0.6MP 各跑两批，两批都命中动漫风；0.6MP 以上风格不再漂移",
+    "要大场面选 0.8MP：该档为全身远景，画面里内容多但人物占比小，适合群像和舞台全景",
+    "推荐用法：先用 0.1MP 快速试构图（10s/条），定稿后再用 0.6MP 出正式成片（113s/条）"
   ],
   "links": [
     ["📄 扫描报告", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/h3-res-sweep/README.md"],

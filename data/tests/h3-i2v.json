@@ -1,14 +1,14 @@
 {
   "id": "h3-i2v",
   "category": "视频生成",
-  "title": "miku_dance H3 重生成 —— MiniMax H3 图生视频对比实验",
-  "summary": "15.08s · 704×960 @24fps · H.264+AAC · 3.4 MB · 8-step Turbo LoRA",
+  "title": "只给一张画面，MiniMax H3 能重做出一段带声音的 15 秒跳舞片吗",
+  "summary": "能：把原片的第 1 帧交给本地 ComfyUI 的 MiniMax H3，生成出 15.08 秒跳舞成片，背景音乐也是模型随画面一起生成的（qwen 原版的 BGM 是事后程序合成）；受模型一次只能出 5–15 秒的限制，30 秒原片这次只重做出 15 秒",
   "date": "2026-09-17",
   "tags": [
-    ["MiniMax H3 (fp8)", "green"],
-    ["qwen3vl-32b 编码器", "green"],
-    ["含原生音频", "green"],
-    ["对比实验", "amber"]
+    ["本地跑 MiniMax H3 (fp8)", "green"],
+    ["连声音一起生成", "green"],
+    ["单次上限 15 秒", "green"],
+    ["对比 qwen 原版", "amber"]
   ],
   "media": {
     "type": "video",
@@ -16,17 +16,17 @@
     "poster": "experiments/miku-h3-i2v/miku_dance_optimized_poster.png"
   },
   "stats": [
-    ["目标", "用本地 ComfyUI 的 MiniMax H3 对 qwen 原版做优化重生成，横向对比效果"],
-    ["首帧", "沿用原成片第 1 帧，704×960，保持角色一致"],
-    ["音频", "H3 原生同步音频生成（J-pop 舞曲提示词），qwen 原版为程序化合成 BGM"],
-    ["限制", "H3 训练帧范围 124–362 帧（5–15s），30s 原片无法单次重生成，故输出 15s"],
-    ["归档", "成片 + 工作流 JSON + 首帧已归档于 experiments/miku-h3-i2v/，可一键复现"]
+    ["做了什么", "用本地 ComfyUI 里的 MiniMax H3（fp8 版，即权重压到 8 位精度的量化模型）把 qwen 原版跳舞片重做一遍，两条成片横向对比效果；挂的加速模型是 8-step Turbo LoRA（把生成步数压到 8 步的小模型）"],
+    ["第一帧从哪来", "直接取原成片的第 1 帧，缩放至 704×960（画面宽×高的像素数）当输入图——图生视频就是给模型一张图、由它把这张图动成一段视频，用原帧是为了让角色和原版对得上"],
+    ["声音谁做的", "声音由 H3 随画面在同一次生成里同步产出，提示词指定 J-pop 舞曲；qwen 原版的背景音乐是片子出来之后用程序另外合成的，两者来源不同"],
+    ["为什么只有 15 秒", "H3 训练时只覆盖 124–362 帧，换算成 24fps（每秒 24 帧）就是 5–15 秒，一次生成装不下 30 秒原片，所以本次输出 15 秒：30s ▮▮▮▮▮ → 15s ▮▮▮"],
+    ["东西存在哪、能不能复现", "成片（15.08s · 704×960 @24fps · H.264+AAC · 3.4 MB）连同工作流 JSON、输入首帧一起归档于 experiments/miku-h3-i2v/，照文件即可一键复现"]
   ],
   "findings": [
-    "节点链：UNETLoader(H3) → 8-step Turbo LoRA → MiniMaxH3ImageToVideo → CreateVideo(24fps)",
-    "坑 1：qwen_3_8b 编码器维度不匹配（512 vs 5120），必须用 qwen3vl_32b_minimax_h3 专用编码器",
-    "坑 2：turbo 4-step LoRA 是 768p 专用，高分辨率必须用 8-step v1.0",
-    "坑 3：ComfyUI 上传图片必须 multipart/form-data，PowerShell 5.1 用 curl.exe -F"
+    "整条流水线四步就能跑通：载入 H3 模型（UNETLoader）→ 挂上 8-step Turbo LoRA 加速 → 图生视频节点 MiniMaxH3ImageToVideo 出画面 → 按 24fps 合成视频文件（CreateVideo）",
+    "坑 1：读提示词的文本编码器不能随便挑一个顶上。qwen_3_8b 与本模型对不上（512 vs 5120），必须换成配套的 qwen3vl_32b_minimax_h3 专用编码器",
+    "坑 2：加速模型分分辨率档位，用错档位等于白跑。turbo 4-step LoRA 只适用于 768p，本次这种高分辨率必须用 8-step v1.0",
+    "坑 3：往 ComfyUI 上传图片必须是 multipart/form-data（网页表单那种分段上传格式），PowerShell 5.1 下改用 curl.exe -F 才传得上去"
   ],
   "links": [
     ["📄 对比记录", "https://github.com/mafeis/ai-test-lab/blob/main/docs/miku-dance-optimize.md"],

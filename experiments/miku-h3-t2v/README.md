@@ -1,35 +1,41 @@
-# miku_dance H3 纯文生视频 —— 工作流资产
+# 零图片输入对照实验：只靠文字能否生成同一支舞
 
-配套对比记录见 [docs/miku-dance-optimize.md](../../docs/miku-dance-optimize.md)，
-图生视频版本见 [experiments/miku-h3-i2v/](../miku-h3-i2v/)。
+同一支「初音舞蹈」此前已用「先输入一张首帧图」的方式生成过一次（[experiments/miku-h3-i2v/](../miku-h3-i2v/)）。本实验把图片输入完全去掉，只保留文字提示词，检验文字能否独立确定主题与角色，并与该版本横向对照。配套对比记录见 [docs/miku-dance-optimize.md](../../docs/miku-dance-optimize.md)。
 
-## 与 i2v 版的区别
+## 一分钟看懂
 
-| 项目 | i2v（图生视频） | t2v（本实验，纯文生视频） |
-|---|---|---|
-| 输入 | 原成片第 1 帧（角色锚定） | 无图片，仅文字描述 |
-| 角色一致性 | 首帧硬锚定 | 依赖提示词完整描述（双马尾/绿发/裙装等） |
-| 成片大小 | 3.4 MB | 7.1 MB（细节更丰富） |
+| 问题 | 做法 | 结果 |
+|------|------|------|
+| 不输入任何图片，仅凭文字能否生成同主题舞蹈视频 | 沿用图生视频版的完整工作流，仅断掉一处图片输入（见[与图生视频版的差异](#与图生视频版的差异)） | 可以。单次生成得到 15.08s、704×960、24fps 的成片，画面 H.264、声音 AAC 编码——去掉全部图片输入并未阻断生成流程 |
+| 去掉图片后画面更好还是更差 | 与图生视频版逐项对照，两版工作流仅差这一处图片输入 | 画面细节更丰富：本条 7.1 MB，图生视频版 3.4 MB。近乎翻倍的体积说明画面里保留的细节更多 |
+| 角色外形靠什么保持一致 | 双马尾 / 绿发 / 裙装等特征全部写入提示词 | 失去首帧硬锚定，角色一致性完全取决于提示词描述的完整程度，外形不再由图片逐帧约束 |
+| 声音是否需要另外制作 | 提示词写明 J-pop 舞曲 + 女声 + 观众氛围声 | 由 H3 原生同步音频生成，与画面同一次推理产出，无需另外配音 |
 
-## 成片
+## 口径说明
 
-`miku_dance_t2v.mp4`：704×960 @24fps、15.08s、H.264 + AAC（H3 原生 J-pop 音轨）、7.1 MB
+- **首帧锚定**：把一张静态图作为视频第一帧交给模型，模型必须自该帧起生成，角色外形因此在整段内被约束。图生视频版取的是原成片第 1 帧，本实验不用此方式。
+- **原生同步音频**：声音与画面由同一次推理产出，而非后期合成或外挂音轨。
+- **节点链**：工作流中从模型加载到最终保存的节点连线顺序。
+- **文件大小**：本实验以文件体积作为画面细节量的粗指标——两版工作流仅差一处图片输入，体积差异即对应画面细节量的差异，体积越大细节越多。
+- **API 格式工作流**：ComfyUI 界面导出的、可直接通过接口提交的 JSON 表示，无需在界面内重新搭建。
+
+## 与图生视频版的差异
+
+两版共用的节点链为：UNETLoader → 8-step Turbo LoRA → qwen3vl-32b CLIP → MiniMaxH3ImageToVideo → SamplerCustomAdvanced → 双 VAE 解码 → CreateVideo → SaveVideo。本实验的唯一改动是 MiniMaxH3ImageToVideo 不接 first_frame，工作流随之退化为纯文生视频。
 
 ## 文件清单
 
 | 文件 | 说明 |
-|---|---|
-| `h3_t2v_workflow.json` | ComfyUI **API 格式**工作流（实验实际执行的最终版，无任何图片输入） |
-| `miku_dance_t2v.mp4` | 成片 |
-| `miku_dance_t2v_poster.png` | 成片封面帧（t=3s） |
+|------|------|
+| `h3_t2v_workflow.json` | ComfyUI **API 格式**工作流，实验实际执行的最终版，无任何图片输入 |
+| `miku_dance_t2v.mp4` | 成片，规格见[一分钟看懂](#一分钟看懂) |
+| `miku_dance_t2v_poster.png` | 封面帧（t=3s，即第 3 秒的画面），供播放页卡片使用 |
 
-节点链与 i2v 版完全一致（UNETLoader → 8-step Turbo LoRA → qwen3vl-32b CLIP → MiniMaxH3ImageToVideo → SamplerCustomAdvanced → 双 VAE 解码 → CreateVideo → SaveVideo），唯一区别：**MiniMaxH3ImageToVideo 不接 first_frame**，即退化为纯文生视频。
-
-## 使用方式
+## 复现
 
 ```powershell
 # 以 API 格式提交工作流（无需上传任何图片）
 curl.exe -X POST --data-binary "@h3_t2v_workflow.json" http://127.0.0.1:8188/prompt
 ```
 
-模型依赖同 [experiments/miku-h3-i2v/README.md](../miku-h3-i2v/README.md)。
+请求提交到本机运行的 ComfyUI 服务（端口 8188）。模型依赖同 [experiments/miku-h3-i2v/README.md](../miku-h3-i2v/README.md)。

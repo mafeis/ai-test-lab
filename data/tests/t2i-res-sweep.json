@@ -1,52 +1,52 @@
 {
   "id": "t2i-res-sweep",
   "category": "参数扫描",
-  "title": "文生图双模型分辨率扫描 —— 同提示词 0.1→1.0 MP",
-  "summary": "Z-Image Turbo vs Flux 2 Klein 9B · 各 10 档 · 同 seed 同提示词 · 图片画廊",
+  "title": "图片分辨率越大生成效果越好？两个模型从 0.1 比到 1.0 百万像素",
+  "summary": "同一句提示词让两个文生图模型各试 10 档分辨率：两家最佳档位都是 0.6MP；Z-Image Turbo 任何档位最多 4.1 秒，Flux 2 Klein 9B 最慢要 18.3 秒",
   "date": "2026-09-17",
   "tags": [
     ["Z-Image Turbo", "green"],
     ["Flux 2 Klein 9B", "amber"],
-    ["甜点均为 0.6MP", "green"]
+    ["最佳档位都是 0.6MP", "green"]
   ],
   "media": {
     "type": "gallery",
     "columns": "four",
     "items": [
-      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.1_00001_.png", "label": "<b>Z-Image 0.1MP</b> 256×352 · 2.0s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.2_00001_.png", "label": "<b>Z-Image 0.2MP</b> 384×512 · 2.0s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.3_00001_.png", "label": "<b>Z-Image 0.3MP</b> 480×640 · 2.0s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.4_00001_.png", "label": "<b>Z-Image 0.4MP</b> 544×736 · 2.0s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.5_00001_.png", "label": "<b>Z-Image 0.5MP</b> 608×832 · 2.1s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.6_00001_.png", "label": "<b>Z-Image 0.6MP</b> 672×896 · 4.1s ★甜点" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.7_00001_.png", "label": "<b>Z-Image 0.7MP</b> 736×960 · 4.1s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.8_00001_.png", "label": "<b>Z-Image 0.8MP</b> 768×1056 · 4.1s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.9_00001_.png", "label": "<b>Z-Image 0.9MP</b> 832×1088 · 4.1s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp1.0_00001_.png", "label": "<b>Z-Image 1.0MP</b> 896×1120 · 4.1s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.1_00001_.png", "label": "<b>Flux2 0.1MP</b> 256×352 · 4.6s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.2_00001_.png", "label": "<b>Flux2 0.2MP</b> 384×512 · 4.1s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.3_00001_.png", "label": "<b>Flux2 0.3MP</b> 480×640 · 腿部伪影" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.4_00001_.png", "label": "<b>Flux2 0.4MP</b> 544×736 · 8.1s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.5_00001_.png", "label": "<b>Flux2 0.5MP</b> 608×832 · 8.9s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.6_00001_.png", "label": "<b>Flux2 0.6MP</b> 672×896 · 10.4s ★甜点" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.7_00001_.png", "label": "<b>Flux2 0.7MP</b> 736×960 · 12.2s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.8_00001_.png", "label": "<b>Flux2 0.8MP</b> 768×1056 · 14.2s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.9_00001_.png", "label": "<b>Flux2 0.9MP</b> 832×1088 · 16.2s" },
-      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp1.0_00001_.png", "label": "<b>Flux2 1.0MP</b> 896×1120 · 18.3s" }
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.1_00001_.png", "label": "<b>Z-Image 0.1MP</b> 256×352 · 2.0s — 看脸部：五官发糊、皮肤有塑料感" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.2_00001_.png", "label": "<b>Z-Image 0.2MP</b> 384×512 · 2.0s — 构图和服装已经成型，注意细节还粗糙" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.3_00001_.png", "label": "<b>Z-Image 0.3MP</b> 480×640 · 2.0s — 细节仍粗糙，真正的提升在下一张" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.4_00001_.png", "label": "<b>Z-Image 0.4MP</b> 544×736 · 2.0s — 还是 2.0 秒，已离清晰档只差一档" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.5_00001_.png", "label": "<b>Z-Image 0.5MP</b> 608×832 · 2.1s — 质变前最后一张，和下一张对比细节差距" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.6_00001_.png", "label": "<b>Z-Image 0.6MP</b> 672×896 · 4.1s ★最佳档位 — 裙摆蕾丝褶皱、背景伴舞、舞台桁架从这里开始全部清晰" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.7_00001_.png", "label": "<b>Z-Image 0.7MP</b> 736×960 · 4.1s — 画面大一档，耗时却仍是 4.1 秒" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.8_00001_.png", "label": "<b>Z-Image 0.8MP</b> 768×1056 · 4.1s — 推荐日常出片档：画幅更大，耗时和 0.6MP 一样" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp0.9_00001_.png", "label": "<b>Z-Image 0.9MP</b> 832×1088 · 4.1s — 从这里起文件大小不再增长，和下一张对照看" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/zimg_mp1.0_00001_.png", "label": "<b>Z-Image 1.0MP</b> 896×1120 · 4.1s — 最大档，耗时不变，但文件不比 0.9MP 大" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.1_00001_.png", "label": "<b>Flux2 0.1MP</b> 256×352 · 4.6s — 看手部和线条：这是崩坏档" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.2_00001_.png", "label": "<b>Flux2 0.2MP</b> 384×512 · 4.1s — 仍低于 0.4MP 质量下限，对比线条改善程度" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.3_00001_.png", "label": "<b>Flux2 0.3MP</b> 480×640 — 重点看腿部：出现明显的横向涂抹伪影" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.4_00001_.png", "label": "<b>Flux2 0.4MP</b> 544×736 · 8.1s — 动漫脸开始稳定命中的最低档，对照上一张的腿部伪影" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.5_00001_.png", "label": "<b>Flux2 0.5MP</b> 608×832 · 8.9s — 最佳档位前一档，脸部已稳定" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.6_00001_.png", "label": "<b>Flux2 0.6MP</b> 672×896 · 10.4s ★最佳档位 — 线稿干净，观众席光斑、桁架、音箱全部到位" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.7_00001_.png", "label": "<b>Flux2 0.7MP</b> 736×960 · 12.2s — 比最佳档位高一档，留意耗时一路在涨" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.8_00001_.png", "label": "<b>Flux2 0.8MP</b> 768×1056 · 14.2s — 线稿依旧干净，和 0.6MP 对比是否值得多花时间" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp0.9_00001_.png", "label": "<b>Flux2 0.9MP</b> 832×1088 · 16.2s — 线条最锐从这里开始，对照 0.6MP 看差别" },
+      { "type": "image", "src": "experiments/t2i-res-sweep/flux2_mp1.0_00001_.png", "label": "<b>Flux2 1.0MP</b> 896×1120 · 18.3s — 最慢一档，文件却比 0.9MP 还小，收益到头" }
     ]
   },
   "stats": [
-    ["变量", "仅分辨率（256×352 → 896×1120），提示词/seed(91720260)/采样配置全部固定"],
-    ["耗时", "Z-Image 全档 2-4.1s 几乎恒定；Flux2 4.6→18.3s 随像素线性涨"],
-    ["风格", "Z-Image 全档微写实（低分辨率只糊不漂）；Flux2 全档锁死赛璐璐动漫风"],
-    ["甜点", "两个模型都是 0.6MP（672×896），与 H3 视频扫描结论一致"],
-    ["饱和", "0.9→1.0MP 两模型文件大小均持平或反降，收益倒挂"]
+    ["做了什么", "两个模型各生成 10 张图，只改分辨率（256×352 → 896×1120），提示词、seed（91720260，控制生成随机性的数）和采样设置全部固定"],
+    ["耗时多少", "Z-Image ▮ 2-4.1s 几乎不变，分辨率再高也不慢；Flux2 ▮▮▮▮▮ 4.6→18.3s 随像素线性上涨，同样的图慢 2-4 倍"],
+    ["风格怎么变", "画风由模型定、不由分辨率定：Z-Image 十档都偏真人照片感（低分辨率只糊、不跑风格），Flux2 十档都固定为赛璐璐动漫风（平涂色块的动画画风）"],
+    ["哪档最合适", "两个模型都是 0.6MP（672×896）综合最好：Z-Image 4.1s、Flux2 10.4s，与 H3 视频扫描的结论一致"],
+    ["越大越好吗", "不是：0.9→1.0MP 两个模型的文件大小都不再增长甚至反降——花了更多时间，画面信息却没有变多"]
   ],
   "findings": [
-    "Z-Image Turbo 是零思考成本模型：直接用 0.8MP 当默认值，任何分辨率 ≤4.1s",
-    "Flux2 Klein 的质量台阶在 0.4MP：低于它会出现肢体/线条崩坏",
-    "风格由模型决定而非分辨率：同 seed 同提示词下两模型风格从 0.1MP 起就完全分化",
-    "动漫题材选 Flux2，写实/cos 题材选 Z-Image（快 2-4 倍）"
+    "Z-Image Turbo 不用纠结选档：十档耗时都不超过 4.1s，日常直接把 0.8MP 当默认值",
+    "Flux2 Klein 的质量下限在 0.4MP：低于这一档肢体和线条会崩坏，反复重新生成也救不回来",
+    "画风由模型定、不由分辨率定：同 seed（控制生成随机性的数）同提示词下，两个模型从 0.1MP 起画风就完全不同",
+    "画动漫题材用 Flux2，要真人/cos（cosplay 照片感）题材用 Z-Image——后者还快 2-4 倍"
   ],
   "links": [
     ["📄 扫描报告", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/t2i-res-sweep/README.md"],
