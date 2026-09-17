@@ -10,6 +10,7 @@
     "data/tests/h3-round2.json",
     "data/tests/miku-story-30s.json",
     "data/tests/qipao-fine-cut.json",
-    "data/tests/miku-stage-recut.json"
+    "data/tests/miku-stage-recut.json",
+    "data/tests/seedvr2-upscale.json"
   ]
 }

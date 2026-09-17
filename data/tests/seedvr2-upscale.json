@@ -1,0 +1,51 @@
+{
+  "id": "seedvr2-upscale",
+  "category": "视频增强",
+  "title": "SeedVR2 视频高清化 —— 放大倍数与脸部保真标定（拟真 cos / MMD 卡通双素材）",
+  "summary": "3 倍直达改表情（抿嘴变咧嘴露齿）· 1.5 倍全程保真 · 定稿流程 1.5 倍 + lanczos · 卡通素材收益更大",
+  "date": "2026-09-19",
+  "tags": [
+    ["SeedVR2 7B fp8", "green"],
+    ["倍数红线 1.5x", "amber"],
+    ["脸部保真", "purple"],
+    ["30.2s 全片", "gray"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "two",
+    "items": [
+      { "type": "image", "src": "experiments/seedvr2-upscale/compare_real_face_3way.jpg", "label": "<b>拟真 三方案</b> 同帧位脸部对比 · 左 1.5x 原生 / 中 1.5x+lanczos / 右 3x 直达（咧嘴露齿）★核心证据" },
+      { "src": "experiments/seedvr2-upscale/dance05_15x_lanczos_1440.mp4", "poster": "experiments/seedvr2-upscale/poster_real.jpg", "label": "<b>拟真 B 推荐</b> 1.5x+lanczos 1440×2560 · 表情保真 · 86.1s ★推荐流程" },
+      { "src": "experiments/seedvr2-upscale/dance05_3x_direct_1440.mp4", "poster": "experiments/seedvr2-upscale/poster_real.jpg", "label": "<b>拟真 C 对照</b> 3x 直达 1440×2560 · 表情被改 · 273.6s" },
+      { "src": "experiments/seedvr2-upscale/dance05_15x_816.mp4", "poster": "experiments/seedvr2-upscale/poster_real.jpg", "label": "<b>拟真 A</b> 1.5x 原生 816×1440 · 表情保真 · 86.1s" },
+      { "src": "experiments/seedvr2-upscale/dance05_source_544.mp4", "poster": "experiments/seedvr2-upscale/poster_real.jpg", "label": "<b>拟真 源片</b> 544×960 · 5.17s 表情基准" },
+      { "type": "image", "src": "experiments/seedvr2-upscale/compare_mmd_full.jpg", "label": "<b>MMD 整帧</b> 前 704×960 / 后 1.5x 1056×1440 · 高光与边缘增强" },
+      { "type": "image", "src": "experiments/seedvr2-upscale/compare_mmd_face.jpg", "label": "<b>MMD 脸部</b> 表情零改动 · 卡通无真人先验更安全" },
+      { "src": "experiments/seedvr2-upscale/mmd_full_15x_1056.mp4", "poster": "experiments/seedvr2-upscale/poster_mmd.jpg", "label": "<b>MMD 全片</b> 1.5x 1056×1440 · 30.2s×724帧 · 653.5s" },
+      { "src": "experiments/seedvr2-upscale/mmd_source_704.mp4", "poster": "experiments/seedvr2-upscale/poster_mmd.jpg", "label": "<b>MMD 源片</b> 704×960 · 30.2s" }
+    ]
+  },
+  "stats": [
+    ["环境", "ComfyUI 0.35.0 核心版 SeedVR2 节点链 · H20 局域网 · HTTP API 提交/轮询/下载"],
+    ["权重", "seedvr2_ema_7b_fp8_e4m3fn（7B fp8）+ ema_vae_fp16 · 色彩校正 lab"],
+    ["采样", "KSampler 1 step · cfg 1.0 · denoise 1.0 · res_multistep+simple"],
+    ["测试一", "拟真 cos 544×960×124帧(5.17s)：A 1.5x 86.1s / B 1.5x+lanczos 86.1s+8s / C 3x 273.6s"],
+    ["测试二", "MMD 卡通 704×960×724帧(30.2s) 1.5x 全片 653.5s ≈ 22 倍实时"],
+    ["评测", "同帧位抽帧 + 脸部局部 crop/scale/hstack 拼图逐帧核对表情，墙钟计耗时"],
+    ["权重坑", "numz 镜像缺 2 枚 conditioning 张量报 Could not detect model type，必须官方转换"]
+  ],
+  "findings": [
+    "放大倍数与脸部失真正相关：3 倍直达时扩散先验把抿嘴浅笑重画成咧嘴露齿、瞳孔重画更蓝更艳；1.5 倍全程与源片一致——核心版节点无恢复强度旋钮，cc 四档只管颜色不管几何，倍数是唯一有效杠杆",
+    "定稿流程：SeedVR2 只做 1.5 倍恢复 → 本地 lanczos 拉到交付尺寸——表情零失真、细节增强保留、服务器耗时约 1/3，观感与大倍数直出几乎无差别",
+    "卡通/三渲二素材比拟真素材更适合 SeedVR2：卡通脸无『标准真人脸』强先验可脑补，模型只恢复轮廓与纹理不重画表情；且 3D 渲染干净边缘的恢复收益更大",
+    "排期口径：素材秒数 ×15~25（H20 空闲队列），高运动素材取上限（时间块切得更碎）",
+    "色彩校正四档（lab/wavelet/adain/none）实测只影响颜色不影响几何，lab 肤色最忠实、wavelet 细节略脆",
+    "人脸是生成式超分重灾区：人脸先验最强 + 人眼对脸最苛刻，真人脸素材倍数必须 ≤1.5x；需要更高倍数应改用人脸保真专用模型（CodeFormer/GFPGAN 类）分区域处理"
+  ],
+  "links": [
+    ["📄 实验说明", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/seedvr2-upscale/README.md"],
+    ["🔧 全部资产", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/seedvr2-upscale"],
+    ["← 素材来源：旗袍棚拍舞精剪", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/qipao-fine-cut/README.md"],
+    ["← 素材来源：初音舞台六镜精剪", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-stage-recut/README.md"]
+  ]
+}

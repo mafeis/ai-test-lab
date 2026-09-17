@@ -17,6 +17,7 @@
 | 9 | **miku_story_30s** —— 初音 30s 舞台小剧场《Encore》：6 幕叙事 + 关键帧双锚锁风格 + 统一 BGM | Flux2 关键帧 + H3 双锚生成 | ✅ 完成（v2 赛璐璐全片锁定） | [制作说明](experiments/miku-story-30s/README.md) · [播放](https://mafeis.github.io/ai-test-lab/#miku-story-30s) |
 | 10 | **qipao_fine_cut** —— 白水纱旗袍棚拍舞：6 条同提示词 take 精剪成一条 16.8s（帧差选切点 + 能量弧重排 + 叠化） | MiniMax H3 + ffmpeg 精剪 | ✅ 完成（接点跳变 3.31x → 2.07x 运动基线） | [实验说明](experiments/qipao-fine-cut/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#qipao-fine-cut) |
 | 11 | **miku_stage_recut** —— 初音舞台六镜双线精剪：接点矩阵穷举重排 + AI 慢放分段修复（赛璐璐 / 真人 cos 两条成片） | MiniMax H3 + ffmpeg 精剪 | ✅ 完成（顺序穷举 1/720 · 滞空 3.0s→1.3s · 25.9s / 22.2s） | [实验说明](experiments/miku-stage-recut/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#miku-stage-recut) |
+| 12 | **seedvr2_upscale** —— SeedVR2 视频高清化：放大倍数与脸部保真标定（3 倍直达改表情，1.5 倍 + lanczos 定稿流程） | SeedVR2 7B fp8（ComfyUI 0.35.0） | ✅ 完成（倍数红线 1.5x · 卡通素材收益更大） | [实验说明](experiments/seedvr2-upscale/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#seedvr2-upscale) |
 
 ## 🎬 在线观看
 
