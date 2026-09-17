@@ -144,6 +144,33 @@ const TESTS = [
       ["🔧 工作流资产", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/miku-h3-t2v"],
     ],
   },
+  {
+    title: "H3 分辨率扫描 —— 同提示词 0.1→0.5 MP 效果与质量对比",
+    media: { type: "video", src: "experiments/h3-res-sweep/res_comparison.mp4", poster: "experiments/h3-res-sweep/comparison_strip.png" },
+    meta: "5 档并排（左→右 0.1→0.5MP）· 0.92s/档 · 同 seed 同提示词 · 生成耗时 2.5s→9.4s",
+    badges: [
+      ["参数扫描", ""],
+      ["MiniMax H3", "green"],
+      ["0.92s 短片段", "green"],
+      ["质量拐点 0.3-0.4MP", "amber"],
+    ],
+    info: [
+      ["变量", "仅分辨率（256×352 → 608×832，~0.1MP 步进），提示词/seed/采样配置全部固定"],
+      ["耗时", "0.1MP 2.5s · 0.2MP 4.1s · 0.3MP 6.0s · 0.4MP 7.7s · 0.5MP 9.4s（≈与像素线性）"],
+      ["质量", "<0.3MP 面部不可用；0.4MP 起细节收益递减（0.4→0.5 耗时+22%，码率仅+3.6%）"],
+      ["发现", "分辨率变化等于重摇 seed：各档并非同一角色，0.4MP 恰好出标准动漫脸，其余偏写实"],
+      ["建议", "0.1MP（2.5s/条）批量摇构图 seed → 选定后 0.5MP 出成片"],
+    ],
+    points: [
+      "0.1MP 构图完整但发糊，五官崩坏，只适合预览运镜",
+      "0.3MP 性价比拐点：蝴蝶结/腰带结构清晰，开始有景深",
+      "0.5MP 背景最丰富（光斑/伴舞/拱门），码率增长趋近内容信息上限",
+    ],
+    links: [
+      ["📄 扫描报告", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/h3-res-sweep/README.md"],
+      ["🔧 工作流资产", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/h3-res-sweep"],
+    ],
+  },
 ];
 
 /* ============ 渲染模板：以下无需改动 ============ */
