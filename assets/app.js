@@ -144,6 +144,44 @@ function renderList() {
 
 /* ---------- 片段选集（紧凑方块，悬停显示片段信息） ---------- */
 
+/* ---------- 片段选集编号：按模型/系列分组编号（Z1-10, F1-10…） ----------
+   提取 label 开头加粗段作为系列名，取每系列首字（去重后）作前缀；无系列的沿用全局序号 */
+function chipLabels(reels) {
+  const seriesOf = r => {
+    const m = (r.html_label || r.label || "").match(/<b>([^<]+)<\/b>/);
+    if (!m) return null;
+    /* 系列名去掉末尾的档位数字部分（如 "Z-Image 0.1MP" → "Z-Image"） */
+    return m[1].replace(/[\s]*[0-9.]+MP.*$/u, "").trim();
+  };
+  const series = reels.map(seriesOf);
+  const names = [...new Set(series.filter(Boolean))];
+  /* 只有一个系列（或全无系列）→ 全局序号 1..N */
+  if (names.length <= 1) return { labels: reels.map((_, i) => String(i + 1)), groups: null };
+
+  const prefixes = {};
+  names.forEach(n => {
+    const base = n.replace(/^Z-Image$/i, "Z").replace(/^Flux2?(\s.*Klein.*)?$/i, "F")
+                  .replace(/[^A-Za-z\u4e00-\u9fa5]/g, "");
+    prefixes[n] = (base || n).charAt(0).toUpperCase();
+  });
+  /* 前缀冲突时用前两个字母 */
+  const used = new Set();
+  names.forEach(n => {
+    if (used.has(prefixes[n])) {
+      const alt = n.replace(/[^A-Za-z\u4e00-\u9fa5]/g, "").slice(0, 2).toUpperCase();
+      prefixes[n] = alt || n.charAt(0);
+    }
+    used.add(prefixes[n]);
+  });
+  const counters = {};
+  const labels = series.map((s, i) => {
+    if (!s) return String(i + 1);
+    counters[s] = (counters[s] || 0) + 1;
+    return `${prefixes[s]}${counters[s]}`;
+  });
+  return { labels, groups: names };
+}
+
 function renderReelNav(t) {
   const reelNav = document.getElementById("reelnav");
   if (!t) { reelNav.innerHTML = ""; reelNav.style.display = "none"; return; }
@@ -151,6 +189,7 @@ function renderReelNav(t) {
   if (reels.length <= 1) { reelNav.innerHTML = ""; reelNav.style.display = "none"; return; }
   reelNav.style.display = "";
   const starCount = reels.filter(r => (r.html_label || r.label || "").includes("★")).length;
+  const { labels } = chipLabels(reels);
   reelNav.innerHTML = `
     <div class="playlist">
       <div class="pl-head">选集 <span class="pl-hint">${reels.length} 个${starCount ? ` · ★${starCount}` : ""}</span></div>
@@ -163,7 +202,7 @@ function renderReelNav(t) {
           ${starred ? `<span class="pl-star">★</span>` : ""}
           ${i === ACTIVE_REEL
             ? `<svg viewBox="0 0 16 16" class="pl-eq"><path d="M3 6v4M6.5 4v8M10 5.5v5M13 6v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"><animate attributeName="d" dur="0.8s" repeatCount="indefinite" values="M3 6v4M6.5 3.5v9M10 6v4M13 5v6;M3 5v6M6.5 6v4M10 3.5v9M13 7v2;M3 6v4M6.5 3.5v9M10 6v4M13 5v6"/></animate></svg>`
-            : (i + 1)}
+            : labels[i]}
         </button>`;
       }).join("") + `</div></div>`;
 
