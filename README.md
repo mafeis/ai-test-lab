@@ -26,5 +26,5 @@
 **任何测试相关的内容变更（新增成片 / 新增测试 / 修改资产），必须在同一次提交里同步以下三处，缺一不可：**
 
 1. 本 README 的「测试项目」表（状态、链接）
-2. `index.html` 的 `TESTS` 数组（卡片数据）
+2. `data/manifest.json` 登记路径 + `data/tests/<id>.json`（播放页数据，详见 [docs/adding-tests.md](docs/adding-tests.md)）
 3. 对应实验目录的 `README.md`（资产清单）
