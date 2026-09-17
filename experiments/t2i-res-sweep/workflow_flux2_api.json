@@ -1,0 +1,141 @@
+﻿{
+    "client_id":  "curl-repro",
+    "prompt":  {
+                   "1":  {
+                             "inputs":  {
+                                            "weight_dtype":  "default",
+                                            "unet_name":  "flux-2-klein-9b-fp8.safetensors"
+                                        },
+                             "class_type":  "UNETLoader"
+                         },
+                   "2":  {
+                             "inputs":  {
+                                            "device":  "default",
+                                            "clip_name":  "qwen_3_8b_fp8mixed.safetensors",
+                                            "type":  "flux2"
+                                        },
+                             "class_type":  "CLIPLoader"
+                         },
+                   "3":  {
+                             "inputs":  {
+                                            "vae_name":  "flux2-vae.safetensors"
+                                        },
+                             "class_type":  "VAELoader"
+                         },
+                   "4":  {
+                             "inputs":  {
+                                            "clip":  [
+                                                         "2",
+                                                         0
+                                                     ],
+                                            "text":  "Anime idol girl with long teal twin-tails and white-navy idol dress, dancing energetically on a colorful concert stage, magenta and cyan spotlights, glowing bokeh."
+                                        },
+                             "class_type":  "CLIPTextEncode"
+                         },
+                   "5":  {
+                             "inputs":  {
+                                            "clip":  [
+                                                         "2",
+                                                         0
+                                                     ],
+                                            "text":  ""
+                                        },
+                             "class_type":  "CLIPTextEncode"
+                         },
+                   "6":  {
+                             "inputs":  {
+                                            "model":  [
+                                                          "1",
+                                                          0
+                                                      ],
+                                            "positive":  [
+                                                             "4",
+                                                             0
+                                                         ],
+                                            "negative":  [
+                                                             "5",
+                                                             0
+                                                         ],
+                                            "cfg":  5
+                                        },
+                             "class_type":  "CFGGuider"
+                         },
+                   "7":  {
+                             "inputs":  {
+                                            "sampler_name":  "euler"
+                                        },
+                             "class_type":  "KSamplerSelect"
+                         },
+                   "8":  {
+                             "inputs":  {
+                                            "steps":  20,
+                                            "width":  608,
+                                            "height":  832
+                                        },
+                             "class_type":  "Flux2Scheduler"
+                         },
+                   "9":  {
+                             "inputs":  {
+                                            "noise_seed":  91720260,
+                                            "control":  "fixed"
+                                        },
+                             "class_type":  "RandomNoise"
+                         },
+                   "10":  {
+                              "inputs":  {
+                                             "width":  608,
+                                             "height":  832,
+                                             "batch_size":  1
+                                         },
+                              "class_type":  "EmptyFlux2LatentImage"
+                          },
+                   "11":  {
+                              "inputs":  {
+                                             "noise":  [
+                                                           "9",
+                                                           0
+                                                       ],
+                                             "guider":  [
+                                                            "6",
+                                                            0
+                                                        ],
+                                             "sampler":  [
+                                                             "7",
+                                                             0
+                                                         ],
+                                             "sigmas":  [
+                                                            "8",
+                                                            0
+                                                        ],
+                                             "latent_image":  [
+                                                                  "10",
+                                                                  0
+                                                              ]
+                                         },
+                              "class_type":  "SamplerCustomAdvanced"
+                          },
+                   "12":  {
+                              "inputs":  {
+                                             "samples":  [
+                                                             "11",
+                                                             0
+                                                         ],
+                                             "vae":  [
+                                                         "3",
+                                                         0
+                                                     ]
+                                         },
+                              "class_type":  "VAEDecode"
+                          },
+                   "13":  {
+                              "inputs":  {
+                                             "images":  [
+                                                            "12",
+                                                            0
+                                                        ],
+                                             "filename_prefix":  "t2i/flux2_mp0.5"
+                                         },
+                              "class_type":  "SaveImage"
+                          }
+               }
+}

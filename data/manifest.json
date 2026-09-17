@@ -3,6 +3,7 @@
     "data/tests/blender-dance.json",
     "data/tests/h3-i2v.json",
     "data/tests/h3-t2v.json",
-    "data/tests/h3-res-sweep.json"
+    "data/tests/h3-res-sweep.json",
+    "data/tests/t2i-res-sweep.json"
   ]
 }
