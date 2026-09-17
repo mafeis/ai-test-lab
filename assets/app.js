@@ -117,6 +117,35 @@ function renderStage() {
     : `<video controls autoplay playsinline src="${esc(reel.src)}" poster="${esc(reel.poster)}"></video>`;
   stage.innerHTML = inner;
 
+  /* 比例保真自检：加载后核对 舞台显示比例 vs 视频原始比例（8 位小数内一致即 PASS） */
+  const vid = stage.querySelector("video, img");
+  if (vid) {
+    const check = () => {
+      const nw = vid.videoWidth || vid.naturalWidth;
+      const nh = vid.videoHeight || vid.naturalHeight;
+      const rw = vid.getBoundingClientRect().width;
+      const rh = vid.getBoundingClientRect().height;
+      if (!nw || !nh || !rw || !rh) return false;
+      const rSrc = nw / nh, rBox = rw / rh;
+      const diff = Math.abs(rSrc - rBox) / rSrc;
+      const ok = diff < 1e-8;
+      console.log(`[aspect-check] ${reel.src} native ${nw}x${nh} (r=${rSrc.toFixed(6)}) shown ${rw.toFixed(1)}x${rh.toFixed(1)} (r=${rBox.toFixed(6)}) diff=${diff.toExponential(2)} ${ok ? "PASS" : "FAIL"}`);
+      if (!ok) {
+        vid.style.outline = "2px solid #dc2626";
+        console.warn("[aspect-check] 显示比例与原始比例不一致，已标红");
+      }
+      return ok;
+    };
+    if (vid.tagName === "VIDEO") {
+      vid.addEventListener("loadedmetadata", check, { once: true });
+      vid.addEventListener("resize", check);
+    } else if (vid.complete) {
+      requestAnimationFrame(check);
+    } else {
+      vid.addEventListener("load", () => requestAnimationFrame(check), { once: true });
+    }
+  }
+
   /* gallery 型测试显示片段切换条 */
   const reels = normalizeReels(t);
   if (reels.length > 1) {
