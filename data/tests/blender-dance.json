@@ -1,0 +1,33 @@
+{
+  "id": "blender-dance",
+  "category": "Agent 任务",
+  "title": "miku_dance.mp4 —— Agent 自主 Blender 舞蹈视频",
+  "summary": "30.000s · 720×960 @24fps · H.264+AAC · 5.0 MB",
+  "date": "2026-09-17",
+  "tags": [
+    ["动画", ""],
+    ["Qwen3.8-Flash xhigh", "green"],
+    ["Blender 5.2 无头", "green"],
+    ["✅ 零人工干预", "amber"]
+  ],
+  "media": {
+    "type": "video",
+    "src": "images/miku_dance.mp4",
+    "poster": "images/miku_dance_poster.png"
+  },
+  "stats": [
+    ["目标", "验证 agent（Hermes）驱动思考档位模型，能否仅凭自然语言指令零人工干预完成 3D 动画全流程"],
+    ["输入", "仅 3 条指令：① Blender 做初音模型 → ② 继续 → ③ 验收通过后做 30s 舞蹈视频（无参考图、无分镜）"],
+    ["消耗", "227 条消息 · 输入 53.0 万 / 输出 10.9 万 token（思考 6.3 万）· 108 次工具调用（vision_analyze ×19 自检）"],
+    ["环境", "Mac mini M2 16GB · macOS 26.6.2"]
+  ],
+  "findings": [
+    "建模 6 轮渲染验收：耳机带、刘海、领带、裙靴等缺陷逐轮修复，最终 6/6 PASS",
+    "OOM 自愈：网格 258MB 撑爆 16GB 内存被杀，自主降精度重跑（→64MB）",
+    "8 段编舞对齐 128 BPM，双马尾弹簧物理；BGM 程序化合成（Am-F-C-G 电子流行）",
+    "渲染 3 次翻车（frame_end 遗漏、文件名污染）全部自主发现并修复"
+  ],
+  "links": [
+    ["📄 完整测试记录", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-blender-dance/README.md"]
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "id": "h3-t2v",
+  "category": "视频生成",
+  "title": "miku_dance H3 纯文生视频 —— 零图片输入对比实验",
+  "summary": "15.08s · 704×960 @24fps · H.264+AAC · 7.1 MB · 无任何图片输入",
+  "date": "2026-09-17",
+  "tags": [
+    ["MiniMax H3 (fp8)", "green"],
+    ["纯文生视频", "green"],
+    ["含原生音频", "green"],
+    ["对比实验", "amber"]
+  ],
+  "media": {
+    "type": "video",
+    "src": "experiments/miku-h3-t2v/miku_dance_t2v.mp4",
+    "poster": "experiments/miku-h3-t2v/miku_dance_t2v_poster.png"
+  },
+  "stats": [
+    ["目标", "验证不接任何图片、仅凭文字描述能否生成同主题舞蹈视频，与 i2v 版横向对比"],
+    ["角色", "无首帧锚定，双马尾/绿发/裙装等外形全靠提示词完整描述"],
+    ["音频", "H3 原生同步音频（J-pop 舞曲 + 女声 + 观众氛围声提示词）"],
+    ["结论", "与 i2v 版节点链完全一致，唯一区别是 MiniMaxH3ImageToVideo 不接 first_frame"],
+    ["归档", "成片 + 工作流 JSON 已归档于 experiments/miku-h3-t2v/"]
+  ],
+  "findings": [
+    "细节量比 i2v 版更丰富（7.1 MB vs 3.4 MB），但角色身份与原图不再逐帧锚定",
+    "工作流已归档，curl 一条命令即可复现，无需上传任何文件",
+    "三种生成路线齐了：Blender 渲染 / H3 图生视频 / H3 纯文生视频"
+  ],
+  "links": [
+    ["📄 对比记录", "https://github.com/mafeis/ai-test-lab/blob/main/docs/miku-dance-optimize.md"],
+    ["🔧 工作流资产", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/miku-h3-t2v"]
+  ]
+}

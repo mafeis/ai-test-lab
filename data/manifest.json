@@ -1,0 +1,8 @@
+{
+  "tests": [
+    "data/tests/blender-dance.json",
+    "data/tests/h3-i2v.json",
+    "data/tests/h3-t2v.json",
+    "data/tests/h3-res-sweep.json"
+  ]
+}

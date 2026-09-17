@@ -1,0 +1,180 @@
+/* ============================================================
+   AI Test Lab · 全部样式
+   换主题 / 调布局只改这个文件，不碰数据和渲染逻辑
+   ============================================================ */
+
+:root {
+  --bg: #f4f6fa;
+  --card: #ffffff;
+  --line: #e6eaf1;
+  --txt: #1f2937;
+  --dim: #6b7280;
+  --accent: #2563eb;
+
+  /* 分类稳定 accent 色：新分类在 app.js 里登记色号 */
+  --c-video: #2563eb;
+  --c-sweep: #7c3aed;
+  --c-image: #059669;
+  --c-agent: #d97706;
+
+  --radius: 12px;
+  --shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: -apple-system, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+/* ---------- 顶栏 ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar-inner {
+  display: flex; align-items: center; gap: 20px;
+  padding-top: 14px; padding-bottom: 14px; flex-wrap: wrap;
+}
+.brand { display: flex; align-items: baseline; gap: 10px; flex: none; }
+.brand h1 {
+  font-size: 20px; font-weight: 700;
+  display: flex; align-items: center; gap: 10px;
+}
+.brand h1::before {
+  content: ""; width: 4px; height: 20px;
+  background: var(--accent); border-radius: 2px;
+}
+.brand-sub { font-size: 12.5px; color: var(--dim); }
+
+/* ---------- 分类筛选 chips ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font-size: 12.5px; padding: 3px 14px;
+  border-radius: 99px; border: 1px solid var(--line);
+  background: var(--card); color: var(--dim);
+  cursor: pointer; user-select: none;
+  transition: all .15s ease;
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.active {
+  background: var(--accent); border-color: var(--accent);
+  color: #fff; font-weight: 600;
+}
+.chip .n { opacity: .65; font-size: 11.5px; margin-left: 3px; }
+
+/* ---------- 正文 ---------- */
+main { padding: 28px 32px 8px; }
+.sub { font-size: 12.5px; color: var(--dim); margin-bottom: 24px; }
+
+.section { margin-bottom: 40px; }
+.section-head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.section-head::before {
+  content: ""; width: 4px; height: 16px;
+  background: var(--sec-color, var(--accent)); border-radius: 2px;
+}
+.section-head h2 { font-size: 16px; font-weight: 700; }
+.section-head .count { font-size: 12px; color: var(--dim); }
+
+.cardgrid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+}
+@media (max-width: 860px) {
+  .wrap, main { padding-left: 16px; padding-right: 16px; }
+  .cardgrid { grid-template-columns: 1fr; }
+}
+
+/* ---------- 卡片 ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+.card > video, .card > img.thumb,
+.vidgrid video {
+  width: 100%; border-radius: 8px;
+  background: #0f172a; display: block;
+}
+.card h3 { font-size: 16px; margin: 12px 0 4px; }
+.meta { font-size: 12.5px; color: var(--dim); }
+.badges { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+.badge {
+  font-size: 11.5px; padding: 1px 10px; border-radius: 99px;
+  background: rgba(37,99,235,.10); color: var(--accent);
+}
+.badge.green { background: rgba(5,150,105,.12); color: #059669; }
+.badge.amber { background: rgba(217,119,6,.12); color: #b45309; }
+.badge.gray  { background: rgba(107,114,128,.12); color: #4b5563; }
+.badge.purple{ background: rgba(124,58,237,.12); color: #7c3aed; }
+
+/* 详情区 */
+details.info {
+  margin-top: 12px; border-top: 1px solid var(--line);
+  padding-top: 10px; font-size: 13px;
+}
+details.info summary {
+  cursor: pointer; color: var(--accent);
+  font-weight: 600; font-size: 12.5px; user-select: none;
+}
+details.info table { margin-top: 8px; width: 100%; border-collapse: collapse; }
+details.info td { vertical-align: top; padding: 3px 8px 3px 0; font-size: 12.5px; }
+details.info td.k { color: var(--dim); white-space: nowrap; width: 5.5em; }
+details.info ul { margin: 6px 0 0 1.4em; font-size: 12.5px; }
+details.info li { margin: 2px 0; }
+.links { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 12px; font-size: 12.5px; }
+.links a { color: var(--accent); text-decoration: none; }
+
+/* ---------- 多窗口播放网格（gallery） ---------- */
+.vidgrid {
+  margin-top: 4px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+.vidgrid.two   { grid-template-columns: repeat(2, 1fr); }
+.vidgrid.four  { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 860px) {
+  .vidgrid, .vidgrid.two, .vidgrid.four { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .vidgrid, .vidgrid.two, .vidgrid.four { grid-template-columns: 1fr; }
+}
+.vcell .vlabel {
+  font-size: 11.5px; color: var(--dim);
+  margin-top: 3px; text-align: center;
+}
+.vcell .vlabel b { color: var(--txt); }
+
+/* ---------- 页脚 ---------- */
+.footer {
+  margin-top: 24px; padding: 20px 0 32px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px; color: var(--dim);
+}
+.footer a { color: var(--accent); text-decoration: none; }
+.footer code {
+  background: #eef1f6; border-radius: 4px;
+  padding: 0 5px; font-size: 11.5px;
+}
+
+/* ---------- 空状态 ---------- */
+.empty {
+  text-align: center; color: var(--dim);
+  padding: 48px 0; border: 1px dashed var(--line); border-radius: var(--radius);
+}
+
+@media print {
+  .topbar, .footer { display: none; }
+  .card { box-shadow: none; }
+}

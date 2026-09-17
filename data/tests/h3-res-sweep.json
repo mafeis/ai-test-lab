@@ -1,0 +1,44 @@
+{
+  "id": "h3-res-sweep",
+  "category": "参数扫描",
+  "title": "H3 分辨率扫描 —— 同提示词 0.1→1.0 MP 全档位对比",
+  "summary": "10 档独立播放器 · 每档 5.17s @24fps · 同 seed 同提示词 · 点击任一窗口单独播放",
+  "date": "2026-09-17",
+  "tags": [
+    ["MiniMax H3", "green"],
+    ["10 档全扫完", "green"],
+    ["甜点 0.6MP", "amber"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "four",
+    "items": [
+      { "src": "experiments/h3-res-sweep/res5s_mp0.1_00001_.mp4", "label": "<b>0.1MP</b> 256×352 · 10.5s" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.2_00001_.mp4", "label": "<b>0.2MP</b> 384×512 · 24.8s" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.3_00001_.mp4", "label": "<b>0.3MP</b> 480×640 · 43.1s" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.4_00001_.mp4", "label": "<b>0.4MP</b> 544×736 · 61.6s" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.5_00001_.mp4", "label": "<b>0.5MP</b> 608×832 · 84.1s" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.6_00001_.mp4", "label": "<b>0.6MP</b> 672×896 · 113s" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.7_00001_.mp4", "label": "<b>0.7MP</b> 736×960 · 143s" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.8_00001_.mp4", "label": "<b>0.8MP</b> 768×1056 · 178.7s" },
+      { "src": "experiments/h3-res-sweep/res5s_mp0.9_00001_.mp4", "label": "<b>0.9MP</b> 832×1088 · 211.3s" },
+      { "src": "experiments/h3-res-sweep/res5s_mp1.0_00001_.mp4", "label": "<b>1.0MP</b> 896×1120 · 252.8s" }
+    ]
+  },
+  "stats": [
+    ["变量", "仅分辨率（256×352 → 896×1120，~0.1MP 步进），提示词/seed/采样配置全部固定"],
+    ["耗时", "0.1MP 10.5s → 1.0MP 252.8s，随像素量近似线性（24 倍像素 ≈ 24 倍耗时）"],
+    ["质量", "<0.3MP 不可用；0.3-0.5MP 可用但风格抽卡；0.6MP 起全面进入高细节稳定区"],
+    ["甜点", "0.6MP 全景深细节爆发（发丝/刺绣/观众席光点全清晰），相对 1.0MP 只需 45% 耗时"],
+    ["饱和", "0.9→1.0MP 码率反降（5823→5479kbps）+ 耗时+20%，收益倒挂"]
+  ],
+  "findings": [
+    "0.4MP 与 0.6MP 两次批次均命中动漫风；0.6MP 以上风格漂移完全收敛",
+    "0.8MP 是全身远景档，画面信息量大但人物占比小，适合群像/舞台全景",
+    "推荐工作流：0.1MP 摇构图（10s/条）→ 0.6MP 出正片（113s/条）"
+  ],
+  "links": [
+    ["📄 扫描报告", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/h3-res-sweep/README.md"],
+    ["🔧 工作流资产", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/h3-res-sweep"]
+  ]
+}
