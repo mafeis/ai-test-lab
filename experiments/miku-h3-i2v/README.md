@@ -11,6 +11,8 @@
 | `node_MiniMaxH3ImageToVideo.json` | MiniMaxH3ImageToVideo 自定义节点定义 |
 | `node_MiniMaxH3ReferenceToVideo.json` | MiniMaxH3ReferenceToVideo 自定义节点定义 |
 | `miku_first_frame.png` | 首帧图（取自原 qwen3.8-flash 成片第 1 帧，缩放至 704×960，保持角色一致） |
+| `miku_dance_optimized.mp4` | **成片**：704×960 @24fps、15.08s、H.264+AAC（H3 原生音频）、3.4 MB |
+| `miku_dance_optimized_poster.png` | 成片封面帧（t=3s），用于播放器卡片海报 |
 
 ## 使用方式
 

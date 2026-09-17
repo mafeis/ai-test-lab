@@ -89,25 +89,27 @@ const TESTS = [
   },
   {
     title: "miku_dance H3 重生成 —— MiniMax H3 图生视频对比实验",
-    media: { type: "image", src: "experiments/miku-h3-i2v/miku_first_frame.png", alt: "H3 首帧" },
-    meta: "362 帧 ≈ 15s · 704×960 @24fps · 8-step Turbo LoRA · 成片未归档（可由工作流复现）",
+    media: { type: "video", src: "experiments/miku-h3-i2v/miku_dance_optimized.mp4", poster: "experiments/miku-h3-i2v/miku_dance_optimized_poster.png" },
+    meta: "15.08s · 704×960 @24fps · H.264+AAC · 3.4 MB · 8-step Turbo LoRA",
     badges: [
       ["视频生成", ""],
       ["MiniMax H3 (fp8)", "green"],
       ["qwen3vl-32b 编码器", "green"],
+      ["含原生音频", "green"],
       ["对比实验", "amber"],
-      ["⚠️ 成片待归档", "gray"],
     ],
     info: [
       ["目标", "用本地 ComfyUI 的 MiniMax H3 对左侧 qwen 原版做优化重生成，横向对比效果"],
-      ["首帧", "沿用原成片第 1 帧（上图），704×960，保持角色一致"],
+      ["首帧", "沿用原成片第 1 帧（见对比记录），704×960，保持角色一致"],
       ["音频", "H3 原生同步音频生成（J-pop 舞曲提示词），qwen 原版为程序化合成 BGM"],
       ["限制", "H3 训练帧范围 124–362 帧（5–15s），30s 原片无法单次重生成，故输出 15s"],
+      ["归档", "成片 + 工作流 JSON + 首帧已归档于 experiments/miku-h3-i2v/，可一键复现"],
     ],
     points: [
       "节点链：UNETLoader(H3) → 8-step Turbo LoRA → MiniMaxH3ImageToVideo → CreateVideo(24fps)",
-      "坑：turbo 4-step LoRA 是 768p 专用，高分辨率必须用 8-step v1.0",
-      "工作流 JSON 已归档，可一键复现；成片文件未归档，待补传",
+      "坑 1：qwen_3_8b 编码器维度不匹配（512 vs 5120），必须用 qwen3vl_32b_minimax_h3 专用编码器",
+      "坑 2：turbo 4-step LoRA 是 768p 专用，高分辨率必须用 8-step v1.0",
+      "坑 3：ComfyUI 上传图片必须 multipart/form-data，PowerShell 5.1 用 curl.exe -F",
     ],
     links: [
       ["📄 对比记录", "https://github.com/mafeis/ai-test-lab/blob/main/docs/miku-dance-optimize.md"],
