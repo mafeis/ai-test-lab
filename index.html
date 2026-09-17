@@ -6,188 +6,151 @@
 <title>AI Test Lab · 动画播放器</title>
 <style>
   :root {
-    --bg: #f4f6fa;
-    --card: #ffffff;
-    --line: #e6eaf1;
-    --txt: #1f2937;
-    --dim: #6b7280;
-    --accent: #2563eb;
+    --bg: #f4f6fa; --card: #ffffff; --line: #e6eaf1;
+    --txt: #1f2937; --dim: #6b7280; --accent: #2563eb;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    background: var(--bg);
-    color: var(--txt);
+    background: var(--bg); color: var(--txt);
     font-family: -apple-system, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
-    font-size: 14px;
-    line-height: 1.7;
-    padding: 40px 32px;
+    font-size: 14px; line-height: 1.7; padding: 40px 32px;
   }
   .wrap { max-width: 880px; margin: 0 auto; }
-  h1 {
-    font-size: 22px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  h1::before {
-    content: "";
-    width: 4px; height: 22px;
-    background: var(--accent);
-    border-radius: 2px;
-    flex: none;
-  }
+  h1 { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+  h1::before { content: ""; width: 4px; height: 22px; background: var(--accent); border-radius: 2px; flex: none; }
   .sub { font-size: 12.5px; color: var(--dim); margin: 8px 0 32px; }
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-  @media (max-width: 760px) {
-    body { padding: 24px 16px; }
-    .grid { grid-template-columns: 1fr; }
-  }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 760px) { body { padding: 24px 16px; } .grid { grid-template-columns: 1fr; } }
   .card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    box-shadow: 0 1px 4px rgba(0,0,0,.08);
-    padding: 16px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08); padding: 16px;
   }
-  .card video, .card img.thumb {
-    width: 100%;
-    border-radius: 8px;
-    background: #0f172a;
-    display: block;
-  }
+  .card video, .card img.thumb { width: 100%; border-radius: 8px; background: #0f172a; display: block; }
   .card h2 { font-size: 16px; margin: 12px 0 4px; }
   .meta { font-size: 12.5px; color: var(--dim); }
   .badges { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
-  .badge {
-    font-size: 11.5px;
-    padding: 1px 10px;
-    border-radius: 99px;
-    background: rgba(37,99,235,.10);
-    color: var(--accent);
-  }
+  .badge { font-size: 11.5px; padding: 1px 10px; border-radius: 99px; background: rgba(37,99,235,.10); color: var(--accent); }
   .badge.green { background: rgba(5,150,105,.12); color: #059669; }
   .badge.amber { background: rgba(217,119,6,.12); color: #b45309; }
-  details.info {
-    margin-top: 12px;
-    border-top: 1px solid var(--line);
-    padding-top: 10px;
-    font-size: 13px;
-  }
-  details.info summary {
-    cursor: pointer;
-    color: var(--accent);
-    font-weight: 600;
-    font-size: 12.5px;
-    user-select: none;
-  }
-  details.info table {
-    margin-top: 8px;
-    width: 100%;
-    border-collapse: collapse;
-  }
-  details.info td {
-    vertical-align: top;
-    padding: 3px 8px 3px 0;
-    font-size: 12.5px;
-  }
-  details.info td.k {
-    color: var(--dim);
-    white-space: nowrap;
-    width: 5.5em;
-  }
+  .badge.gray { background: rgba(107,114,128,.12); color: #4b5563; }
+  details.info { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; font-size: 13px; }
+  details.info summary { cursor: pointer; color: var(--accent); font-weight: 600; font-size: 12.5px; user-select: none; }
+  details.info table { margin-top: 8px; width: 100%; border-collapse: collapse; }
+  details.info td { vertical-align: top; padding: 3px 8px 3px 0; font-size: 12.5px; }
+  details.info td.k { color: var(--dim); white-space: nowrap; width: 5.5em; }
   details.info ul { margin: 6px 0 0 1.4em; font-size: 12.5px; }
   details.info li { margin: 2px 0; }
   .links { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 12px; font-size: 12.5px; }
   .links a { color: var(--accent); text-decoration: none; }
-  .empty {
-    text-align: center;
-    color: var(--dim);
-    padding: 48px 0;
-    border: 1px dashed var(--line);
-    border-radius: 12px;
-  }
   footer { margin-top: 36px; font-size: 12.5px; color: var(--dim); }
   footer a { color: var(--accent); text-decoration: none; }
-  @media print {
-    .card { box-shadow: none; }
-  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>AI Test Lab · 动画播放器</h1>
-  <p class="sub">仓库内所有 AI 生成动画，点击画面即可播放 · 展开卡片下方「详细信息」查看测试过程 · 最后更新 2026-09-17</p>
-
-  <div class="grid">
-    <div class="card">
-      <video controls preload="metadata" src="images/miku_dance.mp4" poster="images/miku_dance_poster.png"></video>
-      <h2>miku_dance.mp4 —— Agent 自主 Blender 舞蹈视频</h2>
-      <p class="meta">30.000s · 720×960 @24fps · H.264+AAC · 5.0 MB</p>
-      <div class="badges">
-        <span class="badge">动画</span>
-        <span class="badge green">Qwen3.8-Flash xhigh</span>
-        <span class="badge green">Blender 5.2 无头</span>
-        <span class="badge amber">✅ 零人工干预</span>
-      </div>
-      <details class="info">
-        <summary>详细信息</summary>
-        <table>
-          <tr><td class="k">目标</td><td>验证 agent（Hermes）驱动思考档位模型，能否仅凭自然语言指令零人工干预完成 3D 动画全流程</td></tr>
-          <tr><td class="k">输入</td><td>仅 3 条指令：① Blender 做初音模型 → ② 继续 → ③ 验收通过后做 30s 舞蹈视频（无参考图、无分镜）</td></tr>
-          <tr><td class="k">消耗</td><td>227 条消息 · 输入 53.0 万 / 输出 10.9 万 token（思考 6.3 万）· 108 次工具调用（vision_analyze ×19 自检）</td></tr>
-          <tr><td class="k">环境</td><td>Mac mini M2 16GB · macOS 26.6.2</td></tr>
-        </table>
-        <ul>
-          <li>建模 6 轮渲染验收：耳机带、刘海、领带、裙靴等缺陷逐轮修复，最终 6/6 PASS</li>
-          <li>OOM 自愈：网格 258MB 撑爆 16GB 内存被杀，自主降精度重跑（→64MB）</li>
-          <li>8 段编舞对齐 128 BPM，双马尾弹簧物理；BGM 程序化合成（Am-F-C-G 电子流行）</li>
-          <li>渲染 3 次翻车（frame_end 遗漏、文件名污染）全部自主发现并修复</li>
-        </ul>
-        <div class="links">
-          <a href="https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-blender-dance/README.md">📄 完整测试记录</a>
-        </div>
-      </details>
-    </div>
-
-    <div class="card">
-      <img class="thumb" src="experiments/miku-h3-i2v/miku_first_frame.png" alt="H3 首帧">
-      <h2>miku_dance_optimized —— H3 图生视频重生成</h2>
-      <p class="meta">362 帧 ≈ 15s · 704×960 @24fps · MiniMax H3 首帧图生视频 · 8-step Turbo LoRA</p>
-      <div class="badges">
-        <span class="badge">视频生成</span>
-        <span class="badge green">MiniMax H3 (fp8)</span>
-        <span class="badge green">qwen3vl-32b 编码器</span>
-        <span class="badge amber">对比实验</span>
-      </div>
-      <details class="info">
-        <summary>详细信息</summary>
-        <table>
-          <tr><td class="k">目标</td><td>用本地 ComfyUI 的 MiniMax H3 对左侧 qwen 原版做优化重生成，横向对比效果</td></tr>
-          <tr><td class="k">首帧</td><td>沿用原成片第 1 帧（上图），704×960，保持角色一致</td></tr>
-          <tr><td class="k">音频</td><td>H3 原生同步音频生成（J-pop 舞曲提示词），qwen 原版为程序化合成 BGM</td></tr>
-          <tr><td class="k">限制</td><td>H3 训练帧范围 124–362 帧（5–15s），30s 原片无法单次重生成，故输出 15s</td></tr>
-        </table>
-        <ul>
-          <li>节点链：UNETLoader(H3) → 8-step Turbo LoRA → MiniMaxH3ImageToVideo → CreateVideo(24fps)</li>
-          <li>坑：turbo 4-step LoRA 是 768p 专用，高分辨率必须用 8-step v1.0</li>
-        </ul>
-        <div class="links">
-          <a href="https://github.com/mafeis/ai-test-lab/blob/main/docs/miku-dance-optimize.md">📄 对比记录</a>
-          <a href="https://github.com/mafeis/ai-test-lab/tree/main/experiments/miku-h3-i2v">🔧 工作流资产</a>
-        </div>
-      </details>
-    </div>
-  </div>
-
+  <p class="sub">仓库内所有 AI 生成动画，点击画面即可播放 · 展开卡片下方「详细信息」查看测试总结 · 最后更新 2026-09-17</p>
+  <div class="grid" id="grid"></div>
   <footer>
-    新增动画：把 mp4 放入 <code>images/</code> 目录后，在 <code>index.html</code> 的 grid 中复制一张 card 并改视频路径即可；详细信息写在卡片的 <code>details.info</code> 里。
+    <strong>新增测试</strong>：只需两步 —— ① 把视频放入 <code>images/</code>；② 在本文件顶部
+    <code>TESTS</code> 数组里加一条数据（视频路径 + 总结字段），卡片自动生成，无需改页面结构。<br>
     在线仓库：<a href="https://github.com/mafeis/ai-test-lab">github.com/mafeis/ai-test-lab</a>
   </footer>
 </div>
+
+<script>
+/* ============ 测试数据：新增测试只改这里 ============ */
+const TESTS = [
+  {
+    title: "miku_dance.mp4 —— Agent 自主 Blender 舞蹈视频",
+    media: { type: "video", src: "images/miku_dance.mp4", poster: "images/miku_dance_poster.png" },
+    meta: "30.000s · 720×960 @24fps · H.264+AAC · 5.0 MB",
+    badges: [
+      ["动画", ""],
+      ["Qwen3.8-Flash xhigh", "green"],
+      ["Blender 5.2 无头", "green"],
+      ["✅ 零人工干预", "amber"],
+    ],
+    info: [
+      ["目标", "验证 agent（Hermes）驱动思考档位模型，能否仅凭自然语言指令零人工干预完成 3D 动画全流程"],
+      ["输入", "仅 3 条指令：① Blender 做初音模型 → ② 继续 → ③ 验收通过后做 30s 舞蹈视频（无参考图、无分镜）"],
+      ["消耗", "227 条消息 · 输入 53.0 万 / 输出 10.9 万 token（思考 6.3 万）· 108 次工具调用（vision_analyze ×19 自检）"],
+      ["环境", "Mac mini M2 16GB · macOS 26.6.2"],
+    ],
+    points: [
+      "建模 6 轮渲染验收：耳机带、刘海、领带、裙靴等缺陷逐轮修复，最终 6/6 PASS",
+      "OOM 自愈：网格 258MB 撑爆 16GB 内存被杀，自主降精度重跑（→64MB）",
+      "8 段编舞对齐 128 BPM，双马尾弹簧物理；BGM 程序化合成（Am-F-C-G 电子流行）",
+      "渲染 3 次翻车（frame_end 遗漏、文件名污染）全部自主发现并修复",
+    ],
+    links: [
+      ["📄 完整测试记录", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-blender-dance/README.md"],
+    ],
+  },
+  {
+    title: "miku_dance H3 重生成 —— MiniMax H3 图生视频对比实验",
+    media: { type: "image", src: "experiments/miku-h3-i2v/miku_first_frame.png", alt: "H3 首帧" },
+    meta: "362 帧 ≈ 15s · 704×960 @24fps · 8-step Turbo LoRA · 成片未归档（可由工作流复现）",
+    badges: [
+      ["视频生成", ""],
+      ["MiniMax H3 (fp8)", "green"],
+      ["qwen3vl-32b 编码器", "green"],
+      ["对比实验", "amber"],
+      ["⚠️ 成片待归档", "gray"],
+    ],
+    info: [
+      ["目标", "用本地 ComfyUI 的 MiniMax H3 对左侧 qwen 原版做优化重生成，横向对比效果"],
+      ["首帧", "沿用原成片第 1 帧（上图），704×960，保持角色一致"],
+      ["音频", "H3 原生同步音频生成（J-pop 舞曲提示词），qwen 原版为程序化合成 BGM"],
+      ["限制", "H3 训练帧范围 124–362 帧（5–15s），30s 原片无法单次重生成，故输出 15s"],
+    ],
+    points: [
+      "节点链：UNETLoader(H3) → 8-step Turbo LoRA → MiniMaxH3ImageToVideo → CreateVideo(24fps)",
+      "坑：turbo 4-step LoRA 是 768p 专用，高分辨率必须用 8-step v1.0",
+      "工作流 JSON 已归档，可一键复现；成片文件未归档，待补传",
+    ],
+    links: [
+      ["📄 对比记录", "https://github.com/mafeis/ai-test-lab/blob/main/docs/miku-dance-optimize.md"],
+      ["🔧 工作流资产", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/miku-h3-i2v"],
+    ],
+  },
+];
+
+/* ============ 渲染模板：以下无需改动 ============ */
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+function renderCard(t) {
+  const media = t.media.type === "video"
+    ? `<video controls preload="metadata" src="${esc(t.media.src)}" poster="${esc(t.media.poster || "")}"></video>`
+    : `<img class="thumb" src="${esc(t.media.src)}" alt="${esc(t.media.alt || "")}">`;
+
+  const badges = t.badges.map(([label, cls]) =>
+    `<span class="badge ${cls}">${esc(label)}</span>`).join("");
+
+  const rows = t.info.map(([k, v]) =>
+    `<tr><td class="k">${esc(k)}</td><td>${esc(v)}</td></tr>`).join("");
+
+  const points = t.points.map(p => `<li>${esc(p)}</li>`).join("");
+
+  const links = t.links.map(([label, url]) =>
+    `<a href="${esc(url)}">${esc(label)}</a>`).join("");
+
+  return `
+  <div class="card">
+    ${media}
+    <h2>${esc(t.title)}</h2>
+    <p class="meta">${esc(t.meta)}</p>
+    <div class="badges">${badges}</div>
+    <details class="info">
+      <summary>详细信息</summary>
+      <table>${rows}</table>
+      <ul>${points}</ul>
+      <div class="links">${links}</div>
+    </details>
+  </div>`;
+}
+
+document.getElementById("grid").innerHTML = TESTS.map(renderCard).join("");
+</script>
 </body>
 </html>

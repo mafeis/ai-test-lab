@@ -29,7 +29,7 @@
 | 版本 | 文件 | 说明 |
 |---|---|---|
 | 原始 | [images/miku_dance.mp4](../images/miku_dance.mp4) | qwen3.8-flash，30s |
-| 优化 v1 | images/miku_dance_optimized_*.mp4 | H3 turbo 8-step，15s，原生音频 |
+| 优化 v1 | `miku_dance_optimized_*.mp4`（成片未归档，可用 `experiments/miku-h3-i2v/` 工作流复现） | H3 turbo 8-step，15s，原生音频 |
 
 ## 工作流
 

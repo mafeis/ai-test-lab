@@ -7,11 +7,11 @@
 | # | 测试 | 模型 | 状态 | 记录 |
 |---|---|---|---|---|
 | 1 | **miku_blender_dance** —— Agent 自主 Blender 建模 + 30s 舞蹈视频 | Qwen3.8-Flash (xhigh) | ✅ 完成 | [详细记录](experiments/miku-blender-dance/README.md) |
-| 2 | **miku_h3_i2v** —— MiniMax H3 图生视频优化重生成（对比实验） | MiniMax H3 + qwen3vl-32b | ✅ 完成 | [对比记录](docs/miku-dance-optimize.md) · [工作流资产](experiments/miku-h3-i2v/) |
+| 2 | **miku_h3_i2v** —— MiniMax H3 图生视频优化重生成（对比实验） | MiniMax H3 + qwen3vl-32b | 🔧 工作流已归档，成片待补传 | [对比记录](docs/miku-dance-optimize.md) · [工作流资产](experiments/miku-h3-i2v/) |
 
 ## 🎬 在线观看
 
-[![miku_dance 封面](images/miku_dance_poster.png)](https://mafeis.github.io/ai-test-lab/)
+<a href="https://mafeis.github.io/ai-test-lab/"><img src="images/miku_dance_poster.png" width="220" alt="miku_dance 封面"></a>
 
 **▶ 点击封面进入播放页** —— 每个测试的成片、参数和详细信息都在播放页卡片里：[https://mafeis.github.io/ai-test-lab/](https://mafeis.github.io/ai-test-lab/)
 
