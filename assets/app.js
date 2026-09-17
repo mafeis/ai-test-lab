@@ -4,6 +4,19 @@
    左侧列表 + 片段切换（无横向滚动条）+ 移动端适配
    ============================================================ */
 
+/* 全局错误可见化：任何脚本错误都打到页面角落，不再静默失效 */
+window.addEventListener("error", e => {
+  let box = document.getElementById("errbox");
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "errbox";
+    box.style.cssText = "position:fixed;bottom:8px;left:8px;z-index:9999;max-width:70%;background:#dc2626;color:#fff;font:12px/1.5 monospace;padding:8px 12px;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.4);";
+    document.body.appendChild(box);
+  }
+  box.textContent = `⚠ JS 错误: ${e.message} @ ${e.filename?.split("/").pop()}:${e.lineno}`;
+  setTimeout(() => box.remove(), 10000);
+});
+
 /* 分类 → accent 色登记表（新分类在这里加一行色号即可） */
 const CATEGORY_COLORS = {
   "视频生成": "var(--c-video)",
@@ -121,15 +134,6 @@ function renderList() {
     }).join("");
     return (ACTIVE_CAT === "全部" ? `<div class="list-group-label">${esc(cat)}</div>` : "") + items;
   }).join("");
-
-  el.querySelectorAll(".testitem").forEach(btn =>
-    btn.addEventListener("click", () => {
-      if (ACTIVE_ID === btn.dataset.id) return;
-      ACTIVE_ID = btn.dataset.id;
-      ACTIVE_REEL = 0;
-      renderList();
-      renderStage();
-    }));
 }
 
 /* ---------- 片段播放列表（正式列表样式，可清晰选择播放哪个） ---------- */
@@ -150,11 +154,6 @@ function renderReelNav(t) {
         <span class="pl-label">${r.html_label || esc(r.label)}</span>
         <span class="pl-state">${i === ACTIVE_REEL ? "播放中" : "点击播放"}</span>
       </button>`).join("") + `</div></div>`;
-  reelNav.querySelectorAll(".pl-item").forEach(btn =>
-    btn.addEventListener("click", () => {
-      ACTIVE_REEL = Number(btn.dataset.i);
-      renderStage();
-    }));
 }
 
 /* ---------- 自定义控制条 ---------- */
@@ -290,21 +289,7 @@ function bindControls(video) {
       : stage.requestFullscreen();
   });
 
-  /* 键盘快捷键（剧场聚焦时） */
-  document.addEventListener("keydown", e => {
-    if (e.target.matches("input, textarea")) return;
-    switch (e.key) {
-      case " ": e.preventDefault(); btnPlay.click(); break;
-      case "ArrowLeft": video.currentTime = Math.max(0, video.currentTime - 5); break;
-      case "ArrowRight": video.currentTime += 5; break;
-      case "ArrowUp": e.preventDefault(); video.volume = Math.min(1, video.volume + .1); syncVol(); break;
-      case "ArrowDown": e.preventDefault(); video.volume = Math.max(0, video.volume - .1); syncVol(); break;
-      case "m": case "M": btnMute.click(); break;
-      case "l": case "L": btnLoopOne.click(); break;
-      case "f": case "F": btnFull.click(); break;
-      case "0": video.currentTime = 0; break;
-    }
-  });
+  /* 键盘快捷键：全局只注册一次（见下方 getStageVideo 代理） */
 
   /* 移动端双击舞台 = 播放/暂停 */
   stage.addEventListener("dblclick", e => {
@@ -314,6 +299,45 @@ function bindControls(video) {
   bar.style.display = "";
   syncPlay(); syncTime();
 }
+
+/* 当前舞台视频的动态引用（快捷键/双击始终操作最新视频） */
+function getStageVideo() { return document.querySelector("#stage video"); }
+
+/* 键盘快捷键：全局注册一次，避免每次 bindControls 重复叠加 */
+document.addEventListener("keydown", e => {
+  if (e.target.matches("input, textarea")) return;
+  const video = getStageVideo();
+  if (!video) return;
+  switch (e.key) {
+    case " ": e.preventDefault(); video.paused ? video.play() : video.pause(); break;
+    case "ArrowLeft": video.currentTime = Math.max(0, video.currentTime - 5); break;
+    case "ArrowRight": video.currentTime += 5; break;
+    case "ArrowUp": e.preventDefault(); video.volume = Math.min(1, video.volume + .1); break;
+    case "ArrowDown": e.preventDefault(); video.volume = Math.max(0, video.volume - .1); break;
+    case "m": case "M": video.muted = !video.muted; break;
+    case "l": case "L": document.getElementById("c-loop-one")?.click(); break;
+    case "f": case "F": document.getElementById("c-full")?.click(); break;
+    case "0": video.currentTime = 0; break;
+  }
+});
+
+/* 左侧测试项：事件委托绑定在 #testlist 容器上 */
+document.getElementById("testlist").addEventListener("click", e => {
+  const btn = e.target.closest(".testitem");
+  if (!btn || btn.dataset.id === ACTIVE_ID) return;
+  ACTIVE_ID = btn.dataset.id;
+  ACTIVE_REEL = 0;
+  renderList();
+  renderStage();
+});
+
+/* 播放列表行：事件委托绑定在 #reelnav 容器上 */
+document.getElementById("reelnav").addEventListener("click", e => {
+  const btn = e.target.closest(".pl-item");
+  if (!btn) return;
+  ACTIVE_REEL = Number(btn.dataset.i);
+  renderStage();
+});
 
 /* ---------- 右侧剧场 ---------- */
 
@@ -417,16 +441,19 @@ function renderFilters() {
     const n = c === "全部" ? ALL_TESTS.length : ALL_TESTS.filter(t => (t.category || "未分类") === c).length;
     return `<button class="chip ${c === ACTIVE_CAT ? "active" : ""}" data-cat="${esc(c)}">${esc(c)}<span class="n">${n}</span></button>`;
   }).join("");
-  el.querySelectorAll(".chip").forEach(btn =>
-    btn.addEventListener("click", () => {
-      ACTIVE_CAT = btn.dataset.cat;
-      const stillVisible = ALL_TESTS.some(t => t.id === ACTIVE_ID &&
-        (ACTIVE_CAT === "全部" || t.category === ACTIVE_CAT));
-      if (!stillVisible) { ACTIVE_ID = null; renderStage(); }
-      renderFilters();
-      renderList();
-    }));
 }
+
+/* 顶部分类 chip：事件委托绑定在 #filters 容器上（重建按钮不丢事件） */
+document.getElementById("filters").addEventListener("click", e => {
+  const btn = e.target.closest(".chip");
+  if (!btn) return;
+  ACTIVE_CAT = btn.dataset.cat;
+  const stillVisible = ALL_TESTS.some(t => t.id === ACTIVE_ID &&
+    (ACTIVE_CAT === "全部" || t.category === ACTIVE_CAT));
+  if (!stillVisible) { ACTIVE_ID = null; renderStage(); }
+  renderFilters();
+  renderList();
+});
 
 /* ---------- 启动 ---------- */
 
