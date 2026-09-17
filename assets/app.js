@@ -25,7 +25,7 @@ const CATEGORY_COLORS = {
   "Agent 任务": "var(--c-agent)",
 };
 
-const SPEEDS = [0.1, 0.2, 0.5, 0.75, 1, 1.25, 1.5, 2, 3, 5, 10];   // 倍速菜单选项（0.1x–10x）
+const SPEEDS = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5];   // 倍速菜单 0.25x–5x，步进 0.25
 
 const esc = s => String(s == null ? "" : s)
   .replace(/&/g, "&amp;").replace(/</g, "&lt;")
@@ -84,7 +84,10 @@ function loadSettings() {
     const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
     if (typeof s.volume === "number") VOLUME = Math.min(1, Math.max(0, s.volume));
     if (typeof s.muted === "boolean") MUTED = s.muted;
-    if (typeof s.rate === "number" && (SPEEDS.includes(s.rate) || SPEEDS.includes(Math.round(s.rate * 100) / 100))) PLAYBACK_RATE = s.rate;
+    if (typeof s.rate === "number") {
+      const r = Math.round(s.rate * 4) / 4;   // 对齐到 0.25 步进
+      if (r >= 0.25 && r <= 5) PLAYBACK_RATE = r;
+    }
     if (["off", "one", "all"].includes(s.loop)) LOOP_MODE = s.loop;
   } catch (e) { /* ignore corrupt settings */ }
 }

@@ -172,14 +172,14 @@ body {
   box-shadow: 0 6px 24px rgba(15,23,42,.18);
   padding: 6px;
   display: none;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 4px;
-  min-width: 176px;
+  min-width: 205px;
 }
 #rate-menu.open { display: grid; }
 .rate-opt {
   font: inherit; font-size: 12.5px; font-variant-numeric: tabular-nums;
-  padding: 6px 10px;
+  padding: 6px 8px;
   border: 1px solid transparent;
   border-radius: 7px;
   background: none; color: var(--txt);
