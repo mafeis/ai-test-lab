@@ -364,6 +364,11 @@ function bindStaticControls() {
   });
 }
 
+/* 当前舞台视频（reel 是图片时返回 null；控制条/快捷键实时取用） */
+function getStageVideo() {
+  return document.querySelector("#stage video");
+}
+
 /* 音量按钮外观 */
 function syncVolButton(v) {
   const btnMute = document.getElementById("c-mute");
