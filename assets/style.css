@@ -222,7 +222,6 @@ body {
 
 /* ---------- 片段播放列表（正式列表，取代缩略卡网格） ---------- */
 
-#reelnav { display: none; }
 .playlist {
   margin-top: 12px;
   background: var(--card);
