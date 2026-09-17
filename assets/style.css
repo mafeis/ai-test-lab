@@ -142,18 +142,20 @@ body {
   box-shadow: 0 2px 12px rgba(15,23,42,.25);
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
-  min-height: 320px;
-  max-height: 72vh;
+  /* 固定舞台：宽高锁定，不随视频内容变化 */
+  height: min(72vh, 640px);
 }
 .stage video, .stage img {
-  /* 保真核心：原始宽高比 contain，绝不拉伸 */
+  /* 保真核心：视频按原始宽高比完整显示，绝不拉伸不裁切 */
+  /* 舞台固定，视频小于舞台时原尺寸显示，超出时等比缩小到刚好放下 */
   max-width: 100%;
-  max-height: 72vh;
+  max-height: 100%;
   width: auto; height: auto;
   object-fit: contain;
   display: block;
 }
 .stage .stage-hint { color: #64748b; font-size: 13px; padding: 40px; text-align: center; }
+.stage:fullscreen { height: 100vh; }
 .stage:fullscreen video { max-height: 100vh; }
 
 /* ---------- 自定义控制条 ---------- */
@@ -346,8 +348,8 @@ body {
   .thumb-box { width: 100%; height: 96px; }
   .sidebar-head { display: none; }
 
-  .stage { min-height: 200px; max-height: 56vh; }
-  .stage video, .stage img { max-height: 56vh; }
+  .stage { height: min(56vh, 480px); }
+  .stage video, .stage img { max-height: 100%; }
 
   /* 控制条压缩：音量滑杆隐藏（用系统音量键），按钮收紧 */
   .c-vol, .c-time.dur { display: none; }
