@@ -1,64 +1,73 @@
-# SeedVR2 视频高清化 —— 放大倍数与脸部保真标定（拟真 cos / MMD 卡通双素材）
+# SeedVR2 视频高清化 —— 放大多少倍才不会把脸改坏？实测标定
 
-> 成片：[dance05_15x_lanczos_1440.mp4](dance05_15x_lanczos_1440.mp4)（推荐流程产物）· [mmd_full_15x_1056.mp4](mmd_full_15x_1056.mp4)
+> 推荐流程成片：[dance05_15x_lanczos_1440.mp4](dance05_15x_lanczos_1440.mp4) · [mmd_full_15x_1056.mp4](mmd_full_1056.mp4)
 > 在线播放：https://mafeis.github.io/ai-test-lab/#seedvr2-upscale
 
-生成端产出 544×960 一类的低分辨率视频后，需要一个「超分到 1440×2560 一类交付尺寸」的环节。本实验标定 ComfyUI 0.35.0 核心版 SeedVR2 节点（`seedvr2_ema_7b_fp8_e4m3fn`，7B fp8）在两条真实管线素材上的可用性、画质收益与**脸部表情保真**，并给出可复用的流程结论。
+## 一分钟看懂
 
-**核心结论一句话：SeedVR2 只做 1.5 倍恢复、剩余尺寸交给本地 lanczos 放大 —— 3 倍直达会把人物表情改掉（抿嘴变咧嘴露齿），1.5 倍则全程保真。**
+AI 生成的视频分辨率低（544×960 一类），交付要 1440×2560。用超分模型 SeedVR2 放大时遇到一个问题：**它不是单纯放大，而是边放大边补画——放得越大，补画越随意**。真人素材放大 3 倍直达时，演员的抿嘴浅笑被改成了咧嘴露齿，瞳孔被画得更蓝更艳；放大 1.5 倍则每一帧表情都与原片一致。
 
-## 测试环境与方法
+由此定稿：**SeedVR2 只负责放大 1.5 倍找回细节，剩下的尺寸用本地 lanczos 放大补齐**。表情零失真，服务器耗时只有 3 倍直达的约 1/3（86 秒对 274 秒），观感几乎没有差别。
 
-- 推理端：局域网 ComfyUI 0.35.0（H20），核心节点链 `SeedVR2Preprocess → VAEEncode → SeedVR2TemporalChunk → Conditioning → KSampler(1 step, cfg 1.0) → TemporalMerge → VAEDecode → PostProcessing → SaveVideo`
-- 权重：`seedvr2_ema_7b_fp8_e4m3fn.safetensors`（7B fp8）+ `ema_vae_fp16.safetensors`（VAE）；色彩校正 `lab`（CIELAB 传输，肤色最忠实）
-- 提交方式：ComfyUI HTTP API（`POST /prompt` + `/history` 轮询 + `/view` 下载），单步 1 步采样 cfg 1.0，去噪 1.0，`res_multistep + simple`
-- 评测方法：全片跑完下载后，用 ffmpeg 抽**同一帧位**（`select=eq(n\,N)`）做整帧与脸部局部裁剪（`crop` + `scale` 统一尺寸 + `hstack`）对比图，逐帧核对表情；耗时以墙钟计
+| 方案 | 表情 | 清晰度 | 5 秒素材耗时 | 结论 |
+|------|------|--------|-------------|------|
+| 1.5 倍 + 本地放大补齐 | 与原片一致 | 好（略软半分） | 86s + 本地 8s | ★ 推荐 |
+| 1.5 倍直出 | 与原片一致 | 好 | 86s | 尺寸不够时用 |
+| 3 倍直达 | **被改**：嘴形、眼睛重画 | 略胜半筹 | 274s | 真人脸禁用 |
 
-## 测试一：拟真 cos 素材（dance05_shot1，544×960 · 124 帧 · 5.17s）
+## 为什么放大会把脸改坏
 
-三个方案，同一帧位（第 60 帧）脸部局部对比（[compare_real_face_3way.jpg](compare_real_face_3way.jpg)）：
+超分模型补细节时靠训练里学到的「标准样子」来画。脸恰恰是它模板最强、而人眼又最挑剔的部位：放大倍数小（1.5 倍），它只需要少量修补，原表情保得住；放大 3 倍，画面信息缺口太大，它就按「标准笑脸」自由发挥。核心版节点没有「恢复强度」旋钮，色彩校正四档只管颜色不管形状——**放大倍数是模型能画多少的唯一开关**。
 
-| 方案 | 输出 | 脸部表情 | 细节锐度 | 服务器耗时 |
-|------|------|----------|----------|------------|
-| A · 1.5 倍原生 | 816×1440 | ✅ 与源片一致 | 好 | 86.1s |
-| B · 1.5 倍 + 本地 lanczos 1440×2560 | 1440×2560 | ✅ 与源片一致 | 好（比 A 略软半分） | 86.1s + 本地 8s |
-| C · 3 倍直达 | 1440×2560 | ❌ 被改：抿嘴浅笑 → 咧嘴露齿，瞳孔重画更蓝更艳 | 略胜 B | 273.6s |
+三方案同帧脸部对比（核心证据）：[compare_real_face_3way.jpg](compare_real_face_3way.jpg)——左 1.5 倍、中 1.5 倍+本地放大、右 3 倍直达，看右图嘴形与牙齿露出量即可。
 
-关键观察：**放大倍数越大，扩散模型对脸部的「脑补」越多**。3 倍直出时模型按训练先验重画了嘴形与眼睛——A/B 与源片并排看嘴形、牙齿露出量、眼神完全一致，C 则明显咧嘴。核心版节点没有「恢复强度」旋钮，`PostProcessing.color_correction_method` 四档（lab/wavelet/adain/none）只作用于颜色、不作用于几何，因此**倍数是唯一有效杠杆**。
+## 测试一：真人 cos 素材（544×960 · 124 帧 · 5.17s）
 
-成片：[dance05_15x_816.mp4](dance05_15x_816.mp4)（A）· [dance05_15x_lanczos_1440.mp4](dance05_15x_lanczos_1440.mp4)（B，推荐）· [dance05_3x_direct_1440.mp4](dance05_3x_direct_1440.mp4)（C，失真对照）· 源片 [dance05_source_544.mp4](dance05_source_544.mp4)
+同一素材三条路线各跑一遍，成片后抽同一帧位、裁脸部放大并排逐帧核对：
 
-## 测试二：MMD 卡通素材（成片_初音长舞蹈 15s x2，704×960 · 724 帧 · 30.2s）
+| 方案 | 输出尺寸 | 表情核对 | 服务器耗时 |
+|------|----------|----------|------------|
+| A · 1.5 倍直出 | 816×1440 | 与源片一致 | 86.1s |
+| B · 1.5 倍 + 本地放大 | 1440×2560 | 与源片一致 | 86.1s + 本地 8s |
+| C · 3 倍直达 | 1440×2560 | **被改**：抿嘴→咧嘴露齿，瞳孔重画 | 273.6s |
 
-按定稿流程 1.5 倍跑全片（目标 1056×1440 等比无裁切）：
+成片对照：源片 [dance05_source_544.mp4](dance05_source_544.mp4) · A [dance05_15x_816.mp4](dance05_15x_816.mp4) · B [dance05_15x_lanczos_1440.mp4](dance05_15x_lanczos_1440.mp4) · C [dance05_3x_direct_1440.mp4](dance05_3x_direct_1440.mp4)。C 的画质确实略锐一点——但这点收益换不走表情被改的代价。
 
-- 整帧对比（[compare_mmd_full.jpg](compare_mmd_full.jpg)）：裙子皮革高光、袖口白纱、黑丝边界各清晰一档，地面光斑轮廓变实
-- 脸部对比（[compare_mmd_face.jpg](compare_mmd_face.jpg)）：眼睛与轮廓更干净，**五官与表情零改动**
-- 耗时 653.5s ≈ 22 倍实时，比拟真片（约 17 倍实时）慢——人物运动幅度大，显存内时间块切得更碎
+## 测试二：MMD 卡通素材（704×960 · 724 帧 · 30.2s 全片）
 
-意外发现：**三渲二卡通素材比拟真素材更适合 SeedVR2**——卡通脸没有「标准真人脸」的强生成先验，模型只恢复轮廓与纹理、不重画表情；且 3D 渲染的干净边缘恢复收益更大。拟真素材的失真风险在卡通素材上天然不存在。
+按定稿流程 1.5 倍跑完整片（输出 1056×1440）：
 
-成片：[mmd_full_15x_1056.mp4](mmd_full_15x_1056.mp4) · 源片 [mmd_source_704.mp4](mmd_source_704.mp4)
+- 画面提升：裙子皮革高光、袖口白纱、黑丝边界各清晰一档，地面光斑轮廓变实（[compare_mmd_full.jpg](compare_mmd_full.jpg)）；
+- 脸部：**五官与表情零改动**（[compare_mmd_face.jpg](compare_mmd_face.jpg)）。
 
-## 落地结论
+意外收获：**卡通素材比拟真素材更适合这套模型**。卡通脸没有「标准真人脸」模板可参照，模型只恢复轮廓和纹理、不去重画表情——拟真素材的失真风险在卡通素材上天然不存在，而 3D 渲染的干净边缘恢复收益反而更大。成片 [mmd_full_15x_1056.mp4](mmd_full_15x_1056.mp4) · 源片 [mmd_source_704.mp4](mmd_source_704.mp4)。
 
-1. **定稿流程：SeedVR2 只做 1.5 倍恢复 → 本地 lanczos 拉到目标交付尺寸。** 脸部零失真、细节增强保留、服务器耗时约为大倍数直出的 1/3，观感与大倍数直出几乎无差别。
-2. **倍数红线**：拟真/真人脸素材 ≤1.5 倍；卡通/非写实素材同样建议 1.5 倍起步（收益已足够，倍数再高只剩风险）。
-3. **排期口径**：按素材秒数 ×15~25 估（H20 空闲队列，运动幅度大取上限）。
-4. **色彩校正选 `lab`**：四档实测差异集中在颜色不影响几何，lab 肤色最忠实；wavelet 档细节略脆。
-5. 工程注意：社区镜像 numz 转换的权重缺 2 枚 conditioning 张量会报 "Could not detect model type"，必须取官方转换（ModelScope `Comfy-Org/SeedVR2`）；加载器下拉能看见文件名 ≠ 能加载。
-6. 脚本资产：提交/轮询/下载一条龙 `run-seedvr.mjs`（`--clip --target WxH --frames N --name --cc --go`），工作流 JSON 与权重修补脚本随实验目录留档。
+## 落地规则
+
+1. **定稿流程**：SeedVR2 只做 1.5 倍恢复 → 本地 lanczos 拉到交付尺寸。
+2. **倍数红线**：真人/拟真素材不超过 1.5 倍；卡通素材同样 1.5 倍起步（收益已够，加倍数只剩风险）。
+3. **需要更大尺寸的真人类交付**：换人脸保真专用模型（CodeFormer/GFPGAN 类）单独处理脸部区域，不要整体大倍数直出。
+4. **排期口径**：素材秒数 ×15~25（H20 空闲队列实测；人物运动幅度大取上限，因为时间块会被切得更碎）。例：5.17s 素材 86s，30.2s 全片 653.5s。
+5. **色彩校正选 lab**：四档差异只在颜色不在形状，lab 肤色最忠实，wavelet 细节略脆。
+6. **权重取官方转换**（ModelScope `Comfy-Org/SeedVR2`）：社区镜像缺 2 枚张量会报 "Could not detect model type"；下拉列表能看到文件名不等于能加载。
+
+## 环境与参数（复现用）
+
+- 推理端：局域网 ComfyUI 0.35.0 核心版，SeedVR2 节点链 `SeedVR2Preprocess → VAEEncode → SeedVR2TemporalChunk → Conditioning → KSampler → TemporalMerge → VAEDecode → PostProcessing → SaveVideo`
+- 权重：`seedvr2_ema_7b_fp8_e4m3fn.safetensors`（7B fp8）+ `ema_vae_fp16.safetensors`；色彩校正 `lab`
+- 采样：1 step · cfg 1.0 · denoise 1.0 · `res_multistep + simple`
+- 提交：ComfyUI HTTP API（`POST /prompt` + `/history` 轮询 + `/view` 下载），脚本 `run-seedvr.mjs`（`--clip --target WxH --frames N --name --cc --go`）随实验目录留档
+- 评测：ffmpeg 抽同一帧位整帧与脸部裁剪对比图，逐帧核对表情；耗时按墙钟计
 
 ## 资产清单
 
-| 文件 | 说明 |
-|------|------|
-| dance05_source_544.mp4 | 测试一源片 544×960 |
-| dance05_15x_816.mp4 | 方案 A：1.5 倍原生 816×1440 |
-| dance05_15x_lanczos_1440.mp4 | 方案 B：1.5 倍 + lanczos 1440×2560（推荐流程 ★） |
-| dance05_3x_direct_1440.mp4 | 方案 C：3 倍直达 1440×2560（表情失真对照） |
-| compare_real_face_3way.jpg | 三方案同帧位脸部局部对比 |
-| mmd_source_704.mp4 | 测试二源片 704×960 |
-| mmd_full_15x_1056.mp4 | MMD 全片 1.5 倍 1056×1440 |
-| compare_mmd_full.jpg / compare_mmd_face.jpg | MMD 整帧 / 脸部前后对比 |
+| 文件 | 是什么 |
+|------|--------|
+| dance05_source_544.mp4 | 测试一源片 |
+| dance05_15x_816.mp4 | 方案 A：1.5 倍直出 |
+| dance05_15x_lanczos_1440.mp4 | 方案 B：推荐流程 ★ |
+| dance05_3x_direct_1440.mp4 | 方案 C：3 倍直达（表情失真对照） |
+| compare_real_face_3way.jpg | 三方案同帧脸部对比（核心证据） |
+| mmd_source_704.mp4 / mmd_full_15x_1056.mp4 | 测试二源片 / 1.5 倍全片 |
+| compare_mmd_full.jpg / compare_mmd_face.jpg | 卡通整帧 / 脸部前后对比 |
 | poster_real.jpg / poster_mmd.jpg | 封面帧 |

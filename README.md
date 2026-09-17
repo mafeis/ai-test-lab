@@ -15,9 +15,9 @@
 | 7 | **t2i_round2** —— 步数权衡（Z-Image 1步即成品 / Flux2 8步省60%）+ 原生 2MP 天花板 | Z-Image Turbo + Flux 2 Klein 9B | ✅ 完成（推荐 8 步 / 2MP 可用） | [实验说明](experiments/t2i-round2/README.md) · [逐张查看](https://mafeis.github.io/ai-test-lab/#t2i-round2) |
 | 8 | **h3_round2** —— 链式续拍 3 镜角色一致性 + 音频提示词隔离（4 变体） | MiniMax H3 | ✅ 完成（末帧接力可行 / 音频独立可控） | [实验说明](experiments/h3-round2/README.md) · [逐条查看](https://mafeis.github.io/ai-test-lab/#h3-round2) |
 | 9 | **miku_story_30s** —— 初音 30s 舞台小剧场《Encore》：6 幕叙事 + 关键帧双锚锁风格 + 统一 BGM | Flux2 关键帧 + H3 双锚生成 | ✅ 完成（v2 赛璐璐全片锁定） | [制作说明](experiments/miku-story-30s/README.md) · [播放](https://mafeis.github.io/ai-test-lab/#miku-story-30s) |
-| 10 | **qipao_fine_cut** —— 白水纱旗袍棚拍舞：6 条同提示词 take 精剪成一条 16.8s（帧差选切点 + 能量弧重排 + 叠化） | MiniMax H3 + ffmpeg 精剪 | ✅ 完成（接点跳变 3.31x → 2.07x 运动基线） | [实验说明](experiments/qipao-fine-cut/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#qipao-fine-cut) |
-| 11 | **miku_stage_recut** —— 初音舞台六镜双线精剪：接点矩阵穷举重排 + AI 慢放分段修复（赛璐璐 / 真人 cos 两条成片） | MiniMax H3 + ffmpeg 精剪 | ✅ 完成（顺序穷举 1/720 · 滞空 3.0s→1.3s · 25.9s / 22.2s） | [实验说明](experiments/miku-stage-recut/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#miku-stage-recut) |
-| 12 | **seedvr2_upscale** —— SeedVR2 视频高清化：放大倍数与脸部保真标定（3 倍直达改表情，1.5 倍 + lanczos 定稿流程） | SeedVR2 7B fp8（ComfyUI 0.35.0） | ✅ 完成（倍数红线 1.5x · 卡通素材收益更大） | [实验说明](experiments/seedvr2-upscale/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#seedvr2-upscale) |
+| 10 | **qipao_fine_cut** —— 白水纱旗袍棚拍舞：6 条同提示词 take 精剪成一条 16.8s（帧差选切点 + 能量弧重排 + 叠化） | MiniMax H3 + ffmpeg 精剪 | ✅ 完成（切换处画面跳变从 3.31 倍降到 2.07 倍，接近无剪辑感） | [实验说明](experiments/qipao-fine-cut/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#qipao-fine-cut) |
+| 11 | **miku_stage_recut** —— 初音舞台六镜精剪：720 种剪法算出衔接最顺的一条 + 把 AI 偷偷放慢的 3 秒滞空修快（动画 / 真人两条成片） | MiniMax H3 + ffmpeg 精剪 | ✅ 完成（顺序全场第 1 · 滞空 3.0 秒修到 1.3 秒 · 25.9s / 22.2s） | [实验说明](experiments/miku-stage-recut/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#miku-stage-recut) |
+| 12 | **seedvr2_upscale** —— SeedVR2 视频高清化：放大多少倍才不会把脸改坏？3 倍直达会把抿嘴笑改成咧嘴露齿，1.5 倍全程保真 | SeedVR2 7B fp8（ComfyUI 0.35.0） | ✅ 完成（红线 1.5 倍，定稿流程：1.5 倍 + 本地放大补齐） | [实验说明](experiments/seedvr2-upscale/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#seedvr2-upscale) |
 
 ## 🎬 在线观看
 

@@ -1,51 +1,50 @@
 {
   "id": "miku-stage-recut",
   "category": "视频生成",
-  "title": "初音舞台六镜双线精剪 —— 接点矩阵穷举重排 + AI 慢放分段修复（赛璐璐 / 真人 cos）",
-  "summary": "顺序穷举 720 排列取 1/720 名（成本 34.6→24.9） · 滞空 3.0s→1.3s · 28.96s→25.92s / 26.38s→22.22s",
+  "title": "初音舞台六镜双线精剪 —— 720 种剪法算出最顺的一条，再把 AI 偷偷放慢的部分修快",
+  "summary": "两条成片（动画 25.9s / 真人 22.2s）：穷举 720 种镜头顺序选出衔接最顺的方案；找出模型生成时留下的 3 秒滞空慢动作并局部提速，总时长 -10.5% / -15.8%",
   "date": "2026-09-18",
   "tags": [
-    ["精剪成片", "green"],
-    ["顺序穷举", "amber"],
-    ["反慢放提速", "amber"],
-    ["双线 25.9s+22.2s", "gray"]
+    ["两条成片", "green"],
+    ["720 种顺序全算", "amber"],
+    ["慢动作 3秒→1.3秒", "amber"],
+    ["动画 / 真人 cos", "gray"]
   ],
   "media": {
     "type": "gallery",
     "columns": "two",
     "items": [
-      { "src": "experiments/miku-stage-recut/recut_cel.mp4", "poster": "experiments/miku-stage-recut/poster_cel.png", "label": "<b>赛璐璐线</b> 成片 25.92s · 顺序穷举 1/720 · 滞空已提速" },
-      { "src": "experiments/miku-stage-recut/recut_real.mp4", "poster": "experiments/miku-stage-recut/poster_real.png", "label": "<b>真人线</b> 成片 22.22s · 聚光亮相开场 · 滞空 3.0s→1.3s" },
-      { "type": "image", "src": "experiments/miku-stage-recut/slowmo_hang_24fps.jpg", "label": "<b>反慢放</b> 证据 · 24fps 连拍实测滞空 3.0s（生理极限 ≤0.7s）" },
-      { "type": "image", "src": "experiments/miku-stage-recut/fixed_real_jump.jpg", "label": "<b>反慢放</b> 分段提速后 6fps 复核 · 滞空 ~1.3s 无定格式滞空" },
-      { "type": "image", "src": "experiments/miku-stage-recut/verify_cel_joins.jpg", "label": "<b>验收</b> 赛璐璐线 5 刀前后帧横排（24fps）" },
-      { "type": "image", "src": "experiments/miku-stage-recut/verify_real_joins.jpg", "label": "<b>验收</b> 真人线 5 刀前后帧横排 · 全部 ≤2.84x 基线" },
-      { "type": "image", "src": "experiments/miku-stage-recut/verify_cel_overview.jpg", "label": "<b>验收</b> 赛璐璐线整片 1fps 连拍" },
-      { "type": "image", "src": "experiments/miku-stage-recut/verify_real_overview.jpg", "label": "<b>验收</b> 真人线整片 1fps 连拍" }
+      { "src": "experiments/miku-stage-recut/recut_cel.mp4", "poster": "experiments/miku-stage-recut/poster_cel.png", "label": "<b>动画线成片</b> 25.9s · 720 种剪法里的最优顺序 · 慢动作已修复" },
+      { "src": "experiments/miku-stage-recut/recut_real.mp4", "poster": "experiments/miku-stage-recut/poster_real.png", "label": "<b>真人线成片</b> 22.2s · 聚光灯亮相开场 · 滞空 3.0 秒修到 1.3 秒" },
+      { "type": "image", "src": "experiments/miku-stage-recut/slowmo_hang_24fps.jpg", "label": "<b>缺陷证据</b> 每秒 24 张连拍：人悬在空中整整 3.0 秒（真实跳跃不超过 0.7 秒）" },
+      { "type": "image", "src": "experiments/miku-stage-recut/fixed_real_jump.jpg", "label": "<b>修复之后</b> 同一镜头滞空约 1.3 秒，起跳落地干脆利落" },
+      { "type": "image", "src": "experiments/miku-stage-recut/verify_cel_joins.jpg", "label": "<b>剪点验收 · 动画线</b> 每一刀左右就是切换前后两帧，顺不顺一眼可见" },
+      { "type": "image", "src": "experiments/miku-stage-recut/verify_real_joins.jpg", "label": "<b>剪点验收 · 真人线</b> 五刀前后帧横排，画面均无跳变" },
+      { "type": "image", "src": "experiments/miku-stage-recut/verify_cel_overview.jpg", "label": "<b>全片一览 · 动画线</b> 每秒取一帧，节奏曲线一眼看完" },
+      { "type": "image", "src": "experiments/miku-stage-recut/verify_real_overview.jpg", "label": "<b>全片一览 · 真人线</b> 每秒取一帧，中段不再有画面停滞" }
     ]
   },
   "stats": [
-    ["成片", "赛璐璐 25.92s / 15.2MB · 真人 22.22s / 10.7MB · 672×896 @24fps CFR · H.264 CRF16 slow · AAC 32kHz · 原生音频"],
-    ["素材", "六幕 × 两画风 13 段 × 5.17s（赛璐璐 story2_* / 真人 story_* + morph 开场镜 story2_shot2fix）· H3 关键帧双锚生成"],
-    ["顺序", "接点姿态匹配 12fps 全对扫描 + 感知成本（≤1.6x 基线全额，溶解残差 ×0.25）+ 全排列穷举：赛璐璐 2→3→4→5→6→睁眼 = 24.9，1/720 名；真人主序 72.2 = 1/120 名"],
-    ["慢放诊断", "CFR 排除时间戳 → 逐秒能量曲线定位谷值（真人 3.2~6.4 vs 前后 13~24）→ 提示词 hangs at the peak → 24fps 连拍滞空 3.0s vs 生理 ≤0.7s，一票判死"],
-    ["修复", "分段 setpts/atempo 坡道 1×→1.5×→2.7×→1.5×→1×；窗口只落滞空与定格漂移（无运动参照）；接点帧全留 1× 区；鞠躬/睁眼/亮相开场等刻意慢放保留"],
-    ["验收", "24fps 解码：赛璐璐 5 刀全部 ≤3x 基线（谢幕叠化 1.00x，硬接边界帧差低至 0.31）；真人 5 刀 ≤2.84x；基线 v4→v5 3.01→3.50 / 6.34→9.36，阈值相对量口径不变"],
-    ["对比", "片长 28.96→25.92s（-10.5%）/ 26.38→22.22s（-15.8%）；滞空 2.75s→~1.2s / 3.0s→~1.3s；能量谷全部抬回基线上方；顺序成本 34.6→24.9（-28%）"]
+    ["做了什么", "同一支六幕舞台剧按两种画风各剪一条成片。第一步：把 720 种镜头顺序全部打分，选衔接最顺的；第二步：找出模型生成时留下的慢动作，只把慢的部分提速"],
+    ["成片", "动画 25.92s（15.2MB）· 真人 22.22s（10.7MB）· 672×896 · 保留视频原生音频"],
+    ["顺不顺怎么打分", "每个剪点量一次「画面跳变」：切过去前后两帧如果人物姿态接近，就顺；把一条顺序所有剪点的跳变加起来就是这条顺序的总分，分越低越顺"],
+    ["重排结果", "动画线新顺序在 720 种里排第 1，比原来顺 28%。奥秘只在一刀：「灯光落下接曲终睁眼」几乎无缝，同一个镜头拿去开场却是全矩阵最贵的剪法——同一镜头放片头还是片尾，分数差一倍。真人线穷举后确认现有顺序本来就是最优（120 种里第 1）"],
+    ["慢动作怎么发现的", "真实跳跃脚离地不到 0.7 秒，这条片实测悬空 3.0 秒（每秒 24 张连拍数出来的）；提示词里还原文写着 hangs at the peak（悬停在跳跃最高点）——是生成端故意渲染的慢动作，不是剪辑事故"],
+    ["慢动作怎么修的", "只把「看不出参照物」的段落（悬空、定格）提速到 2.7 倍，起跳落地等真动作原速保留；所有剪点帧一动没动，上一轮的验收结果零回退"],
+    ["修复结果", "滞空 3.0s ▮▮▮▮▮ → 1.3s ▮▮ · 总长 28.96→25.92s / 26.38→22.22s · 两条片共 10 个剪点最终验收全部达标"]
   ],
   "findings": [
-    "顺序的价值可量化：赛璐璐线重排收益全在最后一刀——退场→睁眼 31.2（全矩阵第 5 便宜）vs 睁眼开场头刀 55~82；重排后 24.9 为 720 排列最优，比原序省 28%",
-    "穷举给下限与排名，不给最终答案：真人线数值最优（96.4）把聚光开场镜排进片中部，叙事不合法；取合法集合最低成本 101.8（贵 5.6%），主序 5 镜版本就是 1/120 最优——穷举同样用来确认'不用改'",
-    "AI 慢放先判死再修：CFR→能量谷定位→提示词证据→滞空时间 vs 生理极限四步证据链；滞空 3.0s 超物理 4 倍即缺陷，非风格",
-    "提速窗口只能落在无运动参照素材（滞空/定格漂移）上，2.7x 读不出变速；起跳落地等真动作 1x，哪怕 1.2x 都会露馅",
-    "分段变速不破坏已验收的接点：把'接点帧必须留在 1x 段'作为坡道设计硬约束，轮次 A 的验收结论零回退",
-    "提速后基线自然抬升（6.34→9.36），窗口/边界判据都是相对量，验收口径跨版本稳定",
-    "成片验收解码帧率必须 ≥ 源帧率：j1 旋转刀 12fps 下看不出混叠，24fps 下 4.58x 现形，交 0.25s 溶解压制"
+    "慢动作先定性再动刀：悬空 3.0 秒、而真人只有 0.7 秒，超物理 4 倍就是缺陷；不违反物理的缓慢（鞠躬、谢幕、亮灯开场）是叙事节奏，全部保留",
+    "提速只藏在「没有参照物」的地方：悬空和定格画面里没有可见的运动可以对照，2.7 倍也看不出来；起跳落地这类真动作哪怕只提 1.2 倍都会露馅",
+    "穷举给排名但不替人做主：真人线分数最低的顺序把开场镜头排到了片子中间——画面最顺但故事不通，弃用；最终在「故事讲得通」的顺序里挑最顺的，只贵 5.6%",
+    "重排的收益能定位到具体某一刀：动画线全部收益来自「退场接睁眼」这一刀，它是 30 种接法里第 5 便宜的，而睁眼镜放开场是最贵的接法",
+    "提速让全片运动基线从 6.34 抬到 9.36，但所有判定标准用的都是相对值，两轮之间验收口径完全不用改",
+    "验收时看片的帧率不能低于源片帧率：一个快速旋转镜头的跳变在半帧率采样下完全隐形，全帧率下暴露出 4.58 倍跳变，最后用 0.25 秒叠化压掉"
   ],
   "links": [
     ["📄 实验说明", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-stage-recut/README.md"],
     ["🔧 全部资产", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/miku-stage-recut"],
-    ["← 素材生成端管线：关键帧双锚", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-story-30s/README.md"],
-    ["← 同款精剪方法前一代：同 prompt 多 take", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/qipao-fine-cut/README.md"]
+    ["← 素材怎么生成的：关键帧双锚", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-story-30s/README.md"],
+    ["← 同款精剪方法第一次使用", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/qipao-fine-cut/README.md"]
   ]
 }
