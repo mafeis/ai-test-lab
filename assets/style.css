@@ -331,6 +331,12 @@ body {
   gap: 6px;
   padding: 10px 12px;
 }
+.pl-break {
+  grid-column: 1 / -1;        /* 系列切换：独占一行强制换行 */
+  height: 1px;
+  margin: 3px 0;
+  background: var(--line);
+}
 .pl-chip {
   height: 34px;
   display: inline-flex; align-items: center; justify-content: center;

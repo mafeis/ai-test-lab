@@ -179,7 +179,10 @@ function chipLabels(reels) {
     counters[s] = (counters[s] || 0) + 1;
     return `${prefixes[s]}${counters[s]}`;
   });
-  return { labels, groups: names };
+  /* 每个系列在选集中的起始下标（用于系列间换行） */
+  const starts = {};
+  series.forEach((s, i) => { if (s && starts[s] === undefined) starts[s] = i; });
+  return { labels, series, starts };
 }
 
 function renderReelNav(t) {
@@ -189,7 +192,7 @@ function renderReelNav(t) {
   if (reels.length <= 1) { reelNav.innerHTML = ""; reelNav.style.display = "none"; return; }
   reelNav.style.display = "";
   const starCount = reels.filter(r => (r.html_label || r.label || "").includes("★")).length;
-  const { labels } = chipLabels(reels);
+  const { labels, series, starts } = chipLabels(reels);
   reelNav.innerHTML = `
     <div class="playlist">
       <div class="pl-head">选集 <span class="pl-hint">${reels.length} 个${starCount ? ` · ★${starCount}` : ""}</span></div>
@@ -197,7 +200,10 @@ function renderReelNav(t) {
         const raw = (r.html_label || r.label || "");
         const tip = raw.replace(/<[^>]+>/g, "").trim();
         const starred = raw.includes("★");
-        return `
+        /* 系列切换处插入整行换行分隔（第一个系列前不加） */
+        const breakHtml = (i > 0 && series[i] && series[i] !== series[i - 1])
+          ? `<div class="pl-break" title="${esc(series[i])}"></div>` : "";
+        return breakHtml + `
         <button class="pl-chip ${i === ACTIVE_REEL ? "active" : ""} ${starred ? "starred" : ""}" data-i="${i}" title="${esc((starred ? "★ " : "") + tip)}">
           ${starred ? `<span class="pl-star">★</span>` : ""}
           ${i === ACTIVE_REEL
