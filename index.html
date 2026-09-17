@@ -8,7 +8,7 @@
 </head>
 <body>
 <header class="topbar">
-  <div class="wrap topbar-inner">
+  <div class="topbar-inner">
     <div class="brand">
       <h1>AI Test Lab</h1>
       <span class="brand-sub">AI 效果测试场</span>
@@ -17,19 +17,28 @@
   </div>
 </header>
 
-<main class="wrap">
-  <p class="sub" id="subline">加载中…</p>
-  <div id="content"></div>
-</main>
+<div class="layout">
+  <!-- 左侧：测试列表 -->
+  <aside class="sidebar">
+    <div class="sidebar-head" id="sidebar-head">测试列表</div>
+    <div class="testlist" id="testlist"></div>
+  </aside>
+
+  <!-- 右侧：共用大播放器（剧场） -->
+  <section class="stage-wrap">
+    <div class="stage" id="stage"></div>
+    <div class="stage-bar" id="stagebar" style="display:none"></div>
+    <div id="reelnav"></div>
+    <div class="detail" id="detail" style="display:none"></div>
+  </section>
+</div>
 
 <footer class="footer">
-  <div class="wrap">
-    <strong>新增测试</strong>（不用改任何代码）：
-    ① 在 <code>data/tests/</code> 新建一个 <code>.json</code>（字段见现有文件）；
-    ② 在 <code>data/manifest.json</code> 的 <code>tests</code> 数组里加一行路径。
-    刷新即见，分类chip自动生成。<br>
-    在线仓库：<a href="https://github.com/mafeis/ai-test-lab">github.com/mafeis/ai-test-lab</a>
-  </div>
+  <strong>新增测试</strong>（不用改任何代码）：
+  ① 在 <code>data/tests/</code> 新建一个 <code>.json</code>（字段见现有文件）；
+  ② 在 <code>data/manifest.json</code> 的 <code>tests</code> 数组里加一行路径。
+  刷新即见；URL 加 <code>#测试id</code> 可直达。
+  <a href="https://github.com/mafeis/ai-test-lab">github.com/mafeis/ai-test-lab</a>
 </footer>
 
 <script src="assets/app.js"></script>
