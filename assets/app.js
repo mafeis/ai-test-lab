@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    AI Test Lab · 通用渲染器（剧场模式 v2）
    共用大播放器 + 自定义控制条（循环/倍速/音量/进度/快捷键）
    左侧列表 + 片段切换（无横向滚动条）+ 移动端适配
@@ -127,12 +127,9 @@ function renderList() {
       const color = CATEGORY_COLORS[t.category] || "var(--accent)";
       return `
       <button class="testitem ${t.id === ACTIVE_ID ? "active" : ""}" data-id="${esc(t.id)}"
-              style="--cat-color: ${color}">
+              style="--cat-color: ${color}" title="${esc(t.summary || t.title)}">
         <span class="ti-dot"></span>
-        <span class="ti-text">
-          <div class="ti-title">${esc(t.title)}</div>
-          <div class="ti-meta">${esc(t.summary || "")}</div>
-        </span>
+        <span class="ti-text"><div class="ti-title">${esc(t.title)}</div></span>
       </button>`;
     }).join("");
     return (ACTIVE_CAT === "全部" ? `<div class="list-group-label">${esc(cat)}</div>` : "") + items;
@@ -478,7 +475,7 @@ function renderStage() {
     stage.innerHTML = `<img src="${esc(reel.src)}" alt="">`;
     controls.style.display = "none";
   } else {
-    stage.innerHTML = `<video id="stage-video" autoplay playsinline src="${esc(reel.src)}" poster="${esc(reel.poster)}"></video>`;
+    stage.innerHTML = `<video id="stage-video" autoplay playsinline src="${esc(reel.src)}"${reel.poster ? ` poster="${esc(reel.poster)}"` : ""}></video>`;
     controls.style.display = "";
   }
 
