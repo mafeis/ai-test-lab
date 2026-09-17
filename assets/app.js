@@ -98,21 +98,25 @@ function renderList() {
     }));
 }
 
-/* ---------- 片段切换（网格换行，永不横向滚动） ---------- */
+/* ---------- 片段播放列表（正式列表样式，可清晰选择播放哪个） ---------- */
 
 function renderReelNav(t) {
   const reelNav = document.getElementById("reelnav");
   const reels = normalizeReels(t);
   if (reels.length <= 1) { reelNav.innerHTML = ""; reelNav.style.display = "none"; return; }
   reelNav.style.display = "";
-  reelNav.innerHTML = `<div class="reelgrid">` + reels.map((r, i) => `
-    <button class="reel ${i === ACTIVE_REEL ? "active" : ""}" data-i="${i}">
-      <span class="rbox">${r.poster
-        ? `<img src="${esc(r.poster)}" alt="">`
-        : `<video src="${esc(r.src)}" preload="metadata" muted></video>`}</span>
-      <div class="rlabel">${r.html_label || esc(r.label)}</div>
-    </button>`).join("") + `</div>`;
-  reelNav.querySelectorAll(".reel").forEach(btn =>
+  reelNav.innerHTML = `
+    <div class="playlist">
+      <div class="pl-head">播放列表 · ${reels.length} 个片段 <span class="pl-hint">点击选择播放 · 列表循环开启时自动连播</span></div>
+      <div class="pl-items">` + reels.map((r, i) => `
+      <button class="pl-item ${i === ACTIVE_REEL ? "active" : ""}" data-i="${i}">
+        <span class="pl-no">${i === ACTIVE_REEL
+          ? `<svg viewBox="0 0 16 16" class="pl-eq"><path d="M3 6v4M6.5 4v8M10 5.5v5M10 5v6M13 6v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"><animate attributeName="d" dur="0.8s" repeatCount="indefinite" values="M3 6v4M6.5 3.5v9M10 6v4M13 5v6;M3 5v6M6.5 6v4M10 3.5v9M13 7v2;M3 6v4M6.5 3.5v9M10 6v4M13 5v6"/></animate></svg>`
+          : `<span class="pl-num">${i + 1}</span>`}</span>
+        <span class="pl-label">${r.html_label || esc(r.label)}</span>
+        <span class="pl-state">${i === ACTIVE_REEL ? "播放中" : "点击播放"}</span>
+      </button>`).join("") + `</div></div>`;
+  reelNav.querySelectorAll(".pl-item").forEach(btn =>
     btn.addEventListener("click", () => {
       ACTIVE_REEL = Number(btn.dataset.i);
       renderStage();
