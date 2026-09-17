@@ -18,12 +18,25 @@
 
 ```
 ai-test-lab/
-├── prompts/       # 提示词测试用例
-├── code/          # AI 生成代码的效果测试
-├── images/        # 图像生成 / 视觉理解测试
-├── docs/          # 测试记录与对比结论
-└── experiments/   # 各种实验性小项目
+├── index.html               # GitHub Pages 在线播放器
+├── prompts/                 # 提示词测试用例
+├── code/                    # AI 生成代码的效果测试
+├── images/                  # 最终成片与封面
+│   ├── miku_dance.mp4           # qwen3.8-flash 生成，30s 720×960@24fps
+│   └── miku_dance_poster.png
+├── docs/                    # 测试记录与对比结论
+│   └── miku-dance-optimize.md   # H3 图生视频 vs qwen 原版对比
+└── experiments/             # 各种实验性小项目（每个测试一个子目录）
+    ├── miku-blender-dance/      # Hermes+Qwen3.8-Flash 自主 Blender 建模+跳舞视频（测试记录）
+    └── miku-h3-i2v/             # MiniMax H3 图生视频重生成（工作流 JSON + 首帧 + 节点定义）
 ```
+
+## 实验索引
+
+| 实验 | 记录 | 资产 |
+|---|---|---|
+| miku_blender_dance —— agent 自主 Blender 建模 + 30s 舞蹈视频 | [experiments/miku-blender-dance](experiments/miku-blender-dance/) | 成片 [images/miku_dance.mp4](images/miku_dance.mp4) |
+| miku_dance H3 图生视频优化重生成 | [docs/miku-dance-optimize](docs/miku-dance-optimize.md) | [experiments/miku-h3-i2v](experiments/miku-h3-i2v/) |
 
 ## 使用方式
 

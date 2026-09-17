@@ -33,7 +33,7 @@
 
 ## 工作流
 
-API 格式工作流存于仓库外本地 `h3_optimized_workflow.json`，节点链：
+API 格式工作流及全部资产见 [experiments/miku-h3-i2v/](../experiments/miku-h3-i2v/)，节点链：
 
 ```
 UNETLoader(H3 fl2va) → LoraLoader(8step turbo) ─┐
