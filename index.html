@@ -49,7 +49,7 @@
 <body>
 <div class="wrap">
   <h1>AI Test Lab · 动画播放器</h1>
-  <p class="sub">仓库内所有 AI 生成动画，点击画面即可播放 · 展开卡片下方「详细信息」查看测试总结 · 最后更新 2026-09-17</p>
+  <p class="sub">仓库内所有 AI 生成动画，点击画面即可播放 · 每张卡片下方直接展示测试详情（目标/输入/消耗/过程/链接）· 最后更新 2026-09-17</p>
   <div class="grid" id="grid"></div>
   <footer>
     <strong>新增测试</strong>：只需两步 —— ① 把视频放入 <code>images/</code>；② 在本文件顶部
@@ -143,8 +143,8 @@ function renderCard(t) {
     <h2>${esc(t.title)}</h2>
     <p class="meta">${esc(t.meta)}</p>
     <div class="badges">${badges}</div>
-    <details class="info">
-      <summary>详细信息</summary>
+    <details class="info" open>
+      <summary>测试详情（点击收起）</summary>
       <table>${rows}</table>
       <ul>${points}</ul>
       <div class="links">${links}</div>
