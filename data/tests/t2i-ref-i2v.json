@@ -1,0 +1,39 @@
+{
+  "id": "t2i-ref-i2v",
+  "category": "参数扫描",
+  "title": "文生图甜点图 → H3 图生视频 —— 双参考图 × 0.4/0.6MP",
+  "summary": "Z-Image / Flux2 甜点图做首帧 · 各 2 档 5s · 同 seed 同提示词 · 含原生音频",
+  "date": "2026-09-17",
+  "tags": [
+    ["MiniMax H3", "green"],
+    ["图生视频", "amber"],
+    ["风格跟随参考图", "green"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "two",
+    "items": [
+      { "src": "experiments/t2i-ref-i2v/t2iref_zimg_mp0.4_00001_.mp4", "label": "<b>Z-Image 参考 → 0.4MP</b> 544×736 · 70.4s" },
+      { "src": "experiments/t2i-ref-i2v/t2iref_zimg_mp0.6_00001_.mp4", "label": "<b>Z-Image 参考 → 0.6MP</b> 672×896 · 125.7s" },
+      { "src": "experiments/t2i-ref-i2v/t2iref_flux2_mp0.4_00001_.mp4", "label": "<b>Flux2 参考 → 0.4MP</b> 544×736 · 70.4s" },
+      { "src": "experiments/t2i-ref-i2v/t2iref_flux2_mp0.6_00001_.mp4", "label": "<b>Flux2 参考 → 0.6MP</b> 672×896 · 125.6s" }
+    ]
+  },
+  "stats": [
+    ["方法", "两张 0.6MP 甜点图做 H3 fl2va 首帧，同提示词/seed(91720260)/采样，124 帧 5.17s @24fps 含原生音频"],
+    ["耗时", "视频档位决定速度：0.4MP 70.4s / 0.6MP 125.6s，与参考图来源无关"],
+    ["风格", "完全跟随参考图：Z-Image 参考图出真人 cos 感，Flux2 参考图出赛璐璐动漫"],
+    ["一致性", "双马尾/水手服/配色全程稳定，无换脸无服装漂移"],
+    ["档位", "0.6MP 提升主要在背景（桁架/光斑/蕾丝纹理），人物主体两档都稳"]
+  ],
+  "findings": [
+    "H3 忠实继承首帧风格，提示词不改变风格归属——与 t2i 扫描结论互相印证",
+    "同 seed 下运镜和舞步起点与首帧构图强相关",
+    "推荐：0.1MP 摇构图 → 0.6MP 出参考图 → 0.6MP 出视频正片（126s）"
+  ],
+  "links": [
+    ["📄 实验说明", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/t2i-ref-i2v/README.md"],
+    ["🔧 工作流资产", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/t2i-ref-i2v"],
+    ["← 上游实验：文生图分辨率扫描", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/t2i-res-sweep/README.md"]
+  ]
+}

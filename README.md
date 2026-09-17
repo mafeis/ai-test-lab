@@ -11,6 +11,7 @@
 | 3 | **miku_h3_t2v** —— H3 纯文生视频（零图片输入，画质最佳版） | MiniMax H3 + qwen3vl-32b | ✅ 完成 | [实验说明](experiments/miku-h3-t2v/README.md) · [成片](experiments/miku-h3-t2v/miku_dance_t2v.mp4) |
 | 4 | **h3_res_sweep** —— H3 分辨率扫描 0.1→0.5MP（风格漂移 + 质量拐点对比） | MiniMax H3 | ✅ 完成（拐点 0.4MP） | [实验说明](experiments/h3-res-sweep/README.md) · [对比条](experiments/h3-res-sweep/comparison_strip_5s.png) |
 | 5 | **t2i_res_sweep** —— 文生图双模型分辨率扫描 0.1→1.0MP（Z-Image Turbo vs Flux 2 Klein） | Z-Image Turbo + Flux 2 Klein 9B | ✅ 完成（甜点均为 0.6MP） | [实验说明](experiments/t2i-res-sweep/README.md) · [逐张查看](https://mafeis.github.io/ai-test-lab/#t2i-res-sweep) |
+| 6 | **t2i_ref_i2v** —— 两张 0.6MP 甜点图做首帧 → H3 图生视频（0.4/0.6MP 两档 5s 含音频） | MiniMax H3 + 双文生图参考图 | ✅ 完成（风格完全跟随参考图） | [实验说明](experiments/t2i-ref-i2v/README.md) · [逐条查看](https://mafeis.github.io/ai-test-lab/#t2i-ref-i2v) |
 
 ## 🎬 在线观看
 
