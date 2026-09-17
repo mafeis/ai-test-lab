@@ -6,9 +6,11 @@
 
 ### miku_dance.mp4 —— Qwen 生成
 
-<video src="images/miku_dance.mp4" controls muted width="640"></video>
+[![miku_dance 封面](images/miku_dance_poster.png)](https://mafeis.github.io/ai-test-lab/)
 
-> 点击上方画面即可直接播放；也可点 [images/miku_dance.mp4](images/miku_dance.mp4) 在文件页观看。
+**▶ 点击封面直接观看** → [在线播放器](https://mafeis.github.io/ai-test-lab/) · [视频文件页](https://github.com/mafeis/ai-test-lab/blob/main/images/miku_dance.mp4)
+
+> 注：GitHub README 出于安全策略会过滤 `<video>` 标签，无法在 README 内直接内嵌播放器，因此点击封面跳转到 GitHub Pages 播放页观看。
 
 ## 目录结构
 
