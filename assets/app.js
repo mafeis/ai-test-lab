@@ -155,8 +155,10 @@ function chipLabels(reels) {
   };
   const series = reels.map(seriesOf);
   const names = [...new Set(series.filter(Boolean))];
-  /* 只有一个系列（或全无系列）→ 全局序号 1..N */
-  if (names.length <= 1) return { labels: reels.map((_, i) => String(i + 1)), groups: null };
+  /* 只有一个系列（或全无系列）→ 全局序号 1..N；series 始终返回数组（调用方依赖） */
+  if (names.length <= 1) {
+    return { labels: reels.map((_, i) => String(i + 1)), series, starts: {} };
+  }
 
   const prefixes = {};
   names.forEach(n => {
