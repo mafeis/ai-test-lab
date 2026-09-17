@@ -42,6 +42,12 @@
   details.info li { margin: 2px 0; }
   .links { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 12px; font-size: 12.5px; }
   .links a { color: var(--accent); text-decoration: none; }
+  .vidgrid { margin-top: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .vidgrid.two { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 760px) { .vidgrid, .vidgrid.two { grid-template-columns: 1fr; } }
+  .vidgrid .vcell video { width: 100%; border-radius: 8px; background: #0f172a; display: block; }
+  .vidgrid .vcell .vlabel { font-size: 11.5px; color: var(--dim); margin-top: 3px; text-align: center; }
+  .vidgrid .vcell .vlabel b { color: var(--txt); }
   footer { margin-top: 36px; font-size: 12.5px; color: var(--dim); }
   footer a { color: var(--accent); text-decoration: none; }
 </style>
@@ -146,8 +152,19 @@ const TESTS = [
   },
   {
     title: "H3 分辨率扫描 —— 同提示词 0.1→1.0 MP 全档位对比",
-    media: { type: "video", src: "experiments/h3-res-sweep/res_comparison_hi.mp4", poster: "experiments/h3-res-sweep/comparison_strip_full10.png" },
-    meta: "10 档全景（0.1→1.0MP）· 每档 5.17s @24fps · 同 seed 同提示词 · 生成耗时 10.5s→252.8s",
+    videos: [
+      { src: "experiments/h3-res-sweep/res5s_mp0.1_00001_.mp4", label: "<b>0.1MP</b> 256×352 · 10.5s" },
+      { src: "experiments/h3-res-sweep/res5s_mp0.2_00001_.mp4", label: "<b>0.2MP</b> 384×512 · 24.8s" },
+      { src: "experiments/h3-res-sweep/res5s_mp0.3_00001_.mp4", label: "<b>0.3MP</b> 480×640 · 43.1s" },
+      { src: "experiments/h3-res-sweep/res5s_mp0.4_00001_.mp4", label: "<b>0.4MP</b> 544×736 · 61.6s" },
+      { src: "experiments/h3-res-sweep/res5s_mp0.5_00001_.mp4", label: "<b>0.5MP</b> 608×832 · 84.1s" },
+      { src: "experiments/h3-res-sweep/res5s_mp0.6_00001_.mp4", label: "<b>0.6MP</b> 672×896 · 113s" },
+      { src: "experiments/h3-res-sweep/res5s_mp0.7_00001_.mp4", label: "<b>0.7MP</b> 736×960 · 143s" },
+      { src: "experiments/h3-res-sweep/res5s_mp0.8_00001_.mp4", label: "<b>0.8MP</b> 768×1056 · 178.7s" },
+      { src: "experiments/h3-res-sweep/res5s_mp0.9_00001_.mp4", label: "<b>0.9MP</b> 832×1088 · 211.3s" },
+      { src: "experiments/h3-res-sweep/res5s_mp1.0_00001_.mp4", label: "<b>1.0MP</b> 896×1120 · 252.8s" },
+    ],
+    meta: "10 档独立播放器（0.1→1.0MP 按序排列）· 每档 5.17s @24fps · 同 seed 同提示词 · 点击任一窗口单独播放",
     badges: [
       ["参数扫描", ""],
       ["MiniMax H3", "green"],
@@ -177,9 +194,17 @@ const TESTS = [
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 function renderCard(t) {
-  const media = t.media.type === "video"
-    ? `<video controls preload="metadata" src="${esc(t.media.src)}" poster="${esc(t.media.poster || "")}"></video>`
-    : `<img class="thumb" src="${esc(t.media.src)}" alt="${esc(t.media.alt || "")}">`;
+  let media = "";
+  if (t.videos) {
+    const cls = t.videos.length === 2 ? "vidgrid two" : "vidgrid";
+    const cells = t.videos.map(v =>
+      `<div class="vcell"><video controls preload="metadata" src="${esc(v.src)}"></video><div class="vlabel">${v.label}</div></div>`).join("");
+    media = `<div class="${cls}">${cells}</div>`;
+  } else if (t.media.type === "video") {
+    media = `<video controls preload="metadata" src="${esc(t.media.src)}" poster="${esc(t.media.poster || "")}"></video>`;
+  } else {
+    media = `<img class="thumb" src="${esc(t.media.src)}" alt="${esc(t.media.alt || "")}">`;
+  }
 
   const badges = t.badges.map(([label, cls]) =>
     `<span class="badge ${cls}">${esc(label)}</span>`).join("");
