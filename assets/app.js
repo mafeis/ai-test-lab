@@ -25,7 +25,7 @@ const CATEGORY_COLORS = {
   "Agent 任务": "var(--c-agent)",
 };
 
-const SPEEDS = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5];   // 倍速菜单 0.25x–5x，步进 0.25
+const SPEEDS = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 3, 5];   // 倍速菜单：超慢放细看生成 + 常规快放
 
 const esc = s => String(s == null ? "" : s)
   .replace(/&/g, "&amp;").replace(/</g, "&lt;")
@@ -85,8 +85,13 @@ function loadSettings() {
     if (typeof s.volume === "number") VOLUME = Math.min(1, Math.max(0, s.volume));
     if (typeof s.muted === "boolean") MUTED = s.muted;
     if (typeof s.rate === "number") {
-      const r = Math.round(s.rate * 4) / 4;   // 对齐到 0.25 步进
-      if (r >= 0.25 && r <= 5) PLAYBACK_RATE = r;
+      const allowed = SPEEDS.includes(s.rate);
+      if (allowed) PLAYBACK_RATE = s.rate;
+      else {
+        /* 旧档位吸附到最接近的现有档位 */
+        const nearest = SPEEDS.reduce((a, b) => Math.abs(b - s.rate) < Math.abs(a - s.rate) ? b : a, SPEEDS[0]);
+        PLAYBACK_RATE = nearest;
+      }
     }
     if (["off", "one", "all"].includes(s.loop)) LOOP_MODE = s.loop;
   } catch (e) { /* ignore corrupt settings */ }

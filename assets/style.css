@@ -174,7 +174,7 @@ body {
   display: none;
   grid-template-columns: repeat(5, 1fr);
   gap: 4px;
-  min-width: 205px;
+  min-width: 210px;
 }
 #rate-menu.open { display: grid; }
 .rate-opt {
