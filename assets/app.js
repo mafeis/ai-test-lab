@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    AI Test Lab · 通用渲染器（剧场模式 v2）
    共用大播放器 + 自定义控制条（循环/倍速/音量/进度/快捷键）
    左侧列表 + 片段切换（无横向滚动条）+ 移动端适配
@@ -226,42 +226,173 @@ function fmtTime(s) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 }
 
+/* ---------- 静态控制条：全局只绑定一次（bindControls 多次调用不叠加） ---------- */
+
+/* 倍速菜单：只构建一次 */
+let rateMenu = null;
+function ensureRateMenu() {
+  if (rateMenu) return rateMenu;
+  rateMenu = document.createElement("div");
+  rateMenu.id = "rate-menu";
+  rateMenu.innerHTML = SPEEDS.map(r =>
+    `<button class="rate-opt" data-r="${r}">${r}x</button>`).join("");
+  document.body.appendChild(rateMenu);
+  /* 点击页面其他地方关闭菜单 */
+  document.addEventListener("click", e => {
+    if (!rateMenu.contains(e.target) && !e.target.closest("#c-rate")) {
+      rateMenu.classList.remove("open");
+    }
+  });
+  /* 选项点击 → 应用倍速并持久化 */
+  rateMenu.addEventListener("click", e => {
+    const opt = e.target.closest(".rate-opt");
+    if (!opt) return;
+    PLAYBACK_RATE = Number(opt.dataset.r);
+    const v = getStageVideo();
+    if (v) v.playbackRate = PLAYBACK_RATE;
+    syncRateButton();
+    saveSettings();
+    rateMenu.classList.remove("open");
+  });
+  return rateMenu;
+}
+
+/* 倍速按钮外观（不触碰视频，随时可调） */
+function syncRateButton() {
+  const btn = document.getElementById("c-rate");
+  if (!btn) return;
+  btn.textContent = PLAYBACK_RATE === 1 ? "1x" : `${PLAYBACK_RATE}x`;
+  btn.classList.toggle("active", PLAYBACK_RATE !== 1);
+  document.querySelectorAll("#rate-menu .rate-opt").forEach(o =>
+    o.classList.toggle("on", Number(o.dataset.r) === PLAYBACK_RATE));
+}
+
+/* 静态按钮 + 键盘 + 菜单：一次性注册 */
+let staticControlsBound = false;
+function bindStaticControls() {
+  if (staticControlsBound) return;
+  staticControlsBound = true;
+  const $ = id => document.getElementById(id);
+  const btnPlay = $("c-play");
+  const btnLoopOne = $("c-loop-one"), btnLoopAll = $("c-loop-all");
+  const btnMute = $("c-mute");
+  const btnPip = $("c-pip"), btnFull = $("c-full");
+  const btnRate = $("c-rate");
+  const stage = document.getElementById("stage");
+  const menu = ensureRateMenu();
+
+  /* 播放/暂停：操作当前视频 */
+  btnPlay.addEventListener("click", () => {
+    const v = getStageVideo();
+    if (v) v.paused ? v.play() : v.pause();
+  });
+
+  /* 循环模式 */
+  function applyLoop() {
+    const v = getStageVideo();
+    if (v) v.loop = LOOP_MODE === "one";
+    btnLoopOne.classList.toggle("active", LOOP_MODE === "one");
+    btnLoopAll.classList.toggle("active", LOOP_MODE === "all");
+  }
+  btnLoopOne.addEventListener("click", () => {
+    LOOP_MODE = LOOP_MODE === "one" ? "off" : "one"; applyLoop(); saveSettings();
+  });
+  btnLoopAll.addEventListener("click", () => {
+    LOOP_MODE = LOOP_MODE === "all" ? "off" : "all"; applyLoop(); saveSettings();
+  });
+  window.applyLoopMode = applyLoop;   // bindControls 每个新视频恢复循环态时调用
+
+  /* 静音 */
+  btnMute.addEventListener("click", () => {
+    const v = getStageVideo();
+    if (!v) return;
+    v.muted = !v.muted;
+    MUTED = v.muted;
+    syncVolButton(v);
+    saveSettings();
+  });
+  window.syncVolumeUI = () => syncVolButton(getStageVideo());
+
+  /* 倍速按钮：开合菜单 */
+  btnRate.addEventListener("click", e => {
+    e.stopPropagation();
+    menu.classList.toggle("open");
+    syncRateButton();
+    const r = btnRate.getBoundingClientRect();
+    menu.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - menu.offsetWidth - 8))}px`;
+    menu.style.top = `${Math.max(8, r.top - menu.offsetHeight - 8)}px`;
+  });
+
+  /* 画中画 / 全屏 */
+  if (document.pictureInPictureEnabled) {
+    btnPip.addEventListener("click", async () => {
+      const v = getStageVideo();
+      if (!v) return;
+      try {
+        document.pictureInPictureElement
+          ? await document.exitPictureInPicture()
+          : await v.requestPictureInPicture();
+      } catch (e) { /* ignore */ }
+    });
+  } else {
+    btnPip.style.display = "none";
+  }
+  btnFull.addEventListener("click", () => {
+    (stage.fullscreenElement || stage === document.fullscreenElement)
+      ? document.exitFullscreen()
+      : stage.requestFullscreen();
+  });
+
+  /* 移动端双击舞台 = 播放/暂停 */
+  stage.addEventListener("dblclick", e => {
+    if (e.target.closest("video")) { e.preventDefault(); btnPlay.click(); }
+  });
+
+  /* 键盘快捷键：全局只注册一次，实时取当前视频 */
+  document.addEventListener("keydown", e => {
+    if (e.target.matches("input, textarea")) return;
+    const video = getStageVideo();
+    if (!video) return;
+    switch (e.key) {
+      case " ": e.preventDefault(); video.paused ? video.play() : video.pause(); break;
+      case "ArrowLeft": video.currentTime = Math.max(0, video.currentTime - 5); break;
+      case "ArrowRight": video.currentTime += 5; break;
+      case "ArrowUp": e.preventDefault(); video.volume = Math.min(1, video.volume + .1); break;
+      case "ArrowDown": e.preventDefault(); video.volume = Math.max(0, video.volume - .1); break;
+      case "m": case "M": btnMute.click(); break;
+      case "l": case "L": btnLoopOne.click(); break;
+      case "f": case "F": btnFull.click(); break;
+      case "0": video.currentTime = 0; break;
+    }
+  });
+}
+
+/* 音量按钮外观 */
+function syncVolButton(v) {
+  const btnMute = document.getElementById("c-mute");
+  const vol = document.getElementById("c-vol");
+  if (!btnMute || !vol || !v) return;
+  btnMute.classList.toggle("active", v.muted || v.volume === 0);
+  vol.value = v.muted ? 0 : v.volume * 1000;
+}
+
 function bindControls(video) {
   const $ = id => document.getElementById(id);
   const bar = $("controls");
+  const cur = $("c-cur"), dur = $("c-dur");
+  const seek = $("c-seek"), buf = $("c-buf");
+  const vol = $("c-vol");
+
+  bindStaticControls();
+
+  /* 播放/暂停图标 */
   const btnPlay = $("c-play");
   const iconPlay = btnPlay.querySelector(".ic-play");
   const iconPause = btnPlay.querySelector(".ic-pause");
-  const cur = $("c-cur"), dur = $("c-dur");
-  const seek = $("c-seek"), buf = $("c-buf");
-  const btnLoopOne = $("c-loop-one"), btnLoopAll = $("c-loop-all");
-  const btnRate = $("c-rate");
-  const btnMute = $("c-mute"), vol = $("c-vol");
-  const btnPip = $("c-pip"), btnFull = $("c-full");
-  const stage = document.getElementById("stage");
-
-  /* 倍速选择菜单（跟随倍速按钮，动态构建一次） */
-  let menu = document.getElementById("rate-menu");
-  if (!menu) {
-    menu = document.createElement("div");
-    menu.id = "rate-menu";
-    menu.innerHTML = SPEEDS.map(r =>
-      `<button class="rate-opt" data-r="${r}">${r}x</button>`).join("");
-    document.body.appendChild(menu);
-    /* 点击页面其他地方关闭菜单 */
-    document.addEventListener("click", e => {
-      if (!menu.contains(e.target) && e.target !== btnRate && !btnRate.contains(e.target)) {
-        menu.classList.remove("open");
-      }
-    });
-  }
-
-  /* 播放/暂停 */
   const syncPlay = () => {
     iconPlay.style.display = video.paused ? "" : "none";
     iconPause.style.display = video.paused ? "none" : "";
   };
-  btnPlay.addEventListener("click", () => video.paused ? video.play() : video.pause());
   video.addEventListener("play", syncPlay);
   video.addEventListener("pause", syncPlay);
 
@@ -281,136 +412,31 @@ function bindControls(video) {
   seek.addEventListener("input", () => {
     if (video.duration) video.currentTime = (seek.value / 1000) * video.duration;
   });
+  seek.addEventListener("input", () => {
+    const pct = video.duration ? (seek.value / 1000) * 100 : 0;
+    seek.style.setProperty("--fill", `${pct}%`);
+  });
+  seek.style.setProperty("--fill", video.duration ? (video.currentTime / video.duration) * 100 + "%" : "0%");
 
-  /* 循环：单个 / 全部（gallery 顺序连播）/ 关 */
-  function applyLoop() {
-    video.loop = LOOP_MODE === "one";
-    btnLoopOne.classList.toggle("active", LOOP_MODE === "one");
-    btnLoopAll.classList.toggle("active", LOOP_MODE === "all");
-  }
-  btnLoopOne.addEventListener("click", () => {
-    LOOP_MODE = LOOP_MODE === "one" ? "off" : "one"; applyLoop(); saveSettings();
-  });
-  btnLoopAll.addEventListener("click", () => {
-    LOOP_MODE = LOOP_MODE === "all" ? "off" : "all"; applyLoop(); saveSettings();
-  });
-  video.addEventListener("ended", () => {
-    if (LOOP_MODE !== "all") return;
-    const t = currentTest();
-    const reels = normalizeReels(t);
-    if (reels.length > 1) {
-      ACTIVE_REEL = (ACTIVE_REEL + 1) % reels.length;   // 循环全部：下一个片段，到尾回首
-      renderStage();
-    } else {
-      const vis = ALL_TESTS.filter(x => ACTIVE_CAT === "全部" || x.category === ACTIVE_CAT);
-      const idx = vis.findIndex(x => x.id === ACTIVE_ID);
-      if (vis.length > 1) {
-        ACTIVE_ID = vis[(idx + 1) % vis.length].id;     // 单片段测试：下一个测试
-        ACTIVE_REEL = 0;
-        renderList(); renderStage();
-      }
-    }
-  });
-  applyLoop();
-
-  /* 倍速：点击弹出菜单直接选（0.1x–10x），并持久化 */
-  const syncRate = () => {
-    video.playbackRate = PLAYBACK_RATE;
-    btnRate.textContent = PLAYBACK_RATE === 1 ? "1x" : `${PLAYBACK_RATE}x`;
-    btnRate.classList.toggle("active", PLAYBACK_RATE !== 1);
-    menu.querySelectorAll(".rate-opt").forEach(o =>
-      o.classList.toggle("on", Number(o.dataset.r) === PLAYBACK_RATE));
-  };
-  btnRate.addEventListener("click", e => {
-    e.stopPropagation();
-    menu.classList.toggle("open");
-    /* 菜单定位在倍速按钮上方 */
-    const r = btnRate.getBoundingClientRect();
-    menu.style.left = `${Math.min(r.left, window.innerWidth - menu.offsetWidth - 8)}px`;
-    menu.style.top = `${Math.max(8, r.top - menu.offsetHeight - 8)}px`;
-  });
-  menu.addEventListener("click", e => {
-    const opt = e.target.closest(".rate-opt");
-    if (!opt) return;
-    PLAYBACK_RATE = Number(opt.dataset.r);
-    syncRate(); saveSettings();
-    menu.classList.remove("open");
-  });
-  syncRate();
-
-  /* 音量（含持久化恢复） */
-  const syncVol = () => {
-    btnMute.classList.toggle("active", video.muted || video.volume === 0);
-    vol.value = video.muted ? 0 : video.volume * 1000;
-  };
-  btnMute.addEventListener("click", () => {
-    video.muted = !video.muted;
-    MUTED = video.muted;
-    syncVol(); saveSettings();
-  });
+  /* 音量滑杆 + 状态恢复（每个新视频一次） */
   vol.addEventListener("input", () => {
     video.muted = false;
     video.volume = vol.value / 1000;
     VOLUME = video.volume;
     MUTED = false;
-    syncVol(); saveSettings();
+    syncVolButton(video); saveSettings();
   });
-  video.addEventListener("volumechange", syncVol);
-  /* 恢复持久化的音量设置 */
+  video.addEventListener("volumechange", () => syncVolButton(video));
   video.volume = VOLUME;
   video.muted = MUTED;
-  syncVol();
-
-  /* 画中画 / 全屏（能力检测，不支持就隐藏） */
-  if (document.pictureInPictureEnabled) {
-    btnPip.style.display = "";
-    btnPip.addEventListener("click", async () => {
-      try {
-        document.pictureInPictureElement
-          ? await document.exitPictureInPicture()
-          : await video.requestPictureInPicture();
-      } catch (e) { /* ignore */ }
-    });
-  } else {
-    btnPip.style.display = "none";
-  }
-  btnFull.addEventListener("click", () => {
-    (stage.fullscreenElement || stage === document.fullscreenElement)
-      ? document.exitFullscreen()
-      : stage.requestFullscreen();
-  });
-
-  /* 键盘快捷键：全局只注册一次（见下方 getStageVideo 代理） */
-
-  /* 移动端双击舞台 = 播放/暂停 */
-  stage.addEventListener("dblclick", e => {
-    if (e.target.closest("video")) { e.preventDefault(); btnPlay.click(); }
-  });
+  syncVolButton(video);
+  video.playbackRate = PLAYBACK_RATE;   // 新视频恢复倍速
+  syncRateButton();                     // 菜单高亮同步
+  window.applyLoopMode?.();             // 新视频恢复循环态
 
   bar.style.display = "";
   syncPlay(); syncTime();
 }
-
-/* 当前舞台视频的动态引用（快捷键/双击始终操作最新视频） */
-function getStageVideo() { return document.querySelector("#stage video"); }
-
-/* 键盘快捷键：全局注册一次，避免每次 bindControls 重复叠加 */
-document.addEventListener("keydown", e => {
-  if (e.target.matches("input, textarea")) return;
-  const video = getStageVideo();
-  if (!video) return;
-  switch (e.key) {
-    case " ": e.preventDefault(); video.paused ? video.play() : video.pause(); break;
-    case "ArrowLeft": video.currentTime = Math.max(0, video.currentTime - 5); break;
-    case "ArrowRight": video.currentTime += 5; break;
-    case "ArrowUp": e.preventDefault(); video.volume = Math.min(1, video.volume + .1); break;
-    case "ArrowDown": e.preventDefault(); video.volume = Math.max(0, video.volume - .1); break;
-    case "m": case "M": video.muted = !video.muted; break;
-    case "l": case "L": document.getElementById("c-loop-one")?.click(); break;
-    case "f": case "F": document.getElementById("c-full")?.click(); break;
-    case "0": video.currentTime = 0; break;
-  }
-});
 
 /* 左侧测试项：事件委托绑定在 #testlist 容器上 */
 document.getElementById("testlist").addEventListener("click", e => {
