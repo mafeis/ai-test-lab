@@ -1,0 +1,47 @@
+{
+  "id": "qipao-fine-cut",
+  "category": "视频生成",
+  "title": "白水纱旗袍棚拍舞 —— 6 条 take 精剪成一条 16.8s（帧差选切点）",
+  "summary": "接点跳变 3.31x → 2.07x 运动基线 · 31.0s 素材剪到 16.75s · 含原生音频",
+  "date": "2026-09-17",
+  "tags": [
+    ["精剪成片", "green"],
+    ["帧差选切点", "amber"],
+    ["16.8s", "gray"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "two",
+    "items": [
+      { "src": "experiments/qipao-fine-cut/qipao_fine_cut.mp4", "poster": "experiments/qipao-fine-cut/poster.png", "label": "<b>精剪</b> 成片 16.75s · 5 接点 ≤2.07x 基线 · ★推荐" },
+      { "src": "experiments/qipao-fine-cut/qipao_raw_concat.mp4", "label": "<b>精剪</b> 对照 原序直拼 31.0s · 硬跳 3.31x 基线" },
+      { "type": "image", "src": "experiments/qipao-fine-cut/joins_check.jpg", "label": "<b>精剪</b> 接点预检 · 5 组「尾帧｜首帧」并排" },
+      { "type": "image", "src": "experiments/qipao-fine-cut/overview_frames.jpg", "label": "<b>精剪</b> 全片抽检 · 2fps × 36 格连拍" },
+      { "type": "image", "src": "experiments/qipao-fine-cut/first_frame_dance.jpg", "label": "<b>精剪</b> 设定图 · 棚拍正面全身（4 条 take 共用首帧）" },
+      { "type": "image", "src": "experiments/qipao-fine-cut/first_frame_breeze.png", "label": "<b>精剪</b> 设定图 · 背身微风（2 条 take 共用首帧）" }
+    ]
+  },
+  "stats": [
+    ["成片", "16.75s @24fps CFR · 544×960 · SAR 1:1 · H.264 CRF16 slow · AAC 32kHz · 7.48MB"],
+    ["素材", "6 条同提示词 take × 5.17s（0.4/0.5/0.98MP → 480×864 / 544×960 / 768×1344）· 2 张首帧设定图"],
+    ["选点", "40×52 灰度 12fps 帧差穷举「A 尾 2.5s × B 首 2.5s」共 30 个有序对，匹配帧落在溶解正中"],
+    ["顺序", "00273→00276→00274→00278→00277→00275（高能段在前、慢镜收势，两条重复 take 拆开）"],
+    ["接点", "5 处：舞蹈段间 0.22s 叠化、跨音频床 0.35s，结尾 0.55s 画面与声音同步压白"],
+    ["验收", "接点窗口最大帧差 1.63~2.07x 运动基线（对照直拼 2.73~3.31x），收刀 0.89x 近乎不可见"],
+    ["编码", "6 段裁切 + 白色补边 + 5×xfade/acrossfade + 结尾压白，全在一条 filter_complex 内一次编码"]
+  ],
+  "findings": [
+    "顺序比切点值钱：同一套扫描只改 take 顺序，最差接点从 3.11x 基线降到 2.42x——原序把静态慢镜夹在两条高能舞蹈中间，是跳变最大的一刀",
+    "帧差有下界：6 条 take 全组合最优也只有 1.64x 基线（舞蹈大幅运镜 + 纯白背景无轮廓参照），硬切无缝不可达，1.6~2.4x 残差交给 0.22s 叠化摊平",
+    "剪静态段比找切点省片长：每条 take 首尾是待机与收势（<0.6x 基线），剪掉后 31.0s → 16.75s，观感密度接近翻倍",
+    "两组 take 的音频提示词不同（J-pop / 微风环境音），重排后天然形成音乐段→环境音收势；跨音床接点用更长叠化（0.35s）同时兜住画面与声音",
+    "纯白棚拍背景补边必须用白色：黑边在纯白画面里是脏块——补边色是场景属性，不是默认值",
+    "帧差量不出语义：回旋方向相反也可能数值很低，定刀前必须看「尾帧｜首帧」并排图目检"
+  ],
+  "links": [
+    ["📄 实验说明", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/qipao-fine-cut/README.md"],
+    ["🔧 全部资产", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/qipao-fine-cut"],
+    ["← 生成端参数依据：链式续拍 + 音频隔离", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/h3-round2/README.md"],
+    ["← 另一种衔接路线：跨镜叙事首尾帧双锚", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/miku-story-30s/README.md"]
+  ]
+}

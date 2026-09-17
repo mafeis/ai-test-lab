@@ -15,6 +15,7 @@
 | 7 | **t2i_round2** —— 步数权衡（Z-Image 1步即成品 / Flux2 8步省60%）+ 原生 2MP 天花板 | Z-Image Turbo + Flux 2 Klein 9B | ✅ 完成（推荐 8 步 / 2MP 可用） | [实验说明](experiments/t2i-round2/README.md) · [逐张查看](https://mafeis.github.io/ai-test-lab/#t2i-round2) |
 | 8 | **h3_round2** —— 链式续拍 3 镜角色一致性 + 音频提示词隔离（4 变体） | MiniMax H3 | ✅ 完成（末帧接力可行 / 音频独立可控） | [实验说明](experiments/h3-round2/README.md) · [逐条查看](https://mafeis.github.io/ai-test-lab/#h3-round2) |
 | 9 | **miku_story_30s** —— 初音 30s 舞台小剧场《Encore》：6 幕叙事 + 关键帧双锚锁风格 + 统一 BGM | Flux2 关键帧 + H3 双锚生成 | ✅ 完成（v2 赛璐璐全片锁定） | [制作说明](experiments/miku-story-30s/README.md) · [播放](https://mafeis.github.io/ai-test-lab/#miku-story-30s) |
+| 10 | **qipao_fine_cut** —— 白水纱旗袍棚拍舞：6 条同提示词 take 精剪成一条 16.8s（帧差选切点 + 能量弧重排 + 叠化） | MiniMax H3 + ffmpeg 精剪 | ✅ 完成（接点跳变 3.31x → 2.07x 运动基线） | [实验说明](experiments/qipao-fine-cut/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#qipao-fine-cut) |
 
 ## 🎬 在线观看
 

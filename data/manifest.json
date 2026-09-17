@@ -8,6 +8,7 @@
     "data/tests/t2i-ref-i2v.json",
     "data/tests/t2i-round2.json",
     "data/tests/h3-round2.json",
-    "data/tests/miku-story-30s.json"
+    "data/tests/miku-story-30s.json",
+    "data/tests/qipao-fine-cut.json"
   ]
 }
