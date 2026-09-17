@@ -6,27 +6,27 @@
 
 | # | 测试 | 模型 | 状态 | 记录 |
 |---|---|---|---|---|
-| 1 | **miku_blender_dance** —— Agent 自主 Blender 建模 + 30s 舞蹈视频 | Qwen3.8-Flash (xhigh) | ✅ 完成 | [详细记录](experiments/miku-blender-dance/README.md) |
-| 2 | **miku_h3_i2v** —— MiniMax H3 图生视频优化重生成（对比实验，15s 含原生音频） | MiniMax H3 + qwen3vl-32b | ✅ 完成 | [对比记录](docs/miku-dance-optimize.md) · [成片](experiments/miku-h3-i2v/miku_dance_optimized.mp4) · [工作流资产](experiments/miku-h3-i2v/) |
-| 3 | **miku_h3_t2v** —— H3 纯文生视频（零图片输入，画质最佳版） | MiniMax H3 + qwen3vl-32b | ✅ 完成 | [实验说明](experiments/miku-h3-t2v/README.md) · [成片](experiments/miku-h3-t2v/miku_dance_t2v.mp4) |
-| 4 | **h3_res_sweep** —— H3 分辨率扫描 0.1→1.0MP 十档（风格漂移 + 质量甜点对比） | MiniMax H3 | ✅ 完成（甜点 0.6MP） | [实验说明](experiments/h3-res-sweep/README.md) · [逐档查看](https://mafeis.github.io/ai-test-lab/#h3-res-sweep) |
-| 5 | **t2i_res_sweep** —— 文生图双模型分辨率扫描 0.1→1.0MP（Z-Image Turbo vs Flux 2 Klein） | Z-Image Turbo + Flux 2 Klein 9B | ✅ 完成（甜点均为 0.6MP） | [实验说明](experiments/t2i-res-sweep/README.md) · [逐张查看](https://mafeis.github.io/ai-test-lab/#t2i-res-sweep) |
-| 6 | **t2i_ref_i2v** —— 两张 0.6MP 甜点图做首帧 → H3 图生视频（0.4/0.6MP 两档 5s 含音频） | MiniMax H3 + 双文生图参考图 | ✅ 完成（风格完全跟随参考图） | [实验说明](experiments/t2i-ref-i2v/README.md) · [逐条查看](https://mafeis.github.io/ai-test-lab/#t2i-ref-i2v) |
-| 7 | **t2i_round2** —— 步数权衡（Z-Image 1步即成品 / Flux2 8步省60%）+ 原生 2MP 天花板 | Z-Image Turbo + Flux 2 Klein 9B | ✅ 完成（推荐 8 步 / 2MP 可用） | [实验说明](experiments/t2i-round2/README.md) · [逐张查看](https://mafeis.github.io/ai-test-lab/#t2i-round2) |
-| 8 | **h3_round2** —— 链式续拍 3 镜角色一致性 + 音频提示词隔离（4 变体） | MiniMax H3 | ✅ 完成（末帧接力可行 / 音频独立可控） | [实验说明](experiments/h3-round2/README.md) · [逐条查看](https://mafeis.github.io/ai-test-lab/#h3-round2) |
-| 9 | **miku_story_30s** —— 初音 30s 舞台小剧场《Encore》：6 幕叙事 + 关键帧双锚锁风格 + 统一 BGM | Flux2 关键帧 + H3 双锚生成 | ✅ 完成（v2 赛璐璐全片锁定） | [制作说明](experiments/miku-story-30s/README.md) · [播放](https://mafeis.github.io/ai-test-lab/#miku-story-30s) |
-| 10 | **qipao_fine_cut** —— 白水纱旗袍棚拍舞：6 条同提示词 take 精剪成一条 16.8s（帧差选切点 + 能量弧重排 + 叠化） | MiniMax H3 + ffmpeg 精剪 | ✅ 完成（切换处画面跳变从 3.31 倍降到 2.07 倍，接近无剪辑感） | [实验说明](experiments/qipao-fine-cut/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#qipao-fine-cut) |
-| 11 | **miku_stage_recut** —— 初音舞台六镜精剪：720 种剪法算出衔接最顺的一条 + 把 AI 偷偷放慢的 3 秒滞空修快（动画 / 真人两条成片） | MiniMax H3 + ffmpeg 精剪 | ✅ 完成（顺序全场第 1 · 滞空 3.0 秒修到 1.3 秒 · 25.9s / 22.2s） | [实验说明](experiments/miku-stage-recut/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#miku-stage-recut) |
-| 12 | **seedvr2_upscale** —— SeedVR2 视频高清化：放大多少倍才不会把脸改坏？3 倍直达会把抿嘴笑改成咧嘴露齿，1.5 倍全程保真 | SeedVR2 7B fp8（ComfyUI 0.35.0） | ✅ 完成（红线 1.5 倍，定稿流程：1.5 倍 + 本地放大补齐） | [实验说明](experiments/seedvr2-upscale/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#seedvr2-upscale) |
-| 13 | **seedvr2_recut_3x** —— 定稿流程首次全片交付：22.2s / 532 帧精剪成片整条 3x 高清化，7 分钟出 2016×2688；3 倍直达探针实测 13.3s/帧不排 | SeedVR2 7B fp8（ComfyUI 0.35.0） | ✅ 完成（全片 426.6s ≈ 秒数×19，表情零失真，流程转正为交付默认） | [实验说明](experiments/seedvr2-recut-3x/README.md) · [查看](https://mafeis.github.io/ai-test-lab/#seedvr2-recut-3x) |
+| 1 | **miku_blender_dance** · Agent 自主建模 30s 舞蹈 | Qwen3.8-Flash | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#blender-dance) |
+| 2 | **miku_h3_i2v** · 图生视频优化重生成 | MiniMax H3 | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#h3-i2v) |
+| 3 | **miku_h3_t2v** · 纯文生视频画质最佳版 | MiniMax H3 | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#h3-t2v) |
+| 4 | **h3_res_sweep** · 分辨率十档扫描 | MiniMax H3 | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#h3-res-sweep) |
+| 5 | **t2i_res_sweep** · 双模型生图分辨率扫描 | Z-Image + Flux 2 | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#t2i-res-sweep) |
+| 6 | **t2i_ref_i2v** · 甜点图做首帧生视频 | H3 + 双参考图 | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#t2i-ref-i2v) |
+| 7 | **t2i_round2** · 步数权衡与分辨率天花板 | Z-Image + Flux 2 | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#t2i-round2) |
+| 8 | **h3_round2** · 链式续拍角色一致性 | MiniMax H3 | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#h3-round2) |
+| 9 | **miku_story_30s** · 30s 舞台小剧场 | Flux2 + H3 | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#miku-story-30s) |
+| 10 | **qipao_fine_cut** · 旗袍舞 6 条精剪 | H3 + ffmpeg | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#qipao-fine-cut) |
+| 11 | **miku_stage_recut** · 舞台六镜精剪 | H3 + ffmpeg | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#miku-stage-recut) |
+| 12 | **seedvr2_upscale** · 放大倍数红线标定 | SeedVR2 7B | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#seedvr2-upscale) |
+| 13 | **seedvr2_recut_3x** · 定稿流程全片交付 | SeedVR2 7B | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#seedvr2-recut-3x) |
+
+> 细节都在播放页卡片里：数据、结论、实验说明、全部资产一键直达。
 
 ## 🎬 在线观看
 
 <a href="https://mafeis.github.io/ai-test-lab/"><img src="experiments/miku-h3-t2v/miku_dance_t2v_poster.png" width="260" alt="miku_dance 封面（H3 纯文生视频版，画质最佳）"></a>
 
-**▶ 点击封面进入播放页** —— 每个测试的成片、参数和详细信息都在播放页卡片里：[https://mafeis.github.io/ai-test-lab/](https://mafeis.github.io/ai-test-lab/)
-
-> 封面取自 t2v 版（纯文生视频，四版中画质最佳）。四版横向对比：[qwen 原版 30s](images/miku_dance.mp4) · [H3 i2v 15s](experiments/miku-h3-i2v/miku_dance_optimized.mp4) · [H3 t2v 15s](experiments/miku-h3-t2v/miku_dance_t2v.mp4) · [分辨率扫描十档逐看](https://mafeis.github.io/ai-test-lab/#h3-res-sweep)
+**▶ 点击封面进入播放页**：[https://mafeis.github.io/ai-test-lab/](https://mafeis.github.io/ai-test-lab/)
 
 ## 🔄 维护约定（每次改动必读）
 
