@@ -49,7 +49,7 @@
                                          "4",
                                          0
                                      ],
-                             "length":  22,
+                             "length":  124,
                              "height":  832
                          },
               "class_type":  "MiniMaxH3ImageToVideo"
@@ -160,7 +160,7 @@
     "17":  {
                "inputs":  {
                               "format":  "mp4",
-                              "filename_prefix":  "video/res_mp0.5",
+                              "filename_prefix":  "video/res5s_mp0.5",
                               "video":  [
                                             "16",
                                             0
