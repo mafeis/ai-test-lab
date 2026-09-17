@@ -11,11 +11,11 @@
 
 ## 🎬 在线观看
 
-<a href="https://mafeis.github.io/ai-test-lab/"><img src="images/miku_dance_poster.png" width="220" alt="miku_dance 封面"></a>
+<a href="https://mafeis.github.io/ai-test-lab/"><img src="experiments/miku-h3-i2v/miku_dance_optimized_poster.png" width="260" alt="miku_dance 封面（H3 优化版舞台镜头）"></a>
 
 **▶ 点击封面进入播放页** —— 每个测试的成片、参数和详细信息都在播放页卡片里：[https://mafeis.github.io/ai-test-lab/](https://mafeis.github.io/ai-test-lab/)
 
-> 注：GitHub README 会过滤 `<video>` 标签无法内嵌播放，请从播放页观看。
+> 封面取自 H3 优化版舞台镜头。两个版本对比：[qwen 原版 30s](images/miku_dance.mp4) vs [H3 优化版 15s](experiments/miku-h3-i2v/miku_dance_optimized.mp4)
 
 ## 🔄 维护约定（每次改动必读）
 
