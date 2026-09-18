@@ -21,8 +21,9 @@
 | 11 | **miku_stage_recut** · 舞台六镜精剪 | H3 + ffmpeg | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#miku-stage-recut) |
 | 12 | **seedvr2_upscale** · 放大倍数红线标定 | SeedVR2 7B | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#seedvr2-upscale) |
 | 13 | **seedvr2_recut_3x** · 定稿流程全片交付 | SeedVR2 7B | ✅ 完成 | [播放页](https://mafeis.github.io/ai-test-lab/#seedvr2-recut-3x) |
+| 14 | **dunhuang_t2i_upscale** · 敦煌神女双模型 + SeedVR2 修复（图片页） | Flux2 + Z-Image + SeedVR2 7B | ✅ 完成 | [图片页对比](https://mafeis.github.io/ai-test-lab/gallery.html#dunhuang-t2i-upscale) |
 
-> 细节都在播放页卡片里：数据、结论、实验说明、全部资产一键直达。
+> 细节都在播放页卡片里：数据、结论、实验说明、全部资产一键直达。图片类测试在独立图片页 [gallery.html](https://mafeis.github.io/ai-test-lab/gallery.html)。
 
 ## 🎬 在线观看
 

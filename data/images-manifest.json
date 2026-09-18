@@ -1,0 +1,5 @@
+{
+  "tests": [
+    "data/image-tests/dunhuang-t2i-upscale.json"
+  ]
+}
