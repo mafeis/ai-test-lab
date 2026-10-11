@@ -105,15 +105,30 @@ body {
 .stage .stage-hint { color: #64748b; font-size: 13px; padding: 40px; text-align: center; }
 /* ---------- 音频舞台（YuE2 等音乐条目） ---------- */
 .stage .stage-audio {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 18px; width: min(640px, 92%); padding: 24px; text-align: center;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12px; width: min(640px, 92%); height: 100%;
+  padding: 18px 22px 12px; text-align: center; overflow: hidden;
 }
 .stage .stage-audio-icon {
-  font-size: 88px; line-height: 1; color: var(--c-music);
-  text-shadow: 0 0 40px rgba(219, 39, 119, .45);
+  font-size: 44px; line-height: 1; color: var(--c-music);
+  text-shadow: 0 0 30px rgba(219, 39, 119, .45);
 }
-.stage .stage-audio-label { color: #cbd5e1; font-size: 14px; line-height: 1.7; }
-.stage .stage-audio audio { width: 100%; }
+.stage .stage-audio-label { color: #cbd5e1; font-size: 14px; line-height: 1.6; }
+.stage .stage-audio audio { width: 100%; flex: none; }
+.stage .stage-audio-lyric {
+  flex: 1 1 auto; min-height: 0; width: 100%;
+  display: flex; flex-direction: column; text-align: left;
+  border-top: 1px solid rgba(148, 163, 184, .18); padding-top: 10px;
+}
+.stage .stage-audio-lyric .lyric-head {
+  color: #64748b; font-size: 12px; letter-spacing: .12em; margin-bottom: 6px; flex: none;
+}
+.stage .stage-audio-lyric .lyric-body {
+  margin: 0; flex: 1 1 auto; min-height: 0; overflow-y: auto;
+  color: #cbd5e1; font: 13px/1.9 ui-monospace, "SF Mono", Consolas, "Microsoft YaHei", monospace;
+  white-space: pre-wrap; word-break: break-word; padding-right: 10px;
+  scrollbar-width: thin; scrollbar-color: #334155 transparent;
+}
 .stage:fullscreen { height: 100vh; }
 .stage:fullscreen video { max-height: 100vh; }
 

@@ -48,12 +48,12 @@ const I18N = {
         episodes: "选集", unit: " 个", pick: "← 从左侧选择一个测试开始播放",
         open: "在 GitHub 打开", data: "测试数据", findings: "结论与发现",
         loadFail: "数据加载失败（检查 data/manifest.json）", err: "⚠ JS 错误",
-        title: null },
+        lyricsHead: "歌词", title: null },
   en: { all: "All", uncat: "Uncategorized", empty: "No tests in this category", mainReel: "Main",
         episodes: "Episodes", unit: " items", pick: "← Pick a test on the left to start",
         open: "Open on GitHub", data: "Test data", findings: "Findings",
         loadFail: "Failed to load data (check data/manifest.json)", err: "⚠ JS error",
-        title: "AI Test Lab · AI Experiments Playground" },
+        lyricsHead: "Lyrics", title: "AI Test Lab · AI Experiments Playground" },
 };
 const T = () => I18N[LANG];
 
@@ -136,6 +136,7 @@ function normalizeReels(t) {
       poster: it.poster || "",
       label: it.label || `#${i + 1}`,
       html_label: it.label || "",
+      lyrics: it.lyrics || "",
     }));
   }
   return [{
@@ -144,6 +145,7 @@ function normalizeReels(t) {
     poster: m.poster || "",
     label: T().mainReel,
     html_label: "",
+    lyrics: m.lyrics || "",
   }];
 }
 
@@ -579,12 +581,16 @@ function renderStage() {
     stage.innerHTML = `<img src="${esc(reel.src)}" alt="">`;
     controls.style.display = "none";
   } else if (reel.kind === "audio") {
-    /* 音频条目：原生控件居中展示（沿用 #stage-video id，快捷键/音量同步照常生效） */
+    /* 音频条目：原生控件 + 可滚动歌词（沿用 #stage-video id，快捷键/音量同步照常生效） */
     const plain = (reel.html_label || reel.label || "").replace(/<[^>]+>/g, "");
+    const lyrHtml = reel.lyrics
+      ? `<div class="stage-audio-lyric"><div class="lyric-head">${esc(T().lyricsHead)}</div><pre class="lyric-body">${esc(reel.lyrics)}</pre></div>`
+      : "";
     stage.innerHTML = `<div class="stage-audio">
       <div class="stage-audio-icon">♪</div>
       <div class="stage-audio-label">${esc(plain)}</div>
       <audio id="stage-video" controls autoplay playsinline preload="metadata" src="${esc(reel.src)}"></audio>
+      ${lyrHtml}
     </div>`;
     controls.style.display = "none";
   } else {
