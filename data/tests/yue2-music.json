@@ -1,0 +1,50 @@
+{
+  "id": "yue2-music",
+  "category": "音乐生成",
+  "title": "YuE2 音乐生成 —— 歌词进、成品歌出，ComfyUI 原生节点全链路",
+  "summary": "开源模型 YuE2 先把「风格+歌词」写成一份可编辑的 ABC 乐谱，再渲染成带人声的完整歌曲。九种风格实测：DJ 大场 / 迪斯科 / 抒情 / 中国风×Trap / City Pop / 热带浩室…单首纯执行 20~40 秒，时长由歌词体量决定而非参数",
+  "date": "2026-10-11",
+  "tags": [
+    ["零插件·原生节点", "green"],
+    ["乐谱白盒可编辑", "purple"],
+    ["时长跟歌词体量走", "amber"],
+    ["int8 权重仅 3.7GB", "gray"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "two",
+    "items": [
+      { "type": "audio", "src": "experiments/yue2-music/01-jintian-shiguang-edm.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>今晚是光</b> Festival Big Room · 128 BPM · supersaw + drop + 全场合唱钩子 · 2:47" },
+      { "type": "audio", "src": "experiments/yue2-music/02-zhuangequan-disco.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>转个圈</b> Retro Disco Funk · 116 BPM · slap bass + 弦乐切分 + 镜球舞池 · 2:54" },
+      { "type": "audio", "src": "experiments/yue2-music/03-yiqianbian-goodbye-ballad.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>一千遍再见</b> Piano Power Ballad · 72 BPM · 钢琴渐强到弦乐爆发 · 全场最长 3:08 ★" },
+      { "type": "audio", "src": "experiments/yue2-music/04-changan-yue-guofeng-trap.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>长安的月</b> 中国风 × Trap · 92 BPM · 古筝戏腔 × 808 · 说唱主歌+戏腔副歌 · 2:19" },
+      { "type": "audio", "src": "experiments/yue2-music/05-haianxian-citypop.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>海岸线自动驾驶</b> City Pop · 110 BPM · Rhodes + 放克贝斯 + 湾岸夜驶霓虹 · 2:36" },
+      { "type": "audio", "src": "experiments/yue2-music/06-bushuizaijian-tropical.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>不说再见的主场</b> Tropical House · 104 BPM · 马林巴 + 萨克斯钩子 + 落日沙滩 · 2:42" },
+      { "type": "audio", "src": "experiments/yue2-music/07-yidiandian-photo-45s.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>一点点</b> 按照片气质定制的对唱小品 · max_duration=45 精确命中 45.00s ★" },
+      { "type": "audio", "src": "experiments/yue2-music/08-wanfeng-laixin.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>晚风来信</b> 中文流行抒情 · 78 BPM · 首发验证曲 · 2:29" },
+      { "type": "audio", "src": "experiments/yue2-music/09-wurenzaichang-instrumental.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>无人在场</b> 纯器乐管弦 · 无人声对照组 · 2:08" }
+    ]
+  },
+  "stats": [
+    ["做了什么", "用 ComfyUI 原生节点（零第三方插件）跑通开源音乐模型 YuE2 的完整出歌链路，产出 9 首跨风格成品并总结可复用的写法配方"],
+    ["模型怎么工作", "风格+歌词 → 先生成可编辑的 ABC 乐谱（旋律+和弦）→ 乐谱条件化渲染成带人声伴奏的完整歌曲；中间乐谱是纯文本，可人工改和弦再接回渲染——白盒编辑入口"],
+    ["最重要的经验", "实际时长由歌词体量决定，max_duration 只是上限：写满 6-8 段出 3 分钟，只写 4 段出 1 分半；要精确 45 秒就控制 8 行左右（实测 45.00s 命中）"],
+    ["提示词公式", "Style = 语言+流派+人声特点+BPM+乐器编制+氛围质感；歌词字段只放要唱的词，混写互相污染"],
+    ["速度", "单首纯执行约 20-40 秒；批量提交按队列顺序消化，6 首约 4 分钟全部落盘"],
+    ["交付格式", "直出 48kHz/16bit FLAC（约 6.5MB/分钟），分享转 MP3 320k + ID3 标签（约 2.4MB/分钟），手机即点即播"],
+    ["许可", "代码 Apache-2.0；权重 CC BY-NC 4.0 + 创作者条款：个人变现免费，公司商用需另取授权"]
+  ],
+  "findings": [
+    "时长开关在歌词手里不在参数手里：max_duration 设 190 秒，歌词写满的歌出 3:08，只写一半的出 1:42——排期按「行数×BPM」估，不按参数估",
+    "ABC planning=full 时模型先写谱再生成，乐谱可直接预览、手改、重渲染；这是与闭源 API 产品最大的体感差异，适合做「客户改和弦不改旋律」这类可控需求",
+    "int8 量化权重只有 3.7GB，普通显存即可跑，演示质量已达标；官方原版 pipeline 要求 Linux+24GB，ComfyUI 路线把门槛降了一个量级",
+    "ComfyUI ≥0.37 已内置 nodes_yue2，官方模板 audio_yue2_text2music 可直接加载；翻唱（SheetSage2 转录）暂未入 ComfyUI，需走上游 Python",
+    "FLAC 发微信/iPhone 经常哑火，分享场景一律转 MP3 320k 并写 ID3——文件名是 dj_00001 和显示《今晚是光》是两种体验"
+  ],
+  "links": [
+    ["📄 实验说明", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/yue2-music/README.md"],
+    ["🔧 全部资产", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/yue2-music"],
+    ["🎵 上游模型 YuE2", "https://github.com/multimodal-art-projection/YuE"],
+    ["🤗 权重下载", "https://huggingface.co/Comfy-Org/YuE2"]
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "id": "yue2-music",
+  "category": "Music",
+  "title": "YuE2 Music Generation — Lyrics In, Finished Song Out, Entirely on ComfyUI Native Nodes",
+  "summary": "Open-source YuE2 first writes an editable ABC score from style+lyrics, then renders it into a full song with vocals. Nine styles tested: big-room EDM / disco / ballad / guofeng-trap / city pop / tropical house... ~20-40 s per song; actual length follows lyric volume, not the parameter",
+  "date": "2026-10-11",
+  "tags": [
+    ["zero plugins · native nodes", "green"],
+    ["white-box editable score", "purple"],
+    ["length follows lyrics", "amber"],
+    ["int8 weights only 3.7 GB", "gray"]
+  ],
+  "media": {
+    "type": "gallery",
+    "columns": "two",
+    "items": [
+      { "type": "audio", "src": "experiments/yue2-music/01-jintian-shiguang-edm.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>Tonight Is Light</b> Festival Big Room · 128 BPM · supersaw + drop + crowd hook · 2:47" },
+      { "type": "audio", "src": "experiments/yue2-music/02-zhuangequan-disco.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>Spin Around</b> Retro Disco Funk · 116 BPM · slap bass + string stabs · 2:54" },
+      { "type": "audio", "src": "experiments/yue2-music/03-yiqianbian-goodbye-ballad.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>1000 Goodbyes</b> Piano Power Ballad · 72 BPM · longest at 3:08 ★" },
+      { "type": "audio", "src": "experiments/yue2-music/04-changan-yue-guofeng-trap.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>Moon over Chang'an</b> Guofeng × Trap · 92 BPM · guzheng & opera vocal × 808 · 2:19" },
+      { "type": "audio", "src": "experiments/yue2-music/05-haianxian-citypop.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>Coastline Autopilot</b> City Pop · 110 BPM · Rhodes + funk bass + bay neon · 2:36" },
+      { "type": "audio", "src": "experiments/yue2-music/06-bushuizaijian-tropical.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>Never-Say-Goodbye Arena</b> Tropical House · 104 BPM · marimba + sax hook · 2:42" },
+      { "type": "audio", "src": "experiments/yue2-music/07-yidiandian-photo-45s.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>A Little Closer</b> Duet tailored to a reference photo · max_duration=45 hit exactly 45.00 s ★" },
+      { "type": "audio", "src": "experiments/yue2-music/08-wanfeng-laixin.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>Letter from the Night Breeze</b> Mandopop ballad · 78 BPM · first take · 2:29" },
+      { "type": "audio", "src": "experiments/yue2-music/09-wurenzaichang-instrumental.mp3", "poster": "experiments/yue2-music/yue2_cover.png", "label": "<b>Nobody Around</b> Orchestral instrumental · no-vocal control · 2:08" }
+    ]
+  },
+  "stats": [
+    ["What we did", "Ran the open-source music model YuE2 end-to-end on stock ComfyUI (zero custom nodes), produced 9 cross-style tracks and distilled reusable prompt recipes"],
+    ["How the model works", "Style+lyrics → an editable ABC score (melody+chords) rendered as conditioning → full song with vocals; the score is plain text you can re-harmonize and re-render — the white-box entry point"],
+    ["Key finding", "Actual length follows lyric volume; max_duration is only a ceiling: fully loaded lyrics render ~3 min, half-loaded ones stop at ~1:42; for an exact 45 s keep ~8 lines (measured 45.00 s)"],
+    ["Prompt formula", "Style = language + genre + vocal character + BPM + instrumentation + mood; keep only singable text in Lyrics"],
+    ["Speed", "~20-40 s pure generation per song; batch of 6 done in ~4 min through the queue"],
+    ["Delivery format", "Native 48 kHz/16-bit FLAC (~6.5 MB/min); share as MP3 320k with ID3 tags (~2.4 MB/min) so phones play files directly"],
+    ["License", "Code Apache-2.0; weights CC BY-NC 4.0 + creator permission: personal monetization free, commercial company use needs a separate license"]
+  ],
+  "findings": [
+    "The length knob lives in the lyrics, not the parameter: same 190 s cap gave 3:08 for full lyrics and 1:42 for half — schedule by lines×BPM, not by max_duration",
+    "With ABC planning=full the model writes the score first; the score previews as text, edits by hand, re-renders — the killer differentiator vs closed APIs for 're-harmonize but keep the melody' requests",
+    "The int8 checkpoint is just 3.7 GB and demo-grade; the upstream pipeline demands Linux + 24 GB VRAM, the ComfyUI route drops the bar by an order of magnitude",
+    "ComfyUI ≥0.37 ships nodes_yue2 natively; official template audio_yue2_text2music loads directly. Covers via SheetSage2 transcription are not in ComfyUI yet — use upstream Python",
+    "FLAC often won't play in WeChat/iPhone — always transcode to MP3 320k with ID3 for sharing: dj_00001 vs a real song title is two different experiences"
+  ],
+  "links": [
+    ["📄 Write-up", "https://github.com/mafeis/ai-test-lab/blob/main/experiments/yue2-music/README.en.md"],
+    ["🔧 All assets", "https://github.com/mafeis/ai-test-lab/tree/main/experiments/yue2-music"],
+    ["🎵 Upstream model YuE2", "https://github.com/multimodal-art-projection/YuE"],
+    ["🤗 Weights", "https://huggingface.co/Comfy-Org/YuE2"]
+  ]
+}

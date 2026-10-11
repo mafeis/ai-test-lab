@@ -27,11 +27,13 @@ const CATEGORY_COLORS = {
   "参数扫描": "var(--c-sweep)",
   "图像生成": "var(--c-image)",
   "Agent 任务": "var(--c-agent)",
+  "音乐生成": "var(--c-music)",
   /* 英文版分类名共用同一套色 */
   "Video": "var(--c-video)",
   "Parameter Sweep": "var(--c-sweep)",
   "Image": "var(--c-image)",
   "Agent Task": "var(--c-agent)",
+  "Music": "var(--c-music)",
 };
 
 /* ---------- 双语（中/EN） ----------
@@ -576,6 +578,15 @@ function renderStage() {
   if (reel.kind === "image") {
     stage.innerHTML = `<img src="${esc(reel.src)}" alt="">`;
     controls.style.display = "none";
+  } else if (reel.kind === "audio") {
+    /* 音频条目：原生控件居中展示（沿用 #stage-video id，快捷键/音量同步照常生效） */
+    const plain = (reel.html_label || reel.label || "").replace(/<[^>]+>/g, "");
+    stage.innerHTML = `<div class="stage-audio">
+      <div class="stage-audio-icon">♪</div>
+      <div class="stage-audio-label">${esc(plain)}</div>
+      <audio id="stage-video" controls autoplay playsinline preload="metadata" src="${esc(reel.src)}"></audio>
+    </div>`;
+    controls.style.display = "none";
   } else {
     stage.innerHTML = `<video id="stage-video" autoplay playsinline src="${esc(reel.src)}"${reel.poster ? ` poster="${esc(reel.poster)}"` : ""}></video>`;
     controls.style.display = "";
@@ -603,7 +614,7 @@ function renderStage() {
     }
   }
 
-  if (reel.kind !== "image") {
+  if (reel.kind === "video") {
     bindControls(stage.querySelector("video"));
   }
 

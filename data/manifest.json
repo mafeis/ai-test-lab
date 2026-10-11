@@ -12,6 +12,7 @@
     "data/tests/qipao-fine-cut.json",
     "data/tests/miku-stage-recut.json",
     "data/tests/seedvr2-upscale.json",
-    "data/tests/seedvr2-recut-3x.json"
+    "data/tests/seedvr2-recut-3x.json",
+    "data/tests/yue2-music.json"
   ]
 }
